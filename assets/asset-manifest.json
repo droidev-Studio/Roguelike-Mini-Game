@@ -149,7 +149,11 @@
           "release": { "src": "weapons/icons/asset_weapon_shield_lv4.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] }
         },
         "5": { "primary": { "src": "weapons/attacks/asset_weapon_attack_shield_lv5.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
-        "6": { "primary": { "src": "weapons/attacks/asset_weapon_attack_shield_lv6.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } }
+        "6": {
+          "primary": { "src": "weapons/attacks/asset_weapon_attack_shield_lv6_release.png", "sourceSize": [1254, 1254], "usage": ["weapon_attack"] },
+          "charge": { "src": "weapons/attacks/asset_weapon_attack_shield_lv6_charge.png", "sourceSize": [1254, 1254], "usage": ["weapon_attack"] },
+          "release": { "src": "weapons/attacks/asset_weapon_attack_shield_lv6_release.png", "sourceSize": [1254, 1254], "usage": ["weapon_attack"] }
+        }
       }
     },
     "taiping": {
