@@ -4522,9 +4522,11 @@ class Shield extends Weapon {
         super(baseDamage, getWeaponJsonAttackInterval('shield', 3.5)); // 每3.5秒触发一次脉冲爆发
         this.type = 'shield';
         this.active = false;
-        this.phase = 'none'; // none / charge / explode
+        this.phase = 'none'; // none / charge / explode / release
         this.chargeTimer = 0;
         this.explodeTimer = 0;
+        this.releaseVisualTimer = 0;
+        this.releaseVisualDuration = 0.42;
         this.currentRadius = 0;
         this.maxRadius = getWeaponJsonParam('shield', 'maxRadius', 144); // 基础范围 ×1.2
         this.baseKnockback = getWeaponJsonParam('shield', 'baseKnockback', 60); // 基础击退距离
@@ -4547,6 +4549,7 @@ class Shield extends Weapon {
         this.phase = 'charge';
         this.chargeTimer = 0;
         this.explodeTimer = 0;
+        this.releaseVisualTimer = 0;
         this.currentRadius = this.chargeStartRadius;
         this.hitRecords.clear();
         // 锚定到玩家当前位置
@@ -4599,7 +4602,7 @@ class Shield extends Weapon {
             // 脉冲范围内清除敌方投射物
             this.destroyProjectilesInRadius(projectiles);
 
-            // 达到最大半径，脉冲结束
+            // 达到最大半径，伤害脉冲结束。Lv6 额外保留短暂纯视觉释放态。
             if (this.explodeTimer >= this.explodeDuration) {
                 // Lv6：生成火墙
                 if (this.spawnFireRing && specialAreas !== undefined) {
@@ -4607,9 +4610,24 @@ class Shield extends Weapon {
                     const burnDps = this.baseDamage * 2 * player.getDamageMultiplier();
                     specialAreas.push(new FireRing(this.x, this.y, effectiveMaxRadius, burnDps));
                 }
+                this.hitRecords.clear();
+                if (this.level >= 6) {
+                    this.phase = 'release';
+                    this.releaseVisualTimer = 0;
+                    this.currentRadius = effectiveMaxRadius;
+                } else {
+                    this.active = false;
+                    this.phase = 'none';
+                }
+            }
+        } else if (this.phase === 'release') {
+            this.releaseVisualTimer += deltaTime;
+            const effectiveMaxRadius = this.maxRadius * (1 + (player.modifiers.areaMulti || 0));
+            this.currentRadius = effectiveMaxRadius;
+            if (this.releaseVisualTimer >= this.releaseVisualDuration) {
                 this.active = false;
                 this.phase = 'none';
-                this.hitRecords.clear();
+                this.currentRadius = 0;
             }
         }
     }
@@ -4849,17 +4867,33 @@ class Shield extends Weapon {
             });
         }
 
-        if (this.phase === 'explode') {
-            const rawProgress = Math.min(1, this.explodeTimer / Math.max(0.001, this.explodeDuration));
-            const borderSize = this.currentRadius * 2.16;
-            const innerSize = borderSize * 0.82;
-            const innerAlpha = Math.max(0.16, alpha * (0.46 - rawProgress * 0.16));
+        if (this.phase === 'explode' || this.phase === 'release') {
+            const rawProgress = this.phase === 'release'
+                ? Math.min(1, this.releaseVisualTimer / Math.max(0.001, this.releaseVisualDuration))
+                : Math.min(1, this.explodeTimer / Math.max(0.001, this.explodeDuration));
+            const borderSize = this.currentRadius * (this.phase === 'release' ? 2.1 : 2.04);
+            const innerScale = this.phase === 'release'
+                ? (0.62 - rawProgress * 0.08)
+                : (0.70 - rawProgress * 0.12);
+            const innerSize = borderSize * innerScale;
+            const innerAlpha = Math.max(0.22, alpha * (0.58 - rawProgress * 0.22));
+            ctx.save();
+            const coreRadius = borderSize * 0.27;
+            const coreGradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, coreRadius);
+            coreGradient.addColorStop(0, `rgba(255, 210, 82, ${0.16 * alpha})`);
+            coreGradient.addColorStop(0.7, `rgba(255, 147, 24, ${0.06 * alpha})`);
+            coreGradient.addColorStop(1, 'rgba(255, 147, 24, 0)');
+            ctx.fillStyle = coreGradient;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, coreRadius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
             const drewInner = drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'charge', this.x, this.y, innerSize, innerSize, {
                 alpha: innerAlpha,
                 angle: 0,
                 anchorX: 0.5,
                 anchorY: 0.56,
-                filter: `blur(${Math.max(2, 5 - rawProgress * 2)}px)`,
+                filter: `blur(${Math.max(2, 4.5 - rawProgress * 1.5)}px)`,
                 shadowBlur: 10,
                 shadowColor: 'rgba(255, 170, 32, 0.55)'
             });
