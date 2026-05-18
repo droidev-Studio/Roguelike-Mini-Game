@@ -4873,21 +4873,10 @@ class Shield extends Weapon {
                 : Math.min(1, this.explodeTimer / Math.max(0.001, this.explodeDuration));
             const borderSize = this.currentRadius * (this.phase === 'release' ? 2.1 : 2.04);
             const innerScale = this.phase === 'release'
-                ? (0.62 - rawProgress * 0.08)
-                : (0.70 - rawProgress * 0.12);
+                ? (0.34 - rawProgress * 0.04)
+                : (0.42 - rawProgress * 0.04);
             const innerSize = borderSize * innerScale;
             const innerAlpha = Math.max(0.22, alpha * (0.58 - rawProgress * 0.22));
-            ctx.save();
-            const coreRadius = borderSize * 0.27;
-            const coreGradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, coreRadius);
-            coreGradient.addColorStop(0, `rgba(255, 210, 82, ${0.16 * alpha})`);
-            coreGradient.addColorStop(0.7, `rgba(255, 147, 24, ${0.06 * alpha})`);
-            coreGradient.addColorStop(1, 'rgba(255, 147, 24, 0)');
-            ctx.fillStyle = coreGradient;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, coreRadius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
             const drewInner = drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'charge', this.x, this.y, innerSize, innerSize, {
                 alpha: innerAlpha,
                 angle: 0,
@@ -4897,6 +4886,11 @@ class Shield extends Weapon {
                 shadowBlur: 10,
                 shadowColor: 'rgba(255, 170, 32, 0.55)'
             });
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, borderSize * 0.56, 0, Math.PI * 2);
+            ctx.arc(this.x, this.y, borderSize * 0.31, 0, Math.PI * 2, true);
+            ctx.clip('evenodd');
             const drewRelease = drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'release', this.x, this.y, borderSize, borderSize, {
                 alpha: Math.min(1, alpha * 1.18),
                 angle: 0,
@@ -4905,6 +4899,7 @@ class Shield extends Weapon {
                 shadowBlur: 18,
                 shadowColor: 'rgba(255, 205, 72, 0.9)'
             });
+            ctx.restore();
             return drewInner || drewRelease;
         }
 
