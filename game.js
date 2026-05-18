@@ -252,6 +252,30 @@ function drawArtWeaponAttackTexture(ctx, weaponId, level, slot, x, y, width, hei
     return true;
 }
 
+function drawArtWeaponAttackTextureAdvanced(ctx, weaponId, level, slot, x, y, width, height, options = {}) {
+    const assets = window.assetRuntime;
+    if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !FEATURE_FLAGS.ENABLE_ART_EFFECTS || !assets?.getWeaponAttackTexture) return false;
+    const image = assets.getWeaponAttackTexture(weaponId, level, slot);
+    if (!assets.canDraw?.(image)) return false;
+    const angle = options.angle || 0;
+    const alpha = options.alpha === undefined ? 1 : options.alpha;
+    const anchorX = options.anchorX === undefined ? 0.5 : options.anchorX;
+    const anchorY = options.anchorY === undefined ? 0.5 : options.anchorY;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.globalAlpha *= Math.max(0, Math.min(1, alpha));
+    ctx.imageSmoothingEnabled = true;
+    if (options.filter) ctx.filter = options.filter;
+    if (options.shadowBlur) {
+        ctx.shadowBlur = options.shadowBlur;
+        ctx.shadowColor = options.shadowColor || 'rgba(255, 190, 42, 0.9)';
+    }
+    ctx.drawImage(image, -width * anchorX, -height * anchorY, width, height);
+    ctx.restore();
+    return true;
+}
+
 function drawArtUiTexture(ctx, uiId, x, y, width, height, alpha = 1) {
     const assets = window.assetRuntime;
     if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !FEATURE_FLAGS.ENABLE_ART_UI_SKIN || !assets?.getUiSkin) return false;
@@ -4766,6 +4790,9 @@ class Shield extends Weapon {
         const shieldArtSlot = this.phase === 'charge' ? 'charge' : 'release';
         const shieldArtRotation = this.phase === 'charge' ? -GameRuntime.frame * 0.01 : GameRuntime.frame * 0.02;
         const shieldArtSize = this.currentRadius * 2;
+        if (this.level >= 6 && this.renderLevel6Art(ctx, player, alpha)) {
+            return;
+        }
         if (drawArtWeaponAttackTexture(ctx, 'shield', this.level, shieldArtSlot, this.x, this.y, shieldArtSize, shieldArtSize, shieldArtRotation, alpha, 0.5, 0.5)) {
             return;
         }
@@ -4802,6 +4829,52 @@ class Shield extends Weapon {
 
         // 重置阴影
         ctx.restore();
+    }
+
+    renderLevel6Art(ctx, player, alpha) {
+        const areaScale = 1 + (player.modifiers.areaMulti || 0);
+        const effectiveMaxRadius = this.maxRadius * areaScale;
+
+        if (this.phase === 'charge') {
+            const rawProgress = Math.min(1, this.chargeTimer / Math.max(0.001, this.chargeDuration));
+            const fastProgress = 1 - Math.pow(1 - rawProgress, 3);
+            const drawSize = effectiveMaxRadius * 2 * (0.42 + fastProgress * 0.88);
+            return drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'charge', this.x, this.y, drawSize, drawSize, {
+                alpha: Math.min(1, 0.42 + fastProgress * 0.52),
+                angle: 0,
+                anchorX: 0.5,
+                anchorY: 0.56,
+                shadowBlur: 22 + fastProgress * 14,
+                shadowColor: 'rgba(255, 174, 30, 0.9)'
+            });
+        }
+
+        if (this.phase === 'explode') {
+            const rawProgress = Math.min(1, this.explodeTimer / Math.max(0.001, this.explodeDuration));
+            const borderSize = this.currentRadius * 2.16;
+            const innerSize = borderSize * 0.82;
+            const innerAlpha = Math.max(0.16, alpha * (0.46 - rawProgress * 0.16));
+            const drewInner = drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'charge', this.x, this.y, innerSize, innerSize, {
+                alpha: innerAlpha,
+                angle: 0,
+                anchorX: 0.5,
+                anchorY: 0.56,
+                filter: `blur(${Math.max(2, 5 - rawProgress * 2)}px)`,
+                shadowBlur: 10,
+                shadowColor: 'rgba(255, 170, 32, 0.55)'
+            });
+            const drewRelease = drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'release', this.x, this.y, borderSize, borderSize, {
+                alpha: Math.min(1, alpha * 1.18),
+                angle: 0,
+                anchorX: 0.5,
+                anchorY: 0.5,
+                shadowBlur: 18,
+                shadowColor: 'rgba(255, 205, 72, 0.9)'
+            });
+            return drewInner || drewRelease;
+        }
+
+        return false;
     }
 
     // 属性更新后刷新 - 不需要缓存，留空保持接口兼容
