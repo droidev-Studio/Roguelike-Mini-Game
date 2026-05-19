@@ -87,12 +87,12 @@
     },
     "spear": {
       "levels": {
-        "1": { "primary": { "src": "weapons/asset_weapon_spear_lv1.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
-        "2": { "primary": { "src": "weapons/asset_weapon_spear_lv1.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
-        "3": { "primary": { "src": "weapons/asset_weapon_spear_lv1.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
-        "4": { "primary": { "src": "weapons/asset_weapon_spear_lv1.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
-        "5": { "primary": { "src": "weapons/asset_weapon_spear_lv1.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
-        "6": { "primary": { "src": "weapons/asset_weapon_spear_lv1.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } }
+        "1": { "primary": { "src": "weapons/attacks/asset_weapon_attack_spear_lv1.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
+        "2": { "primary": { "src": "weapons/attacks/asset_weapon_attack_spear_lv2.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
+        "3": { "primary": { "src": "weapons/attacks/asset_weapon_attack_spear_lv3.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
+        "4": { "primary": { "src": "weapons/attacks/asset_weapon_attack_spear_lv4.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
+        "5": { "primary": { "src": "weapons/attacks/asset_weapon_attack_spear_lv5.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
+        "6": { "primary": { "src": "weapons/attacks/asset_weapon_attack_spear_lv6.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } }
       }
     },
     "crossbow": {
@@ -102,11 +102,11 @@
         "3": { "projectile": { "src": "weapons/attacks/asset_weapon_attack_crossbow_lv3.png", "sourceSize": [512, 512], "usage": ["weapon_projectile"] } },
         "4": { "projectile": { "src": "weapons/attacks/asset_weapon_attack_crossbow_lv4.png", "sourceSize": [512, 512], "usage": ["weapon_projectile"] } },
         "5": {
-          "projectile": { "src": "weapons/attacks/asset_weapon_attack_crossbow_lv4.png", "sourceSize": [512, 512], "usage": ["weapon_projectile"] },
+          "projectile": { "src": "weapons/attacks/asset_weapon_attack_crossbow_projectile_lv5.png", "sourceSize": [512, 512], "usage": ["weapon_projectile"] },
           "aoe": { "src": "weapons/attacks/asset_weapon_attack_crossbow_lv5.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] }
         },
         "6": {
-          "projectile": { "src": "weapons/attacks/asset_weapon_attack_crossbow_lv4.png", "sourceSize": [512, 512], "usage": ["weapon_projectile"] },
+          "projectile": { "src": "weapons/attacks/asset_weapon_attack_crossbow_projectile_lv6.png", "sourceSize": [512, 512], "usage": ["weapon_projectile"] },
           "aoe": { "src": "weapons/attacks/asset_weapon_attack_crossbow_lv5.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] },
           "column": { "src": "weapons/attacks/asset_weapon_attack_crossbow_lv6.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] }
         }
@@ -134,19 +134,19 @@
           "release": { "src": "weapons/attacks/asset_weapon_attack_shield_lv1_release.png", "sourceSize": [1254, 1254], "usage": ["weapon_attack"] }
         },
         "2": {
-          "primary": { "src": "weapons/icons/asset_weapon_shield_lv2.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] },
-          "charge": { "src": "weapons/icons/asset_weapon_shield_lv2.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] },
-          "release": { "src": "weapons/icons/asset_weapon_shield_lv2.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] }
+          "primary": { "src": "weapons/attacks/asset_weapon_attack_shield_lv2.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] },
+          "charge": { "src": "weapons/attacks/asset_weapon_attack_shield_lv2.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] },
+          "release": { "src": "weapons/attacks/asset_weapon_attack_shield_lv2.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] }
         },
         "3": {
-          "primary": { "src": "weapons/icons/asset_weapon_shield_lv3.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] },
-          "charge": { "src": "weapons/icons/asset_weapon_shield_lv3.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] },
-          "release": { "src": "weapons/icons/asset_weapon_shield_lv3.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] }
+          "primary": { "src": "weapons/attacks/asset_weapon_attack_shield_lv3.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] },
+          "charge": { "src": "weapons/attacks/asset_weapon_attack_shield_lv3.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] },
+          "release": { "src": "weapons/attacks/asset_weapon_attack_shield_lv3.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] }
         },
         "4": {
-          "primary": { "src": "weapons/icons/asset_weapon_shield_lv4.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] },
-          "charge": { "src": "weapons/icons/asset_weapon_shield_lv4.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] },
-          "release": { "src": "weapons/icons/asset_weapon_shield_lv4.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] }
+          "primary": { "src": "weapons/attacks/asset_weapon_attack_shield_lv4.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] },
+          "charge": { "src": "weapons/attacks/asset_weapon_attack_shield_lv4.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] },
+          "release": { "src": "weapons/attacks/asset_weapon_attack_shield_lv4.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] }
         },
         "5": {
           "primary": { "src": "weapons/attacks/asset_weapon_attack_shield_lv5.png", "sourceSize": [1254, 1254], "usage": ["weapon_attack"] },
@@ -316,6 +316,43 @@
       }
     }
   },
+  "miniBosses": {
+    "kongxiu": {
+      "frames": ["minibosses/asset_miniboss_kongxiu_01.png", "minibosses/asset_miniboss_kongxiu_02.png"],
+      "sourceSize": [256, 256],
+      "anchor": [0.5, 0.78],
+      "worldSize": 74,
+      "usage": ["world_miniboss"]
+    },
+    "hanfu": {
+      "frames": ["minibosses/asset_miniboss_hanfu_01.png", "minibosses/asset_miniboss_hanfu_02.png"],
+      "sourceSize": [256, 256],
+      "anchor": [0.5, 0.78],
+      "worldSize": 74,
+      "usage": ["world_miniboss"]
+    },
+    "bianxi": {
+      "frames": ["minibosses/asset_miniboss_bianxi_01.png", "minibosses/asset_miniboss_bianxi_02.png"],
+      "sourceSize": [256, 256],
+      "anchor": [0.5, 0.78],
+      "worldSize": 76,
+      "usage": ["world_miniboss"]
+    },
+    "wangzhi": {
+      "frames": ["minibosses/asset_miniboss_wangzhi_01.png", "minibosses/asset_miniboss_wangzhi_02.png"],
+      "sourceSize": [256, 256],
+      "anchor": [0.5, 0.78],
+      "worldSize": 78,
+      "usage": ["world_miniboss"]
+    },
+    "qinqi": {
+      "frames": ["minibosses/asset_miniboss_qinqi_01.png", "minibosses/asset_miniboss_qinqi_02.png"],
+      "sourceSize": [256, 256],
+      "anchor": [0.5, 0.78],
+      "worldSize": 82,
+      "usage": ["world_miniboss"]
+    }
+  },
   "skills": {
     "DAMAGE": { "src": "skills/asset_skill_DAMAGE.png", "sourceSize": [256, 256], "usage": ["upgrade_panel", "passive_list"] },
     "SPEED": { "src": "skills/asset_skill_SPEED.png", "sourceSize": [256, 256], "usage": ["upgrade_panel", "passive_list"] },
@@ -364,9 +401,38 @@
     "pause_panel": { "src": "ui/asset_ui_pause_panel.png", "sourceSize": [720, 360], "usage": ["pause"] }
   },
   "tiles": {
-    "normal": { "src": "tiles/asset_tile_normal.png", "sourceSize": [512, 512], "usage": ["world_background"] },
-    "fire": { "src": "tiles/asset_tile_fire.png", "sourceSize": [512, 512], "usage": ["world_background"] },
-    "void": { "src": "tiles/asset_tile_void.png", "sourceSize": [512, 512], "usage": ["world_background"] }
+    "grass": { "src": "tiles/asset_tile_grass.png", "sourceSize": [512, 512], "usage": ["world_background"] },
+    "stone": { "src": "tiles/asset_tile_stone.png", "sourceSize": [512, 512], "usage": ["world_background"] },
+    "loess": { "src": "tiles/asset_tile_loess.png", "sourceSize": [512, 512], "usage": ["world_background"] },
+    "blood": { "src": "tiles/asset_tile_blood.png", "sourceSize": [512, 512], "usage": ["world_background"] },
+    "siege_fire": { "src": "tiles/asset_tile_siege_fire.png", "sourceSize": [512, 512], "usage": ["world_background"] },
+    "normal": { "src": "tiles/asset_tile_normal.png", "sourceSize": [512, 512], "usage": ["world_background", "legacy_alias"] },
+    "fire": { "src": "tiles/asset_tile_fire.png", "sourceSize": [512, 512], "usage": ["world_background", "legacy_alias"] },
+    "void": { "src": "tiles/asset_tile_void.png", "sourceSize": [512, 512], "usage": ["world_background", "legacy_alias"] }
+  },
+  "terrain": {
+    "blockers": {
+      "wood_fence": { "src": "terrain/blockers/asset_terrain_wood_fence.png", "sourceSize": [512, 256], "usage": ["world_terrain_blocker"] },
+      "stone_small": { "src": "terrain/blockers/asset_terrain_stone_small.png", "sourceSize": [512, 256], "usage": ["world_terrain_blocker"] },
+      "fallen_banner": { "src": "terrain/blockers/asset_terrain_fallen_banner.png", "sourceSize": [512, 256], "usage": ["world_terrain_blocker"] },
+      "wall_ruin": { "src": "terrain/blockers/asset_terrain_wall_ruin.png", "sourceSize": [512, 256], "usage": ["world_terrain_blocker"] },
+      "stone_pillar": { "src": "terrain/blockers/asset_terrain_stone_pillar.png", "sourceSize": [512, 256], "usage": ["world_terrain_blocker"] },
+      "caltrop_barricade": { "src": "terrain/blockers/asset_terrain_caltrop_barricade.png", "sourceSize": [512, 256], "usage": ["world_terrain_blocker"] },
+      "supply_cart": { "src": "terrain/blockers/asset_terrain_supply_cart.png", "sourceSize": [512, 256], "usage": ["world_terrain_blocker"] },
+      "wood_crate": { "src": "terrain/blockers/asset_terrain_wood_crate.png", "sourceSize": [512, 256], "usage": ["world_terrain_blocker"] },
+      "broken_bridge": { "src": "terrain/blockers/asset_terrain_broken_bridge.png", "sourceSize": [512, 256], "usage": ["world_terrain_blocker"] },
+      "corpse_mound": { "src": "terrain/blockers/asset_terrain_corpse_mound.png", "sourceSize": [512, 256], "usage": ["world_terrain_blocker"] },
+      "broken_chariot": { "src": "terrain/blockers/asset_terrain_broken_chariot.png", "sourceSize": [512, 256], "usage": ["world_terrain_blocker"] },
+      "weapon_pile": { "src": "terrain/blockers/asset_terrain_weapon_pile.png", "sourceSize": [512, 256], "usage": ["world_terrain_blocker"] },
+      "burning_fence": { "src": "terrain/blockers/asset_terrain_burning_fence.png", "sourceSize": [512, 256], "usage": ["world_terrain_blocker"] },
+      "collapsed_wall": { "src": "terrain/blockers/asset_terrain_collapsed_wall.png", "sourceSize": [512, 256], "usage": ["world_terrain_blocker"] },
+      "fire_pile": { "src": "terrain/blockers/asset_terrain_fire_pile.png", "sourceSize": [512, 256], "usage": ["world_terrain_blocker"] }
+    },
+    "hazards": {
+      "mud_slow": { "src": "terrain/hazards/asset_terrain_mud_slow.png", "sourceSize": [512, 256], "usage": ["world_terrain_hazard"] },
+      "blood_slow": { "src": "terrain/hazards/asset_terrain_blood_slow.png", "sourceSize": [512, 256], "usage": ["world_terrain_hazard"] },
+      "fire_line": { "src": "terrain/hazards/asset_terrain_fire_line.png", "sourceSize": [512, 256], "usage": ["world_terrain_hazard"] }
+    }
   },
   "atlases": {},
   "styleProofs": {
@@ -540,6 +606,22 @@
         "bosses/asset_boss_qinqi_cast_02.png"
       ]
     },
+    "miniboss_animation_preview": {
+      "src": "style-proofs/miniboss-animation-preview.png",
+      "sourceSize": [640, 384],
+      "derived": [
+        "minibosses/asset_miniboss_kongxiu_01.png",
+        "minibosses/asset_miniboss_kongxiu_02.png",
+        "minibosses/asset_miniboss_hanfu_01.png",
+        "minibosses/asset_miniboss_hanfu_02.png",
+        "minibosses/asset_miniboss_bianxi_01.png",
+        "minibosses/asset_miniboss_bianxi_02.png",
+        "minibosses/asset_miniboss_wangzhi_01.png",
+        "minibosses/asset_miniboss_wangzhi_02.png",
+        "minibosses/asset_miniboss_qinqi_01.png",
+        "minibosses/asset_miniboss_qinqi_02.png"
+      ]
+    },
     "boss_effect_preview": {
       "src": "style-proofs/boss-effect-preview.png",
       "sourceSize": [1024, 512],
@@ -567,12 +649,14 @@
       ]
     },
     "tile_texture_preview": {
-      "src": "style-proofs/tile-texture-preview.png",
-      "sourceSize": [1536, 512],
+      "src": "style-proofs/tile-biome-preview.png",
+      "sourceSize": [920, 210],
       "derived": [
-        "tiles/asset_tile_normal.png",
-        "tiles/asset_tile_fire.png",
-        "tiles/asset_tile_void.png"
+        "tiles/asset_tile_grass.png",
+        "tiles/asset_tile_stone.png",
+        "tiles/asset_tile_loess.png",
+        "tiles/asset_tile_blood.png",
+        "tiles/asset_tile_siege_fire.png"
       ]
     }
   }

@@ -48,6 +48,7 @@ const FEATURE_FLAGS = {
     ENABLE_ART_DEBUG_PREVIEW: false,
     ENABLE_ART_WEAPON_V2: false,
     ENABLE_SABER_FIRE_ANIMATION: false,
+    ENABLE_MAP_TERRAIN_OBSTACLES: true,
 };
 
 const FEATURE_FLAG_PARAMS = new URLSearchParams(window.location.search);
@@ -288,6 +289,81 @@ function drawArtUiTexture(ctx, uiId, x, y, width, height, alpha = 1) {
     ctx.restore();
     return true;
 }
+
+function drawArtTerrainTexture(ctx, kind, width, height, alpha = 1) {
+    const assets = window.assetRuntime;
+    if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !assets?.getTerrainTexture) return false;
+    const image = assets.getTerrainTexture(kind);
+    if (!assets.canDraw?.(image)) return false;
+    ctx.save();
+    ctx.globalAlpha *= Math.max(0, Math.min(1, alpha));
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(image, -width / 2, -height / 2, width, height);
+    ctx.restore();
+    return true;
+}
+
+const MAP_TERRAIN_BIOMES = [
+    {
+        id: 'grass',
+        blockerKinds: ['wood_fence', 'stone_small', 'fallen_banner'],
+        hazardKinds: [],
+        blockerCount: 8,
+        hazardCount: 0,
+    },
+    {
+        id: 'stone',
+        blockerKinds: ['wall_ruin', 'stone_pillar', 'caltrop_barricade'],
+        hazardKinds: [],
+        blockerCount: 10,
+        hazardCount: 0,
+    },
+    {
+        id: 'loess',
+        blockerKinds: ['supply_cart', 'wood_crate', 'broken_bridge'],
+        hazardKinds: ['mud_slow'],
+        blockerCount: 10,
+        hazardCount: 5,
+    },
+    {
+        id: 'blood',
+        blockerKinds: ['corpse_mound', 'broken_chariot', 'weapon_pile'],
+        hazardKinds: ['blood_slow'],
+        blockerCount: 12,
+        hazardCount: 6,
+    },
+    {
+        id: 'siege_fire',
+        blockerKinds: ['burning_fence', 'collapsed_wall', 'fire_pile'],
+        hazardKinds: ['fire_line'],
+        blockerCount: 14,
+        hazardCount: 7,
+    },
+];
+
+const MAP_BLOCKER_SHAPES = {
+    wood_fence: { shape: 'rect', width: 150, height: 30, color: 'rgba(86, 52, 27, 0.92)', accent: 'rgba(191, 133, 62, 0.72)' },
+    stone_small: { shape: 'circle', radius: 40, color: 'rgba(71, 70, 66, 0.94)', accent: 'rgba(170, 154, 116, 0.52)' },
+    fallen_banner: { shape: 'rect', width: 118, height: 26, color: 'rgba(82, 20, 21, 0.9)', accent: 'rgba(224, 169, 72, 0.62)' },
+    wall_ruin: { shape: 'rect', width: 190, height: 46, color: 'rgba(68, 66, 61, 0.96)', accent: 'rgba(174, 154, 107, 0.55)' },
+    stone_pillar: { shape: 'circle', radius: 46, color: 'rgba(84, 82, 76, 0.96)', accent: 'rgba(196, 170, 112, 0.48)' },
+    caltrop_barricade: { shape: 'rect', width: 138, height: 38, color: 'rgba(62, 45, 35, 0.95)', accent: 'rgba(230, 187, 95, 0.5)' },
+    supply_cart: { shape: 'rect', width: 146, height: 62, color: 'rgba(100, 58, 30, 0.94)', accent: 'rgba(217, 151, 72, 0.55)' },
+    wood_crate: { shape: 'rect', width: 78, height: 70, color: 'rgba(111, 67, 34, 0.94)', accent: 'rgba(226, 168, 93, 0.55)' },
+    broken_bridge: { shape: 'rect', width: 212, height: 54, color: 'rgba(70, 46, 30, 0.95)', accent: 'rgba(167, 108, 59, 0.52)' },
+    corpse_mound: { shape: 'circle', radius: 58, color: 'rgba(60, 30, 27, 0.95)', accent: 'rgba(160, 42, 35, 0.58)' },
+    broken_chariot: { shape: 'rect', width: 176, height: 72, color: 'rgba(70, 38, 27, 0.95)', accent: 'rgba(174, 86, 46, 0.58)' },
+    weapon_pile: { shape: 'circle', radius: 48, color: 'rgba(52, 45, 40, 0.94)', accent: 'rgba(201, 181, 130, 0.58)' },
+    burning_fence: { shape: 'rect', width: 170, height: 42, color: 'rgba(84, 35, 18, 0.95)', accent: 'rgba(255, 132, 34, 0.72)' },
+    collapsed_wall: { shape: 'rect', width: 214, height: 56, color: 'rgba(65, 58, 52, 0.96)', accent: 'rgba(236, 116, 41, 0.54)' },
+    fire_pile: { shape: 'circle', radius: 50, color: 'rgba(73, 30, 16, 0.96)', accent: 'rgba(255, 159, 45, 0.72)' },
+};
+
+const MAP_HAZARD_SHAPES = {
+    mud_slow: { shape: 'ellipse', radiusX: 92, radiusY: 50, color: 'rgba(78, 55, 31, 0.46)', accent: 'rgba(190, 130, 63, 0.28)', slowMultiplier: 0.72 },
+    blood_slow: { shape: 'ellipse', radiusX: 94, radiusY: 48, color: 'rgba(106, 18, 22, 0.42)', accent: 'rgba(201, 47, 45, 0.25)', slowMultiplier: 0.76 },
+    fire_line: { shape: 'rect', width: 190, height: 44, color: 'rgba(176, 54, 20, 0.36)', accent: 'rgba(255, 178, 54, 0.42)', slowMultiplier: 0.82, damagePerSecond: 5 },
+};
 
 const GameRuntime = (() => {
     const params = new URLSearchParams(window.location.search);
@@ -4225,10 +4301,24 @@ class FireTornado {
             shadowColor = '#b8860b';
         }
 
-        const pulse = 0.9 + 0.1 * Math.sin(Date.now() / 40);
+        const pulse = 0.94 + 0.06 * Math.sin(GameRuntime.frame * 0.035 + this.x * 0.001);
         const renderRadius = this.currentRadius * pulse;
         const artAlpha = this.mode === 'massive_storm' ? 0.88 : 0.74;
-        if (drawArtEffectTexture(ctx, 'taiping_tornado', this.x, this.y, renderRadius * 2.35, renderRadius * 2.35, GameRuntime.frame * 0.035, artAlpha, 0.5, 0.5)) {
+        const bookLevel = Math.min(this.book?.level || 1, 6);
+        const artLevel = bookLevel >= 5 ? bookLevel : 1;
+        let artSlot = 'primary';
+        if (bookLevel >= 6 && this.mode === 'seek_player') {
+            artSlot = 'steppable';
+        } else if (bookLevel >= 6 && this.mode === 'massive_storm') {
+            artSlot = 'detonate';
+        }
+        const artSizeScale = this.mode === 'massive_storm' ? 1.7 : (this.mode === 'seek_player' ? 1.62 : 1.68);
+        if (drawArtWeaponAttackTexture(ctx, 'taiping', artLevel, artSlot, this.x, this.y, renderRadius * artSizeScale, renderRadius * artSizeScale, 0, artAlpha, 0.5, 0.5)) {
+            if (this.mode !== 'massive_storm') legacyRandomCalls++;
+            for (let i = 0; i < legacyRandomCalls - 1; i++) GameRuntime.random();
+            return;
+        }
+        if (drawArtEffectTexture(ctx, 'taiping_tornado', this.x, this.y, renderRadius * 1.68, renderRadius * 1.68, 0, artAlpha, 0.5, 0.5)) {
             if (this.mode !== 'massive_storm') legacyRandomCalls++;
             for (let i = 0; i < legacyRandomCalls - 1; i++) GameRuntime.random();
             return;
@@ -4333,14 +4423,18 @@ class TaipingBook extends Weapon {
             this.spawnQueue.push({
                 delay: remainingSlots * 0.3,
                 action: () => {
-                    // 终极技能：随机地图安全区域生成（margin=150避开屏幕边缘），与玩家当前位置无关
+                    // 终极技能：生成在玩家视野附近，保证可踩龙卷可见且可交互。
                     const gm = window.gameManager;
-                    const margin = 150;
-                    const spawnX = margin + GameRuntime.random() * (gm.canvas.width - margin * 2);
-                    const spawnY = margin + GameRuntime.random() * (gm.canvas.height - margin * 2);
+                    const spawnAngle = GameRuntime.random() * Math.PI * 2;
+                    const spawnDistance = 280 + GameRuntime.random() * 120;
+                    const mapMargin = this.baseRadius * 1.4;
+                    const maxX = Math.max(mapMargin, (gm.mapWidth || gm.canvas.width) - mapMargin);
+                    const maxY = Math.max(mapMargin, (gm.mapHeight || gm.canvas.height) - mapMargin);
+                    const spawnX = Math.max(mapMargin, Math.min(maxX, player.x + Math.cos(spawnAngle) * spawnDistance));
+                    const spawnY = Math.max(mapMargin, Math.min(maxY, player.y + Math.sin(spawnAngle) * spawnDistance));
                     const tornado = new FireTornado(
                         spawnX, spawnY,
-                        this.baseRadius,
+                        this.baseRadius * (1 + (player.modifiers.areaMulti || 0)),
                         this.baseLifetime,
                         this.baseTickInterval,
                         damagePerSecond,
@@ -4488,10 +4582,10 @@ class FireRing {
     render(ctx) {
         const currentRadius = this.getCurrentRadius();
         // 火焰红橙色环形火墙，透明度随剩余生命衰减
-        const alpha = 0.6 * (this.lifetime / this.totalLifetime) + 0.2;
+        const alpha = 0.34 * (this.lifetime / this.totalLifetime) + 0.08;
         const pulse = 0.9 + 0.1 * Math.sin(Date.now() / 30);
         const renderRadius = currentRadius * pulse;
-        if (drawArtEffectTexture(ctx, 'shield_pulse', this.x, this.y, renderRadius * 2.25, renderRadius * 2.25, -GameRuntime.frame * 0.018, alpha, 0.5, 0.5)) {
+        if (drawArtEffectTexture(ctx, 'shield_pulse', this.x, this.y, renderRadius * 2.05, renderRadius * 2.05, -GameRuntime.frame * 0.018, alpha, 0.5, 0.5)) {
             return;
         }
 
@@ -4858,12 +4952,12 @@ class Shield extends Weapon {
             const fastProgress = 1 - Math.pow(1 - rawProgress, 3);
             const drawSize = effectiveMaxRadius * 2 * (0.42 + fastProgress * 0.88);
             return drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'charge', this.x, this.y, drawSize, drawSize, {
-                alpha: Math.min(1, 0.42 + fastProgress * 0.52),
+                alpha: Math.min(0.68, 0.28 + fastProgress * 0.34),
                 angle: 0,
                 anchorX: 0.5,
                 anchorY: 0.56,
-                shadowBlur: 22 + fastProgress * 14,
-                shadowColor: 'rgba(255, 174, 30, 0.9)'
+                shadowBlur: 12 + fastProgress * 8,
+                shadowColor: 'rgba(255, 174, 30, 0.52)'
             });
         }
 
@@ -4876,15 +4970,15 @@ class Shield extends Weapon {
                 ? (0.34 - rawProgress * 0.04)
                 : (0.42 - rawProgress * 0.04);
             const innerSize = borderSize * innerScale;
-            const innerAlpha = Math.max(0.22, alpha * (0.58 - rawProgress * 0.22));
+            const innerAlpha = Math.max(0.10, alpha * (0.32 - rawProgress * 0.12));
             const drewInner = drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'charge', this.x, this.y, innerSize, innerSize, {
                 alpha: innerAlpha,
                 angle: 0,
                 anchorX: 0.5,
                 anchorY: 0.56,
                 filter: `blur(${Math.max(2, 4.5 - rawProgress * 1.5)}px)`,
-                shadowBlur: 10,
-                shadowColor: 'rgba(255, 170, 32, 0.55)'
+                shadowBlur: 6,
+                shadowColor: 'rgba(255, 170, 32, 0.32)'
             });
             ctx.save();
             ctx.beginPath();
@@ -4892,12 +4986,12 @@ class Shield extends Weapon {
             ctx.arc(this.x, this.y, borderSize * 0.31, 0, Math.PI * 2, true);
             ctx.clip('evenodd');
             const drewRelease = drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'release', this.x, this.y, borderSize, borderSize, {
-                alpha: Math.min(1, alpha * 1.18),
+                alpha: Math.min(0.54, alpha * 0.62),
                 angle: 0,
                 anchorX: 0.5,
                 anchorY: 0.5,
-                shadowBlur: 18,
-                shadowColor: 'rgba(255, 205, 72, 0.9)'
+                shadowBlur: 10,
+                shadowColor: 'rgba(255, 205, 72, 0.46)'
             });
             ctx.restore();
             return drewInner || drewRelease;
@@ -5212,6 +5306,13 @@ class Player {
         newX = Math.max(half, Math.min(canvasWidth - half, newX));
         newY = Math.max(half, Math.min(canvasHeight - half, newY));
 
+        const gm = window.gameManager;
+        if (gm?.resolveTerrainMovement) {
+            const resolved = gm.resolveTerrainMovement(this, newX, newY, half * 0.86, { allowSlide: true });
+            newX = resolved.x;
+            newY = resolved.y;
+        }
+
         this.x = newX;
         this.y = newY;
     }
@@ -5304,6 +5405,11 @@ class Player {
                 const renderSize = this.size * 2.75;
                 ctx.save();
                 ctx.translate(this.x, this.y);
+                ctx.shadowBlur = 16;
+                ctx.shadowColor = 'rgba(255, 211, 106, 0.72)';
+                ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = 'transparent';
                 ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
                 ctx.restore();
                 ctx.globalAlpha = previousAlpha;
@@ -5378,6 +5484,26 @@ class Enemy {
                 this.dirY = 0;
             }
         }
+    }
+
+    isChargeMovementUnit() {
+        return this.type === 'cavalry' ||
+            this.isCharging === true ||
+            (Number.isFinite(this.dirX) && Number.isFinite(this.dirY));
+    }
+
+    ignoresTerrainCollision() {
+        return this.ignoreTerrain === true ||
+            this.isBoss ||
+            this.isLevelBoss ||
+            this.isChargeMovementUnit();
+    }
+
+    ignoresTerrainSlow() {
+        return this.ignoreTerrainSlow === true ||
+            this.isBoss ||
+            this.isLevelBoss ||
+            this.isChargeMovementUnit();
     }
 
     // 需传入 canvas 尺寸用于销毁判定
@@ -5455,14 +5581,21 @@ class Enemy {
             // 合并向玩家的拉力与怪物间的斥力
             if (dist > 0) {
                 // 主移动向量 (向玩家)
-                const moveX = (dx / dist) * this.speed;
-                const moveY = (dy / dist) * this.speed;
+                const terrainSpeedMultiplier = gm.getTerrainSpeedMultiplierForEntity?.(this) || 1;
+                const moveX = (dx / dist) * this.speed * terrainSpeedMultiplier;
+                const moveY = (dy / dist) * this.speed * terrainSpeedMultiplier;
 
                 // 斥力向量 (互相推开)，斥力系数设定为 speed 的一半，保证它仍会往前走
-                const repulsionForce = this.speed * 0.8;
+                const repulsionForce = this.speed * 0.8 * terrainSpeedMultiplier;
 
-                this.x += (moveX + separateX * repulsionForce) * deltaTime;
-                this.y += (moveY + separateY * repulsionForce) * deltaTime;
+                const deltaX = (moveX + separateX * repulsionForce) * deltaTime;
+                const deltaY = (moveY + separateY * repulsionForce) * deltaTime;
+                if (gm?.moveEnemyWithTerrain) {
+                    gm.moveEnemyWithTerrain(this, deltaX, deltaY);
+                } else {
+                    this.x += deltaX;
+                    this.y += deltaY;
+                }
             }
             // ============================================================
         }
@@ -5670,15 +5803,18 @@ class Enemy {
 
     tryRenderArtEnemy(ctx, assets, rotation = 0) {
         if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !FEATURE_FLAGS.ENABLE_ART_ENEMY_SPRITES || !assets) return false;
+        const gm = window.gameManager;
+        const enemyCount = gm?.enemies?.length || 0;
+        const highRenderLoad = enemyCount > 160;
         const enemyId = this.getArtEnemyId();
         const attackState = this.getCloseAttackVisualState();
         const isStaticProp = this.isProp || enemyId === 'prop';
-        const player = window.gameManager?.player;
+        const player = gm?.player;
         const dx = player ? player.x - this.x : 0;
         const dy = player ? player.y - this.y : 0;
         const distSq = dx * dx + dy * dy;
         const activeMoveRange = Math.pow(this.getCloseAttackVisualRange(player) * 1.9, 2);
-        const useMoveFrames = !isStaticProp && !attackState && distSq > 0 && distSq <= activeMoveRange;
+        const useMoveFrames = !highRenderLoad && !isStaticProp && !attackState && distSq > 0 && distSq <= activeMoveRange;
         const artState = attackState ? 'attack' : (useMoveFrames ? 'move' : 'idle');
         const frameIndex = attackState
             ? Math.min(1, Math.floor(Math.max(0, Math.min(0.999, attackState.swingProgress)) * 2))
@@ -5687,7 +5823,7 @@ class Enemy {
         if (!assets.canDraw(sprite)) return false;
         const size = this.getArtRenderSize();
         ctx.save();
-        const idleBreath = !attackState && !useMoveFrames && !isStaticProp
+        const idleBreath = !highRenderLoad && !attackState && !useMoveFrames && !isStaticProp
             ? Math.sin((GameRuntime.frame + this.id * 11) * 0.035) * Math.min(1.1, this.size * 0.025)
             : 0;
         const renderX = this.x + (attackState ? attackState.dirX * attackState.lunge : 0);
@@ -7188,6 +7324,8 @@ class GameManager {
         this.mapWidth = FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA ? getNumericGameSetting('MAP.WIDTH', 6000) : 0;
         this.mapHeight = FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA ? getNumericGameSetting('MAP.HEIGHT', 6000) : 0;
         this.camera = { x: 0, y: 0, smoothness: getNumericGameSetting('MAP.CAMERA_SMOOTHNESS', 0.12) };
+        this.mapObstacles = [];
+        this.mapObstacleStage = -1;
 
         // 占满窗口
         this.resize();
@@ -7300,6 +7438,222 @@ class GameManager {
         const maxY = Math.max(0, this.getWorldHeight() - this.canvas.height);
         this.camera.x = Math.max(0, Math.min(maxX, this.player.x - this.canvas.width / 2));
         this.camera.y = Math.max(0, Math.min(maxY, this.player.y - this.canvas.height / 2));
+    }
+
+    createDeterministicRandom(seed) {
+        let state = (seed >>> 0) || 1;
+        return () => {
+            state = (state * 1664525 + 1013904223) >>> 0;
+            return state / 4294967296;
+        };
+    }
+
+    getCurrentTerrainBiome() {
+        return MAP_TERRAIN_BIOMES[this.currentStage] || MAP_TERRAIN_BIOMES[0];
+    }
+
+    ensureMapTerrainForCurrentStage() {
+        if (!FEATURE_FLAGS.ENABLE_MAP_TERRAIN_OBSTACLES) return;
+        if (this.mapObstacleStage !== this.currentStage) {
+            this.refreshMapTerrainForStage(this.currentStage);
+        }
+    }
+
+    refreshMapTerrainForStage(stage = this.currentStage) {
+        this.mapObstacleStage = stage;
+        this.mapObstacles = [];
+        if (!FEATURE_FLAGS.ENABLE_MAP_TERRAIN_OBSTACLES || !this.player) return;
+
+        const biome = MAP_TERRAIN_BIOMES[stage] || MAP_TERRAIN_BIOMES[0];
+        const rand = this.createDeterministicRandom(0x9e3779b9 ^ ((stage + 1) * 2654435761));
+        const mobileScale = this.canvas.width <= 760 ? 0.78 : 1;
+        const centerX = this.player.x;
+        const centerY = this.player.y;
+        const safeRadius = Math.max(260, Math.min(this.canvas.width, this.canvas.height) * 0.28);
+        const placementRadius = Math.max(this.canvas.width, this.canvas.height) * 1.15;
+
+        const overlapsSafeZone = (x, y, radius) => {
+            const dx = x - centerX;
+            const dy = y - centerY;
+            return dx * dx + dy * dy < Math.pow(safeRadius + radius, 2);
+        };
+        const overlapsExisting = (x, y, radius) => this.mapObstacles.some(other => {
+            const otherRadius = other.radius || Math.max(other.width || 0, other.height || 0) * 0.55;
+            const dx = x - other.x;
+            const dy = y - other.y;
+            return dx * dx + dy * dy < Math.pow(radius + otherRadius + 42, 2);
+        });
+        const makePlacement = (radius) => {
+            for (let attempt = 0; attempt < 32; attempt++) {
+                const angle = rand() * Math.PI * 2;
+                const distance = safeRadius + 90 + rand() * placementRadius;
+                const x = Math.max(radius, Math.min(this.getWorldWidth() - radius, centerX + Math.cos(angle) * distance));
+                const y = Math.max(radius, Math.min(this.getWorldHeight() - radius, centerY + Math.sin(angle) * distance));
+                if (!overlapsSafeZone(x, y, radius) && !overlapsExisting(x, y, radius)) return { x, y };
+            }
+            return null;
+        };
+        const addObstacle = (kind, collisionType) => {
+            const spec = collisionType === 'block' ? MAP_BLOCKER_SHAPES[kind] : MAP_HAZARD_SHAPES[kind];
+            if (!spec) return;
+            const radius = spec.radius || Math.max(spec.width || spec.radiusX || 0, spec.height || spec.radiusY || 0) * 0.58;
+            const placement = makePlacement(radius);
+            if (!placement) return;
+            this.mapObstacles.push({
+                id: `${biome.id}-${collisionType}-${this.mapObstacles.length}`,
+                kind,
+                collisionType,
+                shape: spec.shape,
+                x: placement.x,
+                y: placement.y,
+                width: spec.width,
+                height: spec.height,
+                radius: spec.radius,
+                radiusX: spec.radiusX,
+                radiusY: spec.radiusY,
+                angle: (rand() - 0.5) * Math.PI,
+                color: spec.color,
+                accent: spec.accent,
+                slowMultiplier: spec.slowMultiplier || 1,
+                damagePerSecond: spec.damagePerSecond || 0,
+            });
+        };
+
+        const blockerCount = Math.round(biome.blockerCount * mobileScale);
+        for (let i = 0; i < blockerCount; i++) {
+            addObstacle(biome.blockerKinds[i % biome.blockerKinds.length], 'block');
+        }
+        const hazardCount = Math.round((biome.hazardCount || 0) * mobileScale);
+        for (let i = 0; i < hazardCount; i++) {
+            addObstacle(biome.hazardKinds[i % Math.max(1, biome.hazardKinds.length)], 'slow');
+        }
+    }
+
+    getObstacleBounds(obstacle) {
+        if (obstacle.shape === 'circle') {
+            const radius = obstacle.radius || 40;
+            return { x: obstacle.x - radius, y: obstacle.y - radius, width: radius * 2, height: radius * 2 };
+        }
+        const width = obstacle.width || (obstacle.radiusX || 40) * 2;
+        const height = obstacle.height || (obstacle.radiusY || 30) * 2;
+        return { x: obstacle.x - width / 2, y: obstacle.y - height / 2, width, height };
+    }
+
+    isCircleInsideTerrainShape(x, y, radius, obstacle) {
+        if (obstacle.shape === 'circle') {
+            const obstacleRadius = obstacle.radius || 40;
+            const dx = x - obstacle.x;
+            const dy = y - obstacle.y;
+            return dx * dx + dy * dy <= Math.pow(radius + obstacleRadius, 2);
+        }
+        if (obstacle.shape === 'ellipse') {
+            const rx = (obstacle.radiusX || 80) + radius;
+            const ry = (obstacle.radiusY || 40) + radius;
+            const dx = x - obstacle.x;
+            const dy = y - obstacle.y;
+            return (dx * dx) / (rx * rx) + (dy * dy) / (ry * ry) <= 1;
+        }
+        const bounds = this.getObstacleBounds(obstacle);
+        const closestX = Math.max(bounds.x, Math.min(x, bounds.x + bounds.width));
+        const closestY = Math.max(bounds.y, Math.min(y, bounds.y + bounds.height));
+        const dx = x - closestX;
+        const dy = y - closestY;
+        return dx * dx + dy * dy <= radius * radius;
+    }
+
+    shouldIgnoreTerrain(entity, mode = 'collision') {
+        if (!entity) return false;
+        if (mode === 'slow' && typeof entity.ignoresTerrainSlow === 'function') return entity.ignoresTerrainSlow();
+        if (mode === 'collision' && typeof entity.ignoresTerrainCollision === 'function') return entity.ignoresTerrainCollision();
+        return entity.ignoreTerrain === true || entity.isBoss || entity.isLevelBoss;
+    }
+
+    isTerrainBlockedAt(x, y, radius, entity = null) {
+        if (!FEATURE_FLAGS.ENABLE_MAP_TERRAIN_OBSTACLES || this.shouldIgnoreTerrain(entity, 'collision')) return false;
+        this.ensureMapTerrainForCurrentStage();
+        return this.mapObstacles.some(obstacle =>
+            obstacle.collisionType === 'block' && this.isCircleInsideTerrainShape(x, y, radius, obstacle)
+        );
+    }
+
+    resolveTerrainMovement(entity, targetX, targetY, radius, options = {}) {
+        if (!FEATURE_FLAGS.ENABLE_MAP_TERRAIN_OBSTACLES || this.shouldIgnoreTerrain(entity, 'collision')) {
+            return { x: targetX, y: targetY, blocked: false };
+        }
+        const originX = entity.x;
+        const originY = entity.y;
+        if (!this.isTerrainBlockedAt(targetX, targetY, radius, entity)) {
+            return { x: targetX, y: targetY, blocked: false };
+        }
+        if (options.allowPathfinding) {
+            const dx = targetX - originX;
+            const dy = targetY - originY;
+            const step = Math.sqrt(dx * dx + dy * dy);
+            if (step > 0.001) {
+                const baseAngle = Math.atan2(dy, dx);
+                const candidates = [-0.72, 0.72, -1.18, 1.18, Math.PI].map(offset => ({
+                    x: originX + Math.cos(baseAngle + offset) * step,
+                    y: originY + Math.sin(baseAngle + offset) * step,
+                }));
+                let best = null;
+                let bestScore = Infinity;
+                for (const candidate of candidates) {
+                    if (this.isTerrainBlockedAt(candidate.x, candidate.y, radius, entity)) continue;
+                    const px = this.player?.x || originX;
+                    const py = this.player?.y || originY;
+                    const score = Math.pow(candidate.x - px, 2) + Math.pow(candidate.y - py, 2);
+                    if (score < bestScore) {
+                        bestScore = score;
+                        best = candidate;
+                    }
+                }
+                if (best) return { x: best.x, y: best.y, blocked: true };
+            }
+        }
+        if (options.allowSlide !== false) {
+            const canMoveX = !this.isTerrainBlockedAt(targetX, originY, radius, entity);
+            const canMoveY = !this.isTerrainBlockedAt(originX, targetY, radius, entity);
+            if (canMoveX && canMoveY) {
+                const player = this.player;
+                if (player) {
+                    const xScore = Math.pow(targetX - player.x, 2) + Math.pow(originY - player.y, 2);
+                    const yScore = Math.pow(originX - player.x, 2) + Math.pow(targetY - player.y, 2);
+                    return xScore <= yScore
+                        ? { x: targetX, y: originY, blocked: true }
+                        : { x: originX, y: targetY, blocked: true };
+                }
+                return { x: targetX, y: originY, blocked: true };
+            }
+            if (canMoveX) return { x: targetX, y: originY, blocked: true };
+            if (canMoveY) return { x: originX, y: targetY, blocked: true };
+        }
+        return { x: originX, y: originY, blocked: true };
+    }
+
+    getTerrainSpeedMultiplierForEntity(entity) {
+        if (!FEATURE_FLAGS.ENABLE_MAP_TERRAIN_OBSTACLES || this.shouldIgnoreTerrain(entity, 'slow')) return 1;
+        const radius = Math.max(8, (entity?.size || 20) * 0.42);
+        let multiplier = 1;
+        for (const obstacle of this.mapObstacles) {
+            if (obstacle.collisionType !== 'slow') continue;
+            if (this.isCircleInsideTerrainShape(entity.x, entity.y, radius, obstacle)) {
+                multiplier = Math.min(multiplier, obstacle.slowMultiplier || 1);
+            }
+        }
+        return multiplier;
+    }
+
+    moveEnemyWithTerrain(enemy, deltaX, deltaY) {
+        if (!enemy) return;
+        const targetX = enemy.x + deltaX;
+        const targetY = enemy.y + deltaY;
+        const radius = Math.max(9, (enemy.size || 20) * 0.42);
+        const resolved = this.resolveTerrainMovement(enemy, targetX, targetY, radius, {
+            allowSlide: true,
+            allowPathfinding: enemy.isElite || enemy.isMiniBoss,
+        });
+        enemy.x = resolved.x;
+        enemy.y = resolved.y;
     }
 
     isInCameraView(entity, extraMargin = 50) {
@@ -7604,6 +7958,7 @@ class GameManager {
         this.floatingTexts = []; // 浮动文字（暴击跳字等）
 
         this.currentStage = 0; // 从第一关开始
+        this.refreshMapTerrainForStage(this.currentStage);
         this.spawnTimer = 0;
         this.gameTime = 0;
         this.currentResonance = 0;
@@ -7900,31 +8255,51 @@ class GameManager {
             1.2
         );
         miniBoss.size = 50; // 调整为 50，体型更接近大 Boss
-        // 修改：小 Boss 改为紫色
-        miniBoss.color = '#800080';
+        const miniBossArtIds = ['kongxiu', 'hanfu', 'bianxi', 'wangzhi', 'qinqi'];
+        const miniBossArtId = miniBossArtIds[this.currentStage] || miniBossArtIds[(Math.max(1, minute) - 1) % miniBossArtIds.length];
+        const assetRuntime = this.assets;
+        miniBoss.artId = miniBossArtId;
+        miniBoss.color = '#9b332f';
         miniBoss.isMiniBoss = true;
         miniBoss.resonanceDrop = 10;
 
-        // 修改：直接劫持该实例的渲染方法，改为画正圆形
+        // 小 Boss 使用关卡守将同源美术；资源不可用时保留轻量 canvas fallback。
         miniBoss.render = function(ctx) {
+            const drawHealthBar = (barW, barY) => {
+                if (this.hp >= this.maxHp) return;
+                const barH = 6;
+                const barX = this.x - barW / 2;
+
+                ctx.fillStyle = '#2a0707';
+                ctx.fillRect(barX, barY, barW, barH);
+                const hpPercent = Math.max(0, Math.min(1, this.hp / this.maxHp));
+                ctx.fillStyle = '#d7b35a';
+                ctx.fillRect(barX + 1, barY + 1, (barW - 2) * hpPercent, barH - 2);
+            };
+
+            if (FEATURE_FLAGS.ENABLE_ART_ASSETS && assetRuntime?.getMiniBossSprite) {
+                const frameIndex = Math.floor(Date.now() / 280) % 2;
+                const sprite = assetRuntime.getMiniBossSprite(this.artId, frameIndex);
+                if (assetRuntime.canDraw?.(sprite)) {
+                    const worldSize = assetRuntime.getMiniBossWorldSize?.(this.artId) || 76;
+                    const bob = Math.sin(Date.now() / 230) * 2;
+                    ctx.save();
+                    ctx.shadowColor = 'rgba(255, 194, 88, 0.34)';
+                    ctx.shadowBlur = 12;
+                    ctx.drawImage(sprite, this.x - worldSize / 2, this.y - worldSize / 2 + bob, worldSize, worldSize);
+                    ctx.restore();
+                    drawHealthBar(worldSize * 0.78, this.y - worldSize * 0.46 - 8);
+                    return;
+                }
+            }
+
             ctx.fillStyle = this.color;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
             ctx.fill();
 
             // 浮动血条
-            if (this.hp < this.maxHp) {
-                const barW = this.size;
-                const barH = 6;
-                const barX = this.x - barW / 2;
-                const barY = this.y - this.size / 2 - barH - 2;
-
-                ctx.fillStyle = '#aa0000';
-                ctx.fillRect(barX, barY, barW, barH);
-                const hpPercent = this.hp / this.maxHp;
-                ctx.fillStyle = '#00aa00';
-                ctx.fillRect(barX + 1, barY + 1, (barW - 2) * hpPercent, barH - 2);
-            }
+            drawHealthBar(this.size, this.y - this.size / 2 - 8);
         };
 
         this.enemies.push(miniBoss);
@@ -8662,10 +9037,8 @@ class GameManager {
         }
 
         if (dx !== 0 || dy !== 0) {
-            const movementDeltaTime = FEATURE_FLAGS.ENABLE_BOSS_AFFIXES
-                ? deltaTime * (this.player.environmentSlowMultiplier || 1)
-                : deltaTime;
-        this.player.move(dx, dy, movementDeltaTime, this.getWorldWidth(), this.getWorldHeight());
+            const movementDeltaTime = deltaTime * (this.player.environmentSlowMultiplier || 1);
+            this.player.move(dx, dy, movementDeltaTime, this.getWorldWidth(), this.getWorldHeight());
         }
     }
 
@@ -8768,9 +9141,8 @@ class GameManager {
 
     updateDamageSystem(deltaTime) {
         this.player.update(deltaTime);
-        if (FEATURE_FLAGS.ENABLE_BOSS_AFFIXES) {
-            this.player.environmentSlowMultiplier = 1;
-        }
+        this.player.environmentSlowMultiplier = 1;
+        this.applyTerrainHazardsToPlayer(deltaTime);
 
         // 更新火焰区域（王植）
         for (let i = this.fireAreas.length - 1; i >= 0; i--) {
@@ -8808,6 +9180,23 @@ class GameManager {
             const alive = area.update(deltaTime, this.enemies);
             if (!alive) {
                 this.specialAreas.splice(i, 1);
+            }
+        }
+    }
+
+    applyTerrainHazardsToPlayer(deltaTime) {
+        if (!FEATURE_FLAGS.ENABLE_MAP_TERRAIN_OBSTACLES || !this.player) return;
+        this.ensureMapTerrainForCurrentStage();
+        const radius = Math.max(8, this.player.size * 0.42);
+        for (const obstacle of this.mapObstacles) {
+            if (obstacle.collisionType !== 'slow') continue;
+            if (!this.isCircleInsideTerrainShape(this.player.x, this.player.y, radius, obstacle)) continue;
+            this.player.environmentSlowMultiplier = Math.min(
+                this.player.environmentSlowMultiplier || 1,
+                obstacle.slowMultiplier || 1
+            );
+            if (obstacle.damagePerSecond > 0 && this.player.canTakeDamage()) {
+                this.applyPlayerDamage(obstacle.damagePerSecond * deltaTime);
             }
         }
     }
@@ -9180,6 +9569,7 @@ class GameManager {
     update(deltaTime) {
         if (this.gameState !== GAME_STATE.PLAYING) return;
 
+        this.ensureMapTerrainForCurrentStage();
         this.updateSpawnSystem(deltaTime);
         this.updateMovementSystem(deltaTime);
         this.updateDamageSystem(deltaTime);
@@ -9226,6 +9616,7 @@ class GameManager {
         this.specialAreas = [];
 
         this.currentStage = 0;
+        this.refreshMapTerrainForStage(this.currentStage);
         this.spawnTimer = 0;
         this.gameTime = 0;
         this.currentResonance = 0;
@@ -9798,8 +10189,8 @@ class GameManager {
         const cameraY = FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA ? this.camera.y : 0;
 
         if (FEATURE_FLAGS.ENABLE_ART_ASSETS && FEATURE_FLAGS.ENABLE_ART_TILES && this.assets) {
-            const tileIds = ['normal', 'normal', 'normal', 'fire', 'void'];
-            const tileId = tileIds[this.currentStage] || 'normal';
+            const tileIds = ['grass', 'stone', 'loess', 'blood', 'siege_fire'];
+            const tileId = tileIds[this.currentStage] || 'grass';
             const tile = this.assets.getTileTexture?.(tileId);
             if (this.assets.canDraw?.(tile)) {
                 const configuredSize = getNumericGameSetting('MAP.ART_TILE_SIZE', 512);
@@ -9859,6 +10250,108 @@ class GameManager {
         ctx.restore();
     }
 
+    renderMapTerrain(ctx) {
+        if (!FEATURE_FLAGS.ENABLE_MAP_TERRAIN_OBSTACLES || !this.mapObstacles?.length) return;
+        this.ensureMapTerrainForCurrentStage();
+        for (const obstacle of this.mapObstacles) {
+            const radius = obstacle.radius || Math.max(obstacle.width || obstacle.radiusX || 0, obstacle.height || obstacle.radiusY || 0) * 0.6;
+            if (!this.isCircleInCameraView(obstacle.x, obstacle.y, radius, 80)) continue;
+            ctx.save();
+            ctx.translate(obstacle.x, obstacle.y);
+            ctx.rotate(obstacle.angle || 0);
+            if (obstacle.collisionType === 'slow') {
+                this.renderTerrainHazard(ctx, obstacle);
+            } else {
+                this.renderTerrainBlocker(ctx, obstacle);
+            }
+            ctx.restore();
+        }
+    }
+
+    renderTerrainHazard(ctx, obstacle) {
+        const drawWidth = obstacle.width || (obstacle.radiusX || 80) * 2;
+        const drawHeight = obstacle.height || (obstacle.radiusY || 40) * 2;
+        if (drawArtTerrainTexture(ctx, obstacle.kind, drawWidth, drawHeight, 0.95)) return;
+
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = obstacle.color || 'rgba(120, 60, 30, 0.35)';
+        ctx.strokeStyle = obstacle.accent || 'rgba(255, 190, 80, 0.35)';
+        ctx.lineWidth = 2;
+        if (obstacle.shape === 'rect') {
+            const w = obstacle.width || 160;
+            const h = obstacle.height || 40;
+            ctx.fillRect(-w / 2, -h / 2, w, h);
+            ctx.strokeRect(-w / 2 + 2, -h / 2 + 2, w - 4, h - 4);
+            ctx.globalCompositeOperation = 'lighter';
+            ctx.fillStyle = obstacle.accent || 'rgba(255, 160, 40, 0.3)';
+            for (let i = -2; i <= 2; i++) {
+                ctx.beginPath();
+                ctx.ellipse(i * w * 0.16, 0, w * 0.08, h * 0.42, 0, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            return;
+        }
+        const rx = obstacle.radiusX || 80;
+        const ry = obstacle.radiusY || 40;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalAlpha = 0.42;
+        ctx.beginPath();
+        ctx.ellipse(rx * 0.12, -ry * 0.08, rx * 0.56, ry * 0.38, 0.18, 0, Math.PI * 2);
+        ctx.fillStyle = obstacle.accent || 'rgba(255, 190, 80, 0.28)';
+        ctx.fill();
+    }
+
+    renderTerrainBlocker(ctx, obstacle) {
+        const drawWidth = obstacle.width || (obstacle.radius || 42) * 2;
+        const drawHeight = obstacle.height || (obstacle.radius || 42) * 2;
+        if (drawArtTerrainTexture(ctx, obstacle.kind, drawWidth, drawHeight, 1)) return;
+
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.55)';
+        ctx.shadowBlur = 12;
+        ctx.shadowOffsetY = 6;
+        ctx.fillStyle = obstacle.color || 'rgba(68, 58, 48, 0.94)';
+        ctx.strokeStyle = 'rgba(14, 10, 8, 0.8)';
+        ctx.lineWidth = 4;
+        if (obstacle.shape === 'circle') {
+            const r = obstacle.radius || 42;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, r, r * 0.78, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+            ctx.strokeStyle = obstacle.accent || 'rgba(220, 170, 90, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.ellipse(-r * 0.1, -r * 0.1, r * 0.62, r * 0.38, -0.2, 0, Math.PI * 2);
+            ctx.stroke();
+            return;
+        }
+        const w = obstacle.width || 140;
+        const h = obstacle.height || 44;
+        ctx.fillRect(-w / 2, -h / 2, w, h);
+        ctx.strokeRect(-w / 2, -h / 2, w, h);
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = obstacle.accent || 'rgba(220, 170, 90, 0.5)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(-w * 0.42, -h * 0.1);
+        ctx.lineTo(w * 0.42, -h * 0.22);
+        ctx.moveTo(-w * 0.35, h * 0.2);
+        ctx.lineTo(w * 0.36, h * 0.1);
+        ctx.stroke();
+        if (obstacle.kind?.includes('burning') || obstacle.kind === 'fire_pile') {
+            ctx.globalCompositeOperation = 'lighter';
+            ctx.fillStyle = 'rgba(255, 126, 35, 0.48)';
+            ctx.beginPath();
+            ctx.ellipse(0, -h * 0.42, w * 0.22, h * 0.5, 0, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
     renderPlaying() {
         const ctx = this.ctx;
 
@@ -9892,6 +10385,9 @@ class GameManager {
             ctx.save();
             ctx.translate(-this.camera.x, -this.camera.y);
         }
+
+        // 地形阻挡、镂空和危险区：在角色/特效下层，保证可读但不遮主体。
+        this.renderMapTerrain(ctx);
 
         // 渲染火焰区域（半透明橙色）- 王植Boss技能
         for (const fire of this.fireAreas) {

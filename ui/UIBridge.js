@@ -298,12 +298,13 @@
         }
 
         updateStatus(snapshot) {
-            const key = JSON.stringify({ weapons: snapshot.weapons, skills: snapshot.skills });
+            const activeSkills = (snapshot.skills || []).filter(skill => Number(skill.level) > 0);
+            const key = JSON.stringify({ weapons: snapshot.weapons, skills: activeSkills });
             if (key === this.lastStatusKey) return;
             this.lastStatusKey = key;
             this.setText('weaponCount', `${snapshot.weapons.length}/6`);
             this.renderRows('weaponList', snapshot.weapons, false);
-            this.renderRows('skillList', snapshot.skills, true);
+            this.renderRows('skillList', activeSkills, true);
         }
 
         updateWeaponCooldowns(snapshot) {
@@ -455,6 +456,10 @@
         renderRows(target, rows, isSkill) {
             const container = this.root.querySelector(`[data-ui="${target}"]`);
             if (!container) return;
+            if (!rows || rows.length === 0) {
+                container.innerHTML = `<div class="status-empty">${isSkill ? '暂无已激活' : '暂无'}</div>`;
+                return;
+            }
             container.innerHTML = rows.map((row) => {
                 const icon = row.iconSrc
                     ? `<img class="status-icon" src="${this.escapeAttr(row.iconSrc)}" alt="">`

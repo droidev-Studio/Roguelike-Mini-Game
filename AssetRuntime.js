@@ -83,9 +83,11 @@
                     ['pickups'],
                     ['player'],
                     ['enemies'],
+                    ['miniBosses'],
                     ['effects'],
                     ['ui'],
                     ['tiles'],
+                    ['terrain'],
                 ]
                 : [
                     ['weapons'],
@@ -95,9 +97,11 @@
                     ['player'],
                     ['enemies'],
                     ['bosses'],
+                    ['miniBosses'],
                     ['effects'],
                     ['ui'],
                     ['tiles'],
+                    ['terrain'],
                 ];
 
             for (const [section] of sections) {
@@ -222,8 +226,27 @@
             return Number.isFinite(size) && size > 0 ? size : null;
         }
 
+        getMiniBossSprite(miniBossId, frameIndex = 0) {
+            const entry = this.manifest?.miniBosses?.[miniBossId];
+            const frames = entry?.frames || [];
+            const src = frames.length > 0 ? frames[Math.abs(frameIndex) % frames.length] : entry?.src;
+            return this.resolveImage(src);
+        }
+
+        getMiniBossWorldSize(miniBossId) {
+            const entry = this.manifest?.miniBosses?.[miniBossId];
+            const size = Number(entry?.worldSize);
+            return Number.isFinite(size) && size > 0 ? size : null;
+        }
+
         getTileTexture(tileId) {
             return this.resolveImage(this.manifest?.tiles?.[tileId]?.src);
+        }
+
+        getTerrainTexture(kind) {
+            const terrain = this.manifest?.terrain || {};
+            const entry = terrain.blockers?.[kind] || terrain.hazards?.[kind];
+            return this.resolveImage(entry?.src);
         }
 
         getEffectTexture(effectId, level = null) {
