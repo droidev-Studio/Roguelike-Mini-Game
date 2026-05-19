@@ -4281,7 +4281,7 @@ class FireTornado {
 
     renderAxisSpin(ctx, renderRadius, alpha) {
         const frame = GameRuntime.frame;
-        const phase = frame * (Math.PI * 2 / (5 * 60)) * (this.axisSpinDirection || 1);
+        const phase = frame * (Math.PI * 2 / (10 * 60)) * (this.axisSpinDirection || 1);
         const bandCount = this.mode === 'massive_storm' ? 7 : 6;
         const height = renderRadius * (this.mode === 'massive_storm' ? 1.38 : 1.18);
         const maxX = renderRadius * (this.mode === 'massive_storm' ? 0.62 : 0.54);
@@ -4344,7 +4344,7 @@ class FireTornado {
         if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !FEATURE_FLAGS.ENABLE_ART_EFFECTS || !assets?.getWeaponAttackTexture) return false;
         const image = assets.getWeaponAttackTexture(weaponId, level, slot);
         if (!assets.canDraw?.(image)) return false;
-        const phase = GameRuntime.frame * (Math.PI * 2 / (5 * 60)) * (this.axisSpinDirection || 1);
+        const phase = GameRuntime.frame * (Math.PI * 2 / (10 * 60)) * (this.axisSpinDirection || 1);
         const flow = Math.sin(phase);
         const wobble = Math.cos(phase);
         const maxOffset = width * 0.05;
