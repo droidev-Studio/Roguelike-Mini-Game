@@ -4277,6 +4277,126 @@ class FireTornado {
         this.moveSpeed = 0; // 停止移动
     }
 
+    renderAxisSpin(ctx, renderRadius, alpha) {
+        const frame = GameRuntime.frame;
+        const phase = frame * (this.mode === 'massive_storm' ? 0.045 : 0.06);
+        const bandCount = this.mode === 'massive_storm' ? 7 : 6;
+        const height = renderRadius * (this.mode === 'massive_storm' ? 1.38 : 1.18);
+        const maxX = renderRadius * (this.mode === 'massive_storm' ? 0.62 : 0.54);
+
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalAlpha *= Math.max(0, Math.min(1, alpha * 0.72));
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.shadowBlur = this.mode === 'massive_storm' ? 14 : 9;
+        ctx.shadowColor = 'rgba(255, 185, 36, 0.9)';
+
+        // 竖直中轴：只给方向参照，不让整张图旋转。
+        ctx.beginPath();
+        ctx.moveTo(0, -height * 0.54);
+        ctx.lineTo(0, height * 0.52);
+        ctx.lineWidth = Math.max(1.2, renderRadius * 0.018);
+        ctx.strokeStyle = `rgba(255, 214, 88, ${alpha * 0.28})`;
+        ctx.stroke();
+
+        // 顺时针绕中轴的火线。正向 phase 在 Canvas 坐标里表现为顺时针流动。
+        for (let i = 0; i < bandCount; i++) {
+            const offset = phase + i * Math.PI * 2 / bandCount;
+            const topX = Math.sin(offset) * maxX;
+            const midX = Math.sin(offset + Math.PI * 0.78) * maxX * 0.62;
+            const bottomX = Math.sin(offset + Math.PI * 1.56) * maxX * 0.32;
+            const depth = 0.52 + 0.48 * ((Math.cos(offset) + 1) / 2);
+            const yTop = -height * (0.48 - i * 0.018);
+            const yBottom = height * (0.43 + i * 0.012);
+
+            ctx.beginPath();
+            ctx.moveTo(topX, yTop);
+            ctx.bezierCurveTo(
+                -midX * 1.12, -height * 0.18,
+                midX * 1.08, height * 0.16,
+                bottomX, yBottom
+            );
+            ctx.lineWidth = Math.max(1.6, renderRadius * (0.026 + depth * 0.018));
+            ctx.strokeStyle = `rgba(255, ${110 + Math.floor(depth * 90)}, 24, ${alpha * (0.22 + depth * 0.36)})`;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(topX * 0.82, yTop + height * 0.05);
+            ctx.bezierCurveTo(
+                -midX * 0.78, -height * 0.12,
+                midX * 0.76, height * 0.12,
+                bottomX * 0.76, yBottom - height * 0.04
+            );
+            ctx.lineWidth = Math.max(0.8, renderRadius * 0.011);
+            ctx.strokeStyle = `rgba(255, 238, 126, ${alpha * (0.2 + depth * 0.28)})`;
+            ctx.stroke();
+        }
+
+        ctx.restore();
+    }
+
+    renderAxisTwistingTexture(ctx, weaponId, level, slot, x, y, width, height, alpha) {
+        const assets = window.assetRuntime;
+        if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !FEATURE_FLAGS.ENABLE_ART_EFFECTS || !assets?.getWeaponAttackTexture) return false;
+        const image = assets.getWeaponAttackTexture(weaponId, level, slot);
+        if (!assets.canDraw?.(image)) return false;
+        const phase = GameRuntime.frame * 0.0666;
+        const flow = Math.sin(phase);
+        const wobble = Math.cos(phase);
+        const maxOffset = width * 0.05;
+        const clipWidth = width * 0.48;
+        const clipHeight = height * 0.48;
+
+        ctx.save();
+        ctx.imageSmoothingEnabled = true;
+        ctx.beginPath();
+        ctx.ellipse(x, y, clipWidth, clipHeight, 0, 0, Math.PI * 2);
+        ctx.clip();
+
+        // 稳定底图保留完整轮廓，不做平面旋转。
+        ctx.globalAlpha = Math.max(0, Math.min(1, alpha * 0.42));
+        ctx.drawImage(image, x - width / 2, y - height / 2, width, height);
+
+        // 前景表面：整团纹理沿水平轴平滑流动，模拟绕竖直中轴转到正面。
+        const frontScaleX = 0.96 + Math.max(0, wobble) * 0.08;
+        const frontWidth = width * frontScaleX;
+        ctx.globalAlpha = Math.max(0, Math.min(1, alpha * (0.34 + Math.max(0, wobble) * 0.26)));
+        ctx.drawImage(image, x - frontWidth / 2 + flow * maxOffset, y - height / 2, frontWidth, height);
+
+        // 背面表面：反向流动且更暗，让整体像绕轴循环，而不是左右抖。
+        const backScaleX = 0.94 + Math.max(0, -wobble) * 0.07;
+        const backWidth = width * backScaleX;
+        ctx.globalAlpha = Math.max(0, Math.min(1, alpha * (0.18 + Math.max(0, -wobble) * 0.2)));
+        ctx.drawImage(image, x - backWidth / 2 - flow * maxOffset * 0.82, y - height / 2, backWidth, height);
+
+        // 中轴两侧的高光带跟随水平流动，强化“绕轴自转”。
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.lineCap = 'round';
+        ctx.shadowBlur = this.mode === 'massive_storm' ? 16 : 10;
+        ctx.shadowColor = 'rgba(255, 188, 38, 0.85)';
+        for (let i = 0; i < 3; i++) {
+            const bandPhase = phase + i * Math.PI * 2 / 3;
+            const bandX = Math.sin(bandPhase) * maxOffset * 1.45;
+            const depth = 0.45 + 0.55 * ((Math.cos(bandPhase) + 1) / 2);
+            ctx.globalAlpha = Math.max(0, Math.min(1, alpha * (0.16 + depth * 0.28)));
+            ctx.beginPath();
+            ctx.moveTo(x + bandX, y - height * 0.32);
+            ctx.bezierCurveTo(
+                x - bandX * 0.8, y - height * 0.12,
+                x + bandX * 0.65, y + height * 0.12,
+                x - bandX * 0.35, y + height * 0.32
+            );
+            ctx.lineWidth = Math.max(1.2, width * (0.008 + depth * 0.006));
+            ctx.strokeStyle = 'rgba(255, 180, 38, 0.78)';
+            ctx.stroke();
+        }
+
+        ctx.restore();
+        return true;
+    }
+
     render(ctx) {
         let strokeColor, fillColor, shadowColor;
         let lineWidth = 3;
@@ -4312,13 +4432,15 @@ class FireTornado {
         } else if (bookLevel >= 6 && this.mode === 'massive_storm') {
             artSlot = 'detonate';
         }
-        const artSizeScale = this.mode === 'massive_storm' ? 1.7 : (this.mode === 'seek_player' ? 1.62 : 1.68);
-        if (drawArtWeaponAttackTexture(ctx, 'taiping', artLevel, artSlot, this.x, this.y, renderRadius * artSizeScale, renderRadius * artSizeScale, 0, artAlpha, 0.5, 0.5)) {
+        const artSizeScale = this.mode === 'massive_storm' ? 2.1 : (this.mode === 'seek_player' ? 2.08 : 2.25);
+        if (this.renderAxisTwistingTexture(ctx, 'taiping', artLevel, artSlot, this.x, this.y, renderRadius * artSizeScale, renderRadius * artSizeScale, artAlpha)) {
+            this.renderAxisSpin(ctx, renderRadius, artAlpha);
             if (this.mode !== 'massive_storm') legacyRandomCalls++;
             for (let i = 0; i < legacyRandomCalls - 1; i++) GameRuntime.random();
             return;
         }
-        if (drawArtEffectTexture(ctx, 'taiping_tornado', this.x, this.y, renderRadius * 1.68, renderRadius * 1.68, 0, artAlpha, 0.5, 0.5)) {
+        if (drawArtEffectTexture(ctx, 'taiping_tornado', this.x, this.y, renderRadius * 2.35, renderRadius * 2.35, 0, artAlpha, 0.5, 0.5)) {
+            this.renderAxisSpin(ctx, renderRadius, artAlpha);
             if (this.mode !== 'massive_storm') legacyRandomCalls++;
             for (let i = 0; i < legacyRandomCalls - 1; i++) GameRuntime.random();
             return;
@@ -4423,7 +4545,7 @@ class TaipingBook extends Weapon {
             this.spawnQueue.push({
                 delay: remainingSlots * 0.3,
                 action: () => {
-                    // 终极技能：生成在玩家视野附近，保证可踩龙卷可见且可交互。
+                    // 终极技能：在玩家视野附近生成可踩龙卷，随后缓慢向玩家移动。
                     const gm = window.gameManager;
                     const spawnAngle = GameRuntime.random() * Math.PI * 2;
                     const spawnDistance = 280 + GameRuntime.random() * 120;
@@ -4581,13 +4703,45 @@ class FireRing {
 
     render(ctx) {
         const currentRadius = this.getCurrentRadius();
-        // 火焰红橙色环形火墙，透明度随剩余生命衰减
-        const alpha = 0.34 * (this.lifetime / this.totalLifetime) + 0.08;
-        const pulse = 0.9 + 0.1 * Math.sin(Date.now() / 30);
+        const lifeRatio = Math.max(0, this.lifetime / this.totalLifetime);
+        const alpha = 0.16 + 0.68 * lifeRatio;
+        const pulse = 0.97 + 0.03 * Math.sin(GameRuntime.frame * 0.18);
         const renderRadius = currentRadius * pulse;
-        if (drawArtEffectTexture(ctx, 'shield_pulse', this.x, this.y, renderRadius * 2.05, renderRadius * 2.05, -GameRuntime.frame * 0.018, alpha, 0.5, 0.5)) {
+        const ringSize = renderRadius * 2.12;
+        const ghostFrameSize = renderRadius * 1.22;
+        const ghostSize = ghostFrameSize * 0.92;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(this.x - ghostFrameSize / 2, this.y - ghostFrameSize / 2, ghostFrameSize, ghostFrameSize);
+        ctx.clip();
+        drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'charge', this.x, this.y, ghostSize, ghostSize, {
+            alpha: 0.11 + 0.14 * lifeRatio,
+            angle: 0,
+            anchorX: 0.5,
+            anchorY: 0.56,
+            filter: `blur(${9 + (1 - lifeRatio) * 4}px) saturate(0.85)`,
+            shadowBlur: 0
+        });
+        ctx.restore();
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, renderRadius * 1.08, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, renderRadius * 0.78, 0, Math.PI * 2, true);
+        ctx.clip('evenodd');
+        if (drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'release', this.x, this.y, ringSize, ringSize, {
+            alpha,
+            angle: 0,
+            anchorX: 0.5,
+            anchorY: 0.5,
+            shadowBlur: 12,
+            shadowColor: 'rgba(255, 144, 24, 0.7)'
+        })) {
+            ctx.restore();
             return;
         }
+        ctx.restore();
 
         ctx.save();
         ctx.shadowBlur = 15;
@@ -4596,15 +4750,9 @@ class FireRing {
         // 绘制环形边缘（跟随收缩）
         ctx.beginPath();
         ctx.arc(this.x, this.y, renderRadius, 0, Math.PI * 2);
-        ctx.lineWidth = 8;
+        ctx.lineWidth = Math.max(4, renderRadius * 0.08);
         ctx.strokeStyle = `rgba(255, 69, 0, ${alpha})`;
         ctx.stroke();
-
-        // 内半透明填充（填充到当前半径）
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, renderRadius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 69, 0, ${alpha * 0.2})`;
-        ctx.fill();
 
         ctx.restore();
     }
@@ -4950,7 +5098,7 @@ class Shield extends Weapon {
         if (this.phase === 'charge') {
             const rawProgress = Math.min(1, this.chargeTimer / Math.max(0.001, this.chargeDuration));
             const fastProgress = 1 - Math.pow(1 - rawProgress, 3);
-            const drawSize = effectiveMaxRadius * 2 * (0.42 + fastProgress * 0.88);
+            const drawSize = effectiveMaxRadius * (0.26 + fastProgress * 0.58);
             return drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'charge', this.x, this.y, drawSize, drawSize, {
                 alpha: Math.min(0.68, 0.28 + fastProgress * 0.34),
                 angle: 0,
@@ -4966,24 +5114,28 @@ class Shield extends Weapon {
                 ? Math.min(1, this.releaseVisualTimer / Math.max(0.001, this.releaseVisualDuration))
                 : Math.min(1, this.explodeTimer / Math.max(0.001, this.explodeDuration));
             const borderSize = this.currentRadius * (this.phase === 'release' ? 2.1 : 2.04);
-            const innerScale = this.phase === 'release'
-                ? (0.34 - rawProgress * 0.04)
-                : (0.42 - rawProgress * 0.04);
-            const innerSize = borderSize * innerScale;
-            const innerAlpha = Math.max(0.10, alpha * (0.32 - rawProgress * 0.12));
+            const innerFrameSize = borderSize * (this.phase === 'release'
+                ? (0.46 - rawProgress * 0.12)
+                : (0.52 - rawProgress * 0.1));
+            const innerSize = innerFrameSize * 0.92;
+            const innerAlpha = Math.max(0.08, alpha * (0.2 - rawProgress * 0.08));
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(this.x - innerFrameSize / 2, this.y - innerFrameSize / 2, innerFrameSize, innerFrameSize);
+            ctx.clip();
             const drewInner = drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'charge', this.x, this.y, innerSize, innerSize, {
                 alpha: innerAlpha,
                 angle: 0,
                 anchorX: 0.5,
                 anchorY: 0.56,
-                filter: `blur(${Math.max(2, 4.5 - rawProgress * 1.5)}px)`,
-                shadowBlur: 6,
-                shadowColor: 'rgba(255, 170, 32, 0.32)'
+                filter: `blur(${7.5 + rawProgress * 3}px) saturate(0.82)`,
+                shadowBlur: 0
             });
+            ctx.restore();
             ctx.save();
             ctx.beginPath();
-            ctx.arc(this.x, this.y, borderSize * 0.56, 0, Math.PI * 2);
-            ctx.arc(this.x, this.y, borderSize * 0.31, 0, Math.PI * 2, true);
+            ctx.arc(this.x, this.y, borderSize * 0.54, 0, Math.PI * 2);
+            ctx.arc(this.x, this.y, borderSize * 0.42, 0, Math.PI * 2, true);
             ctx.clip('evenodd');
             const drewRelease = drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'release', this.x, this.y, borderSize, borderSize, {
                 alpha: Math.min(0.54, alpha * 0.62),
@@ -5092,7 +5244,7 @@ class Player {
         // 血量初始化：满血量开局
         this.hp = this.maxHp;
 
-        // 测试默认初始武器：八门金锁盾 Lv.6。URL 仍可用 debugInitialWeapon/debugInitialWeaponLevel 覆盖。
+        // 测试默认初始武器：太平要术 Lv.1。URL 仍可用 debugInitialWeapon/debugInitialWeaponLevel 覆盖。
         const weaponChoices = [
             { type: 'saber', cls: Saber },
             { type: 'spear', cls: Spear },
@@ -5103,7 +5255,7 @@ class Player {
         ];
         const forcedWeaponType = new URLSearchParams(window.location.search).get('debugInitialWeapon');
         const forcedWeapon = weaponChoices.find(choice => choice.type === forcedWeaponType);
-        const picked = forcedWeapon || weaponChoices.find(choice => choice.type === 'shield') || weaponChoices[0];
+        const picked = forcedWeapon || weaponChoices.find(choice => choice.type === 'taiping') || weaponChoices[0];
         const config = WEAPON_UPGRADES[picked.type];
 
         // 直接使用纯净的基础伤害，所有乘区计算交给攻击判定瞬间
@@ -5115,7 +5267,7 @@ class Player {
             }
         }
         weapon.level = 1;
-        const initialWeaponLevelParam = Number(new URLSearchParams(window.location.search).get('debugInitialWeaponLevel') || 6);
+        const initialWeaponLevelParam = Number(new URLSearchParams(window.location.search).get('debugInitialWeaponLevel') || 1);
         if (Number.isInteger(initialWeaponLevelParam) && initialWeaponLevelParam > 1) {
             const targetLevel = Math.min(initialWeaponLevelParam, 6);
             for (let lvl = 2; lvl <= targetLevel; lvl++) {

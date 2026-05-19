@@ -162,12 +162,16 @@
     },
     "taiping": {
       "levels": {
-        "1": { "primary": { "src": "weapons/attacks/asset_weapon_attack_taiping_lv1.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
-        "2": { "primary": { "src": "weapons/attacks/asset_weapon_attack_taiping_lv2.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
-        "3": { "primary": { "src": "weapons/attacks/asset_weapon_attack_taiping_lv3.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
-        "4": { "primary": { "src": "weapons/attacks/asset_weapon_attack_taiping_lv4.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
-        "5": { "primary": { "src": "weapons/attacks/asset_weapon_attack_taiping_lv5.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } },
-        "6": { "primary": { "src": "weapons/attacks/asset_weapon_attack_taiping_lv6.png", "sourceSize": [512, 512], "usage": ["weapon_attack"] } }
+        "1": { "primary": { "src": "weapons/attacks/asset_weapon_attack_taiping_lv1.png", "sourceSize": [1254, 1254], "usage": ["weapon_attack"] } },
+        "2": { "primary": { "src": "weapons/attacks/asset_weapon_attack_taiping_lv1.png", "sourceSize": [1254, 1254], "usage": ["weapon_attack"] } },
+        "3": { "primary": { "src": "weapons/attacks/asset_weapon_attack_taiping_lv1.png", "sourceSize": [1254, 1254], "usage": ["weapon_attack"] } },
+        "4": { "primary": { "src": "weapons/attacks/asset_weapon_attack_taiping_lv1.png", "sourceSize": [1254, 1254], "usage": ["weapon_attack"] } },
+        "5": { "primary": { "src": "weapons/attacks/asset_weapon_attack_taiping_lv5.png", "sourceSize": [1254, 1254], "usage": ["weapon_attack"] } },
+        "6": {
+          "primary": { "src": "weapons/attacks/asset_weapon_attack_taiping_lv6.png", "sourceSize": [1254, 1254], "usage": ["weapon_attack"] },
+          "steppable": { "src": "weapons/attacks/asset_weapon_attack_taiping_lv6(steppable).png", "sourceSize": [1254, 1254], "usage": ["weapon_attack"] },
+          "detonate": { "src": "weapons/attacks/asset_weapon_attack_taiping_lv6_nuke.png", "sourceSize": [1254, 1254], "usage": ["weapon_attack"] }
+        }
       }
     }
   },
