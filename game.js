@@ -4348,6 +4348,9 @@ class FireTornado {
         const maxOffset = width * 0.05;
         const clipWidth = width * 0.48;
         const clipHeight = height * 0.48;
+        const solidBoost = weaponId === 'taiping' && level >= 6
+            ? (slot === 'detonate' ? 1.34 : 1.2)
+            : 1;
 
         ctx.save();
         ctx.imageSmoothingEnabled = true;
@@ -4355,20 +4358,29 @@ class FireTornado {
         ctx.ellipse(x, y, clipWidth, clipHeight, 0, 0, Math.PI * 2);
         ctx.clip();
 
-        // 稳定底图保留完整轮廓，不做平面旋转。
-        ctx.globalAlpha = Math.max(0, Math.min(1, alpha * 0.42));
+        // 稳定底图保留完整轮廓，不做平面旋转；Lv6 玄武/凤凰虚影需要更实，避免释放后只剩薄光。
+        ctx.globalAlpha = Math.max(0, Math.min(1, alpha * 0.56 * solidBoost));
         ctx.drawImage(image, x - width / 2, y - height / 2, width, height);
+
+        if (solidBoost > 1) {
+            ctx.save();
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.filter = 'saturate(1.14) contrast(1.08)';
+            ctx.globalAlpha = Math.max(0, Math.min(1, alpha * 0.22 * solidBoost));
+            ctx.drawImage(image, x - width * 0.46, y - height * 0.46, width * 0.92, height * 0.92);
+            ctx.restore();
+        }
 
         // 前景表面：整团纹理沿水平轴平滑流动，模拟绕竖直中轴转到正面。
         const frontScaleX = 0.96 + Math.max(0, wobble) * 0.08;
         const frontWidth = width * frontScaleX;
-        ctx.globalAlpha = Math.max(0, Math.min(1, alpha * (0.34 + Math.max(0, wobble) * 0.26)));
+        ctx.globalAlpha = Math.max(0, Math.min(1, alpha * solidBoost * (0.42 + Math.max(0, wobble) * 0.28)));
         ctx.drawImage(image, x - frontWidth / 2 + flow * maxOffset, y - height / 2, frontWidth, height);
 
         // 背面表面：反向流动且更暗，让整体像绕轴循环，而不是左右抖。
         const backScaleX = 0.94 + Math.max(0, -wobble) * 0.07;
         const backWidth = width * backScaleX;
-        ctx.globalAlpha = Math.max(0, Math.min(1, alpha * (0.18 + Math.max(0, -wobble) * 0.2)));
+        ctx.globalAlpha = Math.max(0, Math.min(1, alpha * solidBoost * (0.24 + Math.max(0, -wobble) * 0.22)));
         ctx.drawImage(image, x - backWidth / 2 - flow * maxOffset * 0.82, y - height / 2, backWidth, height);
 
         // 中轴两侧的高光带跟随水平流动，强化“绕轴自转”。
