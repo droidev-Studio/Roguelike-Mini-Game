@@ -5244,7 +5244,7 @@ class Player {
         // 血量初始化：满血量开局
         this.hp = this.maxHp;
 
-        // 测试默认初始武器：太平要术 Lv.1。URL 仍可用 debugInitialWeapon/debugInitialWeaponLevel 覆盖。
+        // 主线默认开局使用八门金锁盾 Lv.6；URL 仍可用 debugInitialWeapon/debugInitialWeaponLevel 覆盖。
         const weaponChoices = [
             { type: 'saber', cls: Saber },
             { type: 'spear', cls: Spear },
@@ -5253,31 +5253,28 @@ class Player {
             { type: 'shield', cls: Shield },
             { type: 'taiping', cls: TaipingBook }
         ];
-        const forcedWeaponType = new URLSearchParams(window.location.search).get('debugInitialWeapon');
+        const params = new URLSearchParams(window.location.search);
+        const forcedWeaponType = params.get('debugInitialWeapon');
         const forcedWeapon = weaponChoices.find(choice => choice.type === forcedWeaponType);
-        const picked = forcedWeapon || weaponChoices.find(choice => choice.type === 'taiping') || weaponChoices[0];
+        const picked = forcedWeapon || weaponChoices.find(choice => choice.type === 'shield') || weaponChoices[0];
         const config = WEAPON_UPGRADES[picked.type];
 
         // 直接使用纯净的基础伤害，所有乘区计算交给攻击判定瞬间
         const weapon = new picked.cls(config.baseDamage);
 
-        for (let lvl = 1; lvl <= 1; lvl++) {
+        const defaultInitialLevel = forcedWeapon ? 1 : 6;
+        const initialWeaponLevelParam = Number(params.get('debugInitialWeaponLevel') || defaultInitialLevel);
+        const targetLevel = Number.isInteger(initialWeaponLevelParam)
+            ? Math.max(1, Math.min(initialWeaponLevelParam, 6))
+            : defaultInitialLevel;
+
+        for (let lvl = 1; lvl <= targetLevel; lvl++) {
             if (config[lvl].action) {
                 config[lvl].action(weapon);
             }
         }
-        weapon.level = 1;
-        const initialWeaponLevelParam = Number(new URLSearchParams(window.location.search).get('debugInitialWeaponLevel') || 1);
-        if (Number.isInteger(initialWeaponLevelParam) && initialWeaponLevelParam > 1) {
-            const targetLevel = Math.min(initialWeaponLevelParam, 6);
-            for (let lvl = 2; lvl <= targetLevel; lvl++) {
-                if (config[lvl]?.action) {
-                    config[lvl].action(weapon);
-                }
-            }
-            weapon.level = targetLevel;
-            weapon.onStatsUpdated(this.modifiers);
-        }
+        weapon.level = targetLevel;
+        weapon.onStatsUpdated(this.modifiers);
         applyGenericWeaponScalarMigration(weapon);
         this.weapons.push(weapon);
         this.refreshWeapons();
