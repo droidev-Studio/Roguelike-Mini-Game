@@ -817,10 +817,10 @@ const WEAPON_UPGRADES = {
         type: 'weapon',
         name: '太平要术·风火',
         baseDamage: 20, // 区域持续DPS
-        1: { name: '太平要术·风火', desc: '在玩家脚下召唤一团停留火焰龙卷风，持续伤害范围内敌人。', action: (w) => {} },
-        2: { name: '风火增幅', desc: '龙卷风半径增加 30%，持续时间延长 30%。', action: (w) => { w.baseRadius *= 1.3; w.baseLifetime *= 1.3; } },
-        3: { name: '火势凶猛', desc: '伤害 Tick 频率加快 50%。', action: (w) => { w.baseTickInterval *= 0.5; } },
-        4: { name: '燎原', desc: '同时存在龙卷风数量上限 +1（总计 2 个）。', action: (w) => { w.maxTornados = 2; } },
+        1: { name: '太平要术·风火', desc: '在玩家脚下召唤 1 团停留火焰龙卷风，持续伤害范围内敌人。', action: (w) => { w.maxTornados = 1; } },
+        2: { name: '风火二转', desc: '同时存在龙卷风数量上限提升到 2 个。', action: (w) => { w.maxTornados = 2; } },
+        3: { name: '风火三转', desc: '同时存在龙卷风数量上限提升到 3 个。', action: (w) => { w.maxTornados = 3; } },
+        4: { name: '风火四转', desc: '同时存在龙卷风数量上限提升到 4 个。', action: (w) => { w.maxTornados = 4; } },
         5: { name: '灵动', desc: '龙卷风自动缓慢向距离最近敌人移动索敌。', action: (w) => { w.autoSeek = true; } },
         6: { name: '黄天·焚世烈火', desc: '同时存在上限 +2（总计 4 个），额外召唤一个向玩家移动的聚变龙卷风，触碰后引爆巨型风暴。', action: (w) => { w.maxTornados = 4; w.hasProximityStorm = true; } }
     }
@@ -4124,6 +4124,8 @@ class FireTornado {
 
         // 聚变风暴特殊参数
         this.originalParams = null; // 保存爆炸前参数
+        const spinSeed = Math.sin(this.x * 12.9898 + this.y * 78.233 + (book?.level || 1) * 37.719) * 43758.5453;
+        this.axisSpinDirection = spinSeed - Math.floor(spinSeed) >= 0.5 ? 1 : -1;
     }
 
     findNearestTarget(enemies, player) {
@@ -4279,7 +4281,7 @@ class FireTornado {
 
     renderAxisSpin(ctx, renderRadius, alpha) {
         const frame = GameRuntime.frame;
-        const phase = frame * (this.mode === 'massive_storm' ? 0.045 : 0.06);
+        const phase = frame * (Math.PI * 2 / (5 * 60)) * (this.axisSpinDirection || 1);
         const bandCount = this.mode === 'massive_storm' ? 7 : 6;
         const height = renderRadius * (this.mode === 'massive_storm' ? 1.38 : 1.18);
         const maxX = renderRadius * (this.mode === 'massive_storm' ? 0.62 : 0.54);
@@ -4342,7 +4344,7 @@ class FireTornado {
         if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !FEATURE_FLAGS.ENABLE_ART_EFFECTS || !assets?.getWeaponAttackTexture) return false;
         const image = assets.getWeaponAttackTexture(weaponId, level, slot);
         if (!assets.canDraw?.(image)) return false;
-        const phase = GameRuntime.frame * 0.0666;
+        const phase = GameRuntime.frame * (Math.PI * 2 / (5 * 60)) * (this.axisSpinDirection || 1);
         const flow = Math.sin(phase);
         const wobble = Math.cos(phase);
         const maxOffset = width * 0.05;
@@ -5273,7 +5275,7 @@ class Player {
         // 血量初始化：满血量开局
         this.hp = this.maxHp;
 
-        // 主线默认开局使用八门金锁盾 Lv.6；URL 仍可用 debugInitialWeapon/debugInitialWeaponLevel 覆盖。
+        // 当前美术联调默认开局使用太平要术 Lv.1；URL 仍可用 debugInitialWeapon/debugInitialWeaponLevel 覆盖。
         const weaponChoices = [
             { type: 'saber', cls: Saber },
             { type: 'spear', cls: Spear },
@@ -5285,13 +5287,13 @@ class Player {
         const params = new URLSearchParams(window.location.search);
         const forcedWeaponType = params.get('debugInitialWeapon');
         const forcedWeapon = weaponChoices.find(choice => choice.type === forcedWeaponType);
-        const picked = forcedWeapon || weaponChoices.find(choice => choice.type === 'shield') || weaponChoices[0];
+        const picked = forcedWeapon || weaponChoices.find(choice => choice.type === 'taiping') || weaponChoices[0];
         const config = WEAPON_UPGRADES[picked.type];
 
         // 直接使用纯净的基础伤害，所有乘区计算交给攻击判定瞬间
         const weapon = new picked.cls(config.baseDamage);
 
-        const defaultInitialLevel = forcedWeapon ? 1 : 6;
+        const defaultInitialLevel = forcedWeapon ? 1 : 1;
         const initialWeaponLevelParam = Number(params.get('debugInitialWeaponLevel') || defaultInitialLevel);
         const targetLevel = Number.isInteger(initialWeaponLevelParam)
             ? Math.max(1, Math.min(initialWeaponLevelParam, 6))
