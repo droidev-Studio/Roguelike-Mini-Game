@@ -71,7 +71,7 @@
                 <section class="dom-levelup" role="dialog" aria-modal="true" aria-label="升级选择">
                     <div class="levelup-panel">
                         <header class="levelup-header">
-                            <div class="levelup-title" data-ui="levelUpTitle">升级！</div>
+                            <div class="levelup-title" data-ui="levelUpTitle">升级</div>
                             <div class="levelup-subtitle">选择一项增益</div>
                         </header>
                         <div class="levelup-options" data-ui="levelUpOptions"></div>
@@ -84,6 +84,7 @@
                     <div class="main-panel">
                         <div class="main-title" data-ui="mainTitle">千里走单骑</div>
                         <div class="main-subtitle" data-ui="mainSubtitle">穿越时空只为找到你</div>
+                        <div class="main-loadout">初始武器：太平要术 Lv.1</div>
                         <div class="main-weapon-preview" data-ui="mainWeaponPreview"></div>
                         <div class="main-actions">
                             <button class="main-button main-button-primary" type="button" data-action="start">开始新游戏</button>
@@ -134,7 +135,7 @@
                                 <div class="settings-title">音频设置</div>
                                 <div class="settings-subtitle" data-ui="audioModeText">Synthetic audio</div>
                             </div>
-                            <button class="settings-close" type="button" data-action="closeSettings" aria-label="关闭">×</button>
+                            <button class="settings-close" type="button" data-action="closeSettings" aria-label="关闭">X</button>
                         </header>
                         <div class="settings-list">
                             <label class="settings-row">
@@ -352,7 +353,7 @@
             });
             if (key === this.lastLevelUpKey) return;
             this.lastLevelUpKey = key;
-            this.setText('levelUpTitle', `升级！ 等级 ${snapshot.level}`);
+            this.setText('levelUpTitle', `升级：等级 ${snapshot.level}`);
             const reroll = this.root.querySelector('[data-action="reroll"]');
             if (reroll) {
                 reroll.textContent = `刷新选项（剩余：${snapshot.rerolls}次）`;
@@ -361,11 +362,12 @@
             const container = this.root.querySelector('[data-ui="levelUpOptions"]');
             if (!container) return;
             container.innerHTML = snapshot.levelUpOptions.map((option, index) => {
+                const typeClass = option.type === 'passive' ? 'is-passive' : 'is-weapon';
                 const icon = option.iconSrc
                     ? `<img src="${this.escapeAttr(option.iconSrc)}" alt="">`
                     : `<span>${option.type === 'passive' ? '◆' : '✦'}</span>`;
                 return `
-                    <button class="levelup-card" type="button" data-levelup-index="${index}">
+                    <button class="levelup-card ${typeClass}" type="button" data-levelup-index="${index}">
                         <div class="levelup-card-title">${this.escape(option.title)}</div>
                         <div class="levelup-icon">${icon}</div>
                         <div class="levelup-card-desc">${this.escape(option.desc)}</div>

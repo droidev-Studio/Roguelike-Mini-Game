@@ -7526,6 +7526,7 @@ class GameManager {
         this.isVictory = false;
         this.hitstopTimer = 0; // 顿帧定时器：打击感卡肉效果
         this.activeMusicTrack = '';
+        this.uiBridge?.update(this);
 
         // 启动主循环
         this.gameLoop = this.gameLoop.bind(this);

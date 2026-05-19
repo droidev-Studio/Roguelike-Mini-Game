@@ -3,10 +3,12 @@
     --ui-gold-dim: #b8860b;
     --ui-cyan: #45f0ff;
     --ui-red: #ff5b5b;
-    --ui-panel: rgba(9, 17, 23, 0.82);
+    --ui-panel: rgba(9, 17, 23, 0.76);
     --ui-border: rgba(255, 211, 106, 0.55);
     --ui-text: #f4f7f4;
     --ui-muted: rgba(244, 247, 244, 0.68);
+    --ui-green: #61ffd6;
+    --ui-panel-shadow: 0 10px 28px rgba(0, 0, 0, 0.34);
     --ui-skin-menu: url("../assets/ui/asset_ui_menu_panel.png");
     --ui-skin-button: url("../assets/ui/asset_ui_button_frame.png");
     --ui-skin-card: url("../assets/ui/asset_ui_upgrade_card_frame.png");
@@ -60,12 +62,13 @@
 
 .hud-cluster {
     position: absolute;
+    border-radius: 8px;
     border: 1px solid rgba(255, 211, 106, 0.36);
     background:
         var(--ui-panel-skin, none) center / 100% 100% no-repeat,
         linear-gradient(135deg, rgba(255, 211, 106, 0.10), transparent 30%),
         linear-gradient(180deg, rgba(10, 19, 26, 0.88), rgba(4, 8, 11, 0.72));
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.38), inset 0 0 28px rgba(255, 211, 106, 0.05);
+    box-shadow: var(--ui-panel-shadow), inset 0 0 28px rgba(255, 211, 106, 0.05);
     backdrop-filter: blur(3px);
 }
 
@@ -73,18 +76,18 @@
     --ui-panel-skin: var(--ui-skin-status);
     left: 14px;
     top: 12px;
-    width: min(288px, calc(100vw - 28px));
-    padding: 12px;
+    width: min(252px, calc(100vw - 28px));
+    padding: 10px 11px;
 }
 
 .hud-top {
     --ui-panel-skin: var(--ui-skin-hud-bar);
     left: 50%;
-    top: 10px;
-    width: min(520px, calc(100vw - 360px));
-    min-width: 280px;
+    top: 8px;
+    width: min(440px, calc(100vw - 380px));
+    min-width: 252px;
     transform: translateX(-50%);
-    padding: 8px 14px 10px;
+    padding: 7px 12px 9px;
     text-align: center;
 }
 
@@ -92,10 +95,11 @@
     --ui-panel-skin: var(--ui-skin-status);
     right: 14px;
     top: 54px;
-    width: 218px;
+    width: 190px;
     max-height: calc(100vh - 78px);
-    padding: 12px;
+    padding: 10px;
     overflow: hidden;
+    opacity: 0.88;
 }
 
 .hud-actions {
@@ -103,15 +107,15 @@
     right: 14px;
     top: 12px;
     display: flex;
-    gap: 8px;
+    gap: 6px;
     pointer-events: auto;
 }
 
 .hud-button,
 .levelup-reroll {
-    min-width: 74px;
-    min-height: 34px;
-    padding: 0 14px;
+    min-width: 62px;
+    min-height: 32px;
+    padding: 0 11px;
     border: 1px solid rgba(255, 211, 106, 0.28);
     color: var(--ui-text);
     background:
@@ -119,6 +123,8 @@
         linear-gradient(180deg, rgba(34, 45, 50, 0.94), rgba(9, 13, 17, 0.94));
     box-shadow: inset 0 0 16px rgba(255, 211, 106, 0.08), 0 6px 18px rgba(0, 0, 0, 0.25);
     cursor: pointer;
+    font-size: 13px;
+    font-weight: 800;
 }
 
 .hud-button:hover,
@@ -132,7 +138,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     font-size: 13px;
     color: var(--ui-muted);
 }
@@ -144,7 +150,7 @@
 
 .meter {
     position: relative;
-    height: 18px;
+    height: 16px;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.25);
     background: rgba(0, 0, 0, 0.58);
@@ -174,8 +180,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 7px 12px;
-    margin-top: 12px;
-    font-size: 13px;
+    margin-top: 9px;
+    font-size: 12px;
 }
 
 .hud-stat-grid span {
@@ -186,7 +192,7 @@
     display: block;
     margin-top: 2px;
     color: var(--ui-text);
-    font-size: 15px;
+    font-size: 14px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -195,13 +201,13 @@
 .level-text {
     color: var(--ui-gold);
     font-weight: 800;
-    font-size: 18px;
+    font-size: 17px;
     line-height: 1.2;
     text-shadow: 0 0 12px rgba(255, 211, 106, 0.35);
 }
 
 .time-text {
-    margin-top: 6px;
+    margin-top: 5px;
     color: var(--ui-muted);
     font-size: 13px;
 }
@@ -213,23 +219,23 @@
     margin-bottom: 7px;
     color: var(--ui-gold);
     font-weight: 800;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .status-list {
     display: grid;
-    gap: 5px;
-    margin-bottom: 12px;
+    gap: 4px;
+    margin-bottom: 9px;
 }
 
 .status-row {
     display: grid;
-    grid-template-columns: 22px 1fr auto;
+    grid-template-columns: 20px 1fr auto;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
     min-width: 0;
     color: var(--ui-text);
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .status-row.is-muted {
@@ -243,8 +249,8 @@
 }
 
 .status-icon {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     object-fit: contain;
     background: rgba(0, 0, 0, 0.36);
     border: 1px solid rgba(255, 255, 255, 0.10);
@@ -300,8 +306,8 @@
     bottom: 18px;
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: 58px;
-    gap: 10px;
+    grid-auto-columns: 52px;
+    gap: 8px;
     pointer-events: none;
 }
 
@@ -311,19 +317,19 @@
 
 .weapon-cd-card {
     position: relative;
-    width: 58px;
-    height: 58px;
+    width: 52px;
+    height: 52px;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: 7px;
     background:
         radial-gradient(circle at 50% 22%, rgba(255, 211, 106, 0.16), transparent 42%),
         linear-gradient(180deg, rgba(17, 17, 18, 0.95), rgba(3, 3, 4, 0.96));
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42), inset 0 0 14px rgba(255, 211, 106, 0.10);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.38), inset 0 0 14px rgba(255, 211, 106, 0.10);
 }
 
 .weapon-cd-icon {
     position: absolute;
-    inset: 7px;
+    inset: 6px;
     display: grid;
     place-items: center;
     color: #ffe99a;
@@ -346,6 +352,15 @@
     transition: height 80ms linear;
 }
 
+.weapon-cd-card::after {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border-radius: 5px;
+    opacity: calc(var(--ready, 0) / 100);
+    box-shadow: inset 0 0 14px rgba(97, 255, 214, 0.28);
+}
+
 .weapon-cd-border {
     position: absolute;
     inset: 0;
@@ -355,8 +370,8 @@
 }
 
 .weapon-cd-card.is-ready .weapon-cd-border {
-    border-color: #ffe16a;
-    box-shadow: 0 0 14px rgba(255, 211, 106, 0.48), inset 0 0 0 1px rgba(255, 255, 220, 0.55);
+    border-color: var(--ui-green);
+    box-shadow: 0 0 14px rgba(97, 255, 214, 0.44), inset 0 0 0 1px rgba(255, 255, 220, 0.55);
 }
 
 .weapon-cd-card b {
@@ -476,17 +491,30 @@
     font-size: 18px;
 }
 
+.main-loadout {
+    width: max-content;
+    max-width: 100%;
+    margin: 18px auto 0;
+    padding: 7px 14px;
+    border: 1px solid rgba(97, 255, 214, 0.30);
+    color: var(--ui-green);
+    background: rgba(0, 0, 0, 0.28);
+    font-size: 14px;
+    font-weight: 800;
+    box-shadow: inset 0 0 18px rgba(97, 255, 214, 0.08);
+}
+
 .main-weapon-preview {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-top: 26px;
+    gap: 10px;
+    margin-top: 18px;
 }
 
 .main-weapon-preview img,
 .main-weapon-preview span {
-    width: 58px;
-    height: 58px;
+    width: 54px;
+    height: 54px;
     border: 1px solid rgba(255, 211, 106, 0.38);
     background: rgba(0, 0, 0, 0.28);
     object-fit: contain;
@@ -866,16 +894,17 @@
 .levelup-options {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
-    margin-top: 26px;
+    gap: 16px;
+    margin-top: 24px;
 }
 
 .levelup-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 322px;
-    padding: 18px 16px 16px;
+    min-height: 304px;
+    padding: 34px 16px 16px;
     border: 1px solid rgba(255, 211, 106, 0.28);
     background:
         var(--ui-skin-card) center / 100% 100% no-repeat,
@@ -887,15 +916,34 @@
     text-align: center;
 }
 
+.levelup-card::before {
+    content: "武器";
+    position: absolute;
+    left: 14px;
+    top: 12px;
+    padding: 3px 8px;
+    border: 1px solid rgba(255, 211, 106, 0.26);
+    color: var(--ui-gold);
+    background: rgba(0, 0, 0, 0.34);
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.levelup-card.is-passive::before {
+    content: "被动";
+    color: var(--ui-cyan);
+    border-color: rgba(69, 240, 255, 0.28);
+}
+
 .levelup-card:hover {
     border-color: #fff1a8;
     transform: translateY(-2px);
 }
 
 .levelup-icon {
-    width: 74px;
-    height: 74px;
-    margin: 8px auto 14px;
+    width: 78px;
+    height: 78px;
+    margin: 10px auto 13px;
     display: grid;
     place-items: center;
     color: var(--ui-cyan);
@@ -911,7 +959,7 @@
 }
 
 .levelup-card-title {
-    min-height: 48px;
+    min-height: 45px;
     color: #ffffff;
     font-weight: 800;
     font-size: 18px;
@@ -924,10 +972,10 @@
 }
 
 .levelup-card-desc {
-    margin-top: 12px;
+    margin-top: 10px;
     color: rgba(244, 247, 244, 0.78);
     font-size: 14px;
-    line-height: 1.55;
+    line-height: 1.48;
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
