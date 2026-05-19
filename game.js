@@ -5132,21 +5132,21 @@ class Shield extends Weapon {
             const innerSize = innerFrameSize * 0.92;
             const isReleasePhase = this.phase === 'release';
             const innerAlpha = isReleasePhase
-                ? Math.max(0.18, alpha * (0.38 - rawProgress * 0.12))
+                ? Math.max(0.24, alpha * (0.5 - rawProgress * 0.14))
                 : Math.max(0.11, alpha * (0.26 - rawProgress * 0.08));
             ctx.save();
             ctx.beginPath();
             ctx.rect(this.x - innerFrameSize / 2, this.y - innerFrameSize / 2, innerFrameSize, innerFrameSize);
             ctx.clip();
             if (isReleasePhase) {
-                drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'charge', this.x, this.y, innerSize * 0.84, innerSize * 0.84, {
-                    alpha: Math.max(0.13, innerAlpha * 0.52),
+                drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'charge', this.x, this.y, innerSize * 0.9, innerSize * 0.9, {
+                    alpha: Math.max(0.18, innerAlpha * 0.68),
                     angle: 0,
                     anchorX: 0.5,
                     anchorY: 0.56,
-                    filter: `saturate(1.12) contrast(1.08) blur(${Math.max(1.2, 2.2 - rawProgress * 0.5)}px)`,
-                    shadowBlur: 4,
-                    shadowColor: 'rgba(255, 190, 68, 0.36)'
+                    filter: `saturate(1.18) contrast(1.13) blur(${Math.max(0.8, 1.45 - rawProgress * 0.35)}px)`,
+                    shadowBlur: 6,
+                    shadowColor: 'rgba(255, 196, 72, 0.46)'
                 });
             }
             const drewInner = drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'charge', this.x, this.y, innerSize, innerSize, {
@@ -5155,10 +5155,10 @@ class Shield extends Weapon {
                 anchorX: 0.5,
                 anchorY: 0.56,
                 filter: isReleasePhase
-                    ? `blur(${3.4 + rawProgress * 1.2}px) saturate(1.04) contrast(1.04)`
+                    ? `blur(${1.8 + rawProgress * 0.65}px) saturate(1.12) contrast(1.1)`
                     : `blur(${6 + rawProgress * 2.2}px) saturate(0.9)`,
-                shadowBlur: isReleasePhase ? 3 : 0,
-                shadowColor: 'rgba(255, 198, 76, 0.28)'
+                shadowBlur: isReleasePhase ? 5 : 0,
+                shadowColor: 'rgba(255, 202, 82, 0.38)'
             });
             ctx.restore();
             ctx.save();
