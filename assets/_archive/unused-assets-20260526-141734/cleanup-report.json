@@ -1,0 +1,1995 @@
+{
+  "dryRun": false,
+  "archive": "_archive/unused-assets-20260526-141734",
+  "generatedAt": "2026-05-26T06:17:34.425Z",
+  "retentionRules": [
+    "keep anything referenced by assets/manifest.json",
+    "keep assets/style-proofs/** for offline reference",
+    "keep assets/prompts/** and assets/source/**",
+    "keep assets/generated/weapon-v2/** because AssetRuntime probes it",
+    "keep weapon/map filenames containing lv1-lv6, lv.1-lv.6, or lv_1-lv_6"
+  ],
+  "totals": {
+    "scannedFiles": 346,
+    "keptFiles": 306,
+    "candidateFiles": 40,
+    "movedFiles": 40,
+    "candidateBytes": 33339350
+  },
+  "moved": [
+    {
+      "from": "icons/asset_weapon_crossbow_lv1.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_crossbow_lv1.png",
+      "sizeBytes": 283312,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_crossbow_lv2.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_crossbow_lv2.png",
+      "sizeBytes": 283312,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_crossbow_lv3.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_crossbow_lv3.png",
+      "sizeBytes": 278802,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_crossbow_lv4.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_crossbow_lv4.png",
+      "sizeBytes": 277582,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_crossbow_lv5.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_crossbow_lv5.png",
+      "sizeBytes": 338697,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_crossbow_lv6.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_crossbow_lv6.png",
+      "sizeBytes": 353755,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_qinggang_lv1.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_qinggang_lv1.png",
+      "sizeBytes": 2148788,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_qinggang_lv2.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_qinggang_lv2.png",
+      "sizeBytes": 2148788,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_qinggang_lv3.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_qinggang_lv3.png",
+      "sizeBytes": 2148788,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_qinggang_lv4.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_qinggang_lv4.png",
+      "sizeBytes": 2148788,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_qinggang_lv5.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_qinggang_lv5.png",
+      "sizeBytes": 2889138,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_qinggang_lv6.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_qinggang_lv6.png",
+      "sizeBytes": 2999754,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_saber_lv1.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_saber_lv1.png",
+      "sizeBytes": 280317,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_saber_lv2.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_saber_lv2.png",
+      "sizeBytes": 303067,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_saber_lv3.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_saber_lv3.png",
+      "sizeBytes": 283510,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_saber_lv4.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_saber_lv4.png",
+      "sizeBytes": 300478,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_saber_lv5.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_saber_lv5.png",
+      "sizeBytes": 300003,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_saber_lv6.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_saber_lv6.png",
+      "sizeBytes": 298825,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_shield_lv1.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_shield_lv1.png",
+      "sizeBytes": 329743,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_shield_lv2.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_shield_lv2.png",
+      "sizeBytes": 330240,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_shield_lv3.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_shield_lv3.png",
+      "sizeBytes": 326068,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_shield_lv4.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_shield_lv4.png",
+      "sizeBytes": 324576,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_shield_lv5.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_shield_lv5.png",
+      "sizeBytes": 318498,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_shield_lv6.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_shield_lv6.png",
+      "sizeBytes": 310753,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_spear_lv1.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_spear_lv1.png",
+      "sizeBytes": 183995,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_spear_lv2.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_spear_lv2.png",
+      "sizeBytes": 211943,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_spear_lv3.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_spear_lv3.png",
+      "sizeBytes": 209295,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_spear_lv4.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_spear_lv4.png",
+      "sizeBytes": 211033,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_spear_lv5.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_spear_lv5.png",
+      "sizeBytes": 2535613,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_spear_lv6.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_spear_lv6.png",
+      "sizeBytes": 3460042,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_taiping_lv1.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_taiping_lv1.png",
+      "sizeBytes": 353134,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_taiping_lv2.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_taiping_lv2.png",
+      "sizeBytes": 354734,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_taiping_lv3.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_taiping_lv3.png",
+      "sizeBytes": 346811,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_taiping_lv4.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_taiping_lv4.png",
+      "sizeBytes": 346856,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_taiping_lv5.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_taiping_lv5.png",
+      "sizeBytes": 337797,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "icons/asset_weapon_taiping_lv6.png",
+      "to": "_archive/unused-assets-20260526-141734/icons/asset_weapon_taiping_lv6.png",
+      "sizeBytes": 329251,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "map/main/legacy_scifi/asset_tile_fire.png",
+      "to": "_archive/unused-assets-20260526-141734/map/main/legacy_scifi/asset_tile_fire.png",
+      "sizeBytes": 685116,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "map/main/legacy_scifi/asset_tile_normal.png",
+      "to": "_archive/unused-assets-20260526-141734/map/main/legacy_scifi/asset_tile_normal.png",
+      "sizeBytes": 590359,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "player/asset_player_guanyu_idle_01.png",
+      "to": "_archive/unused-assets-20260526-141734/player/asset_player_guanyu_idle_01.png",
+      "sizeBytes": 1277098,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "from": "weapons/attacks/source/asset_weapon_attack_qinggang_source.png",
+      "to": "_archive/unused-assets-20260526-141734/weapons/attacks/source/asset_weapon_attack_qinggang_source.png",
+      "sizeBytes": 1900691,
+      "reason": "unreferenced and no retention rule matched"
+    }
+  ],
+  "candidates": [
+    {
+      "path": "icons/asset_weapon_crossbow_lv1.png",
+      "sizeBytes": 283312,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_crossbow_lv2.png",
+      "sizeBytes": 283312,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_crossbow_lv3.png",
+      "sizeBytes": 278802,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_crossbow_lv4.png",
+      "sizeBytes": 277582,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_crossbow_lv5.png",
+      "sizeBytes": 338697,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_crossbow_lv6.png",
+      "sizeBytes": 353755,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_qinggang_lv1.png",
+      "sizeBytes": 2148788,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_qinggang_lv2.png",
+      "sizeBytes": 2148788,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_qinggang_lv3.png",
+      "sizeBytes": 2148788,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_qinggang_lv4.png",
+      "sizeBytes": 2148788,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_qinggang_lv5.png",
+      "sizeBytes": 2889138,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_qinggang_lv6.png",
+      "sizeBytes": 2999754,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_saber_lv1.png",
+      "sizeBytes": 280317,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_saber_lv2.png",
+      "sizeBytes": 303067,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_saber_lv3.png",
+      "sizeBytes": 283510,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_saber_lv4.png",
+      "sizeBytes": 300478,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_saber_lv5.png",
+      "sizeBytes": 300003,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_saber_lv6.png",
+      "sizeBytes": 298825,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_shield_lv1.png",
+      "sizeBytes": 329743,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_shield_lv2.png",
+      "sizeBytes": 330240,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_shield_lv3.png",
+      "sizeBytes": 326068,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_shield_lv4.png",
+      "sizeBytes": 324576,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_shield_lv5.png",
+      "sizeBytes": 318498,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_shield_lv6.png",
+      "sizeBytes": 310753,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_spear_lv1.png",
+      "sizeBytes": 183995,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_spear_lv2.png",
+      "sizeBytes": 211943,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_spear_lv3.png",
+      "sizeBytes": 209295,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_spear_lv4.png",
+      "sizeBytes": 211033,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_spear_lv5.png",
+      "sizeBytes": 2535613,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_spear_lv6.png",
+      "sizeBytes": 3460042,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_taiping_lv1.png",
+      "sizeBytes": 353134,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_taiping_lv2.png",
+      "sizeBytes": 354734,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_taiping_lv3.png",
+      "sizeBytes": 346811,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_taiping_lv4.png",
+      "sizeBytes": 346856,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_taiping_lv5.png",
+      "sizeBytes": 337797,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "icons/asset_weapon_taiping_lv6.png",
+      "sizeBytes": 329251,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "map/main/legacy_scifi/asset_tile_fire.png",
+      "sizeBytes": 685116,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "map/main/legacy_scifi/asset_tile_normal.png",
+      "sizeBytes": 590359,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "player/asset_player_guanyu_idle_01.png",
+      "sizeBytes": 1277098,
+      "reason": "unreferenced and no retention rule matched"
+    },
+    {
+      "path": "weapons/attacks/source/asset_weapon_attack_qinggang_source.png",
+      "sizeBytes": 1900691,
+      "reason": "unreferenced and no retention rule matched"
+    }
+  ],
+  "kept": [
+    {
+      "path": "bosses/asset_boss_bianxi_cast_01.png",
+      "sizeBytes": 109486,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_bianxi_cast_02.png",
+      "sizeBytes": 116561,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_bianxi_idle_01.png",
+      "sizeBytes": 110095,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_bianxi_idle_02.png",
+      "sizeBytes": 97598,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_hanfu_cast_01.png",
+      "sizeBytes": 98253,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_hanfu_cast_02.png",
+      "sizeBytes": 103061,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_hanfu_idle_01.png",
+      "sizeBytes": 109984,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_hanfu_idle_02.png",
+      "sizeBytes": 87338,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_kongxiu_cast_01.png",
+      "sizeBytes": 91598,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_kongxiu_cast_02.png",
+      "sizeBytes": 97548,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_kongxiu_idle_01.png",
+      "sizeBytes": 105225,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_kongxiu_idle_02.png",
+      "sizeBytes": 79241,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_qinqi_cast_01.png",
+      "sizeBytes": 69567,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_qinqi_cast_02.png",
+      "sizeBytes": 74651,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_qinqi_idle_01.png",
+      "sizeBytes": 69812,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_qinqi_idle_02.png",
+      "sizeBytes": 58211,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_wangzhi_cast_01.png",
+      "sizeBytes": 89882,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_wangzhi_cast_02.png",
+      "sizeBytes": 93165,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_wangzhi_idle_01.png",
+      "sizeBytes": 97241,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "bosses/asset_boss_wangzhi_idle_02.png",
+      "sizeBytes": 82039,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "effects/asset_effect_boss_affix_arrow.png",
+      "sizeBytes": 28666,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "effects/asset_effect_boss_dark_arrow.png",
+      "sizeBytes": 30921,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "effects/asset_effect_boss_fire_area.png",
+      "sizeBytes": 154734,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "effects/asset_effect_boss_scorched_ground.png",
+      "sizeBytes": 154338,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "effects/asset_effect_crossbow_arrow.png",
+      "sizeBytes": 51852,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "effects/asset_effect_levelup_nova.png",
+      "sizeBytes": 155509,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "effects/asset_effect_lightning_aoe.png",
+      "sizeBytes": 313394,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "effects/asset_effect_lightning_column.png",
+      "sizeBytes": 323857,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "effects/asset_effect_prop_break.png",
+      "sizeBytes": 44483,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "effects/asset_effect_qinggang_orbit.png",
+      "sizeBytes": 23884,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "effects/asset_effect_saber_arc.png",
+      "sizeBytes": 40778,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "effects/asset_effect_shield_pulse.png",
+      "sizeBytes": 28327,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "effects/asset_effect_spear_stab.png",
+      "sizeBytes": 17733,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "effects/asset_effect_taiping_tornado.png",
+      "sizeBytes": 46276,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_archer.png",
+      "sizeBytes": 1220925,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_archer_attack_01.png",
+      "sizeBytes": 1259818,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_archer_attack_02.png",
+      "sizeBytes": 1287067,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_archer_move_01.png",
+      "sizeBytes": 1222832,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_archer_move_02.png",
+      "sizeBytes": 1232768,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_cavalry.png",
+      "sizeBytes": 1243405,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_cavalry_attack_01.png",
+      "sizeBytes": 1281140,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_cavalry_attack_02.png",
+      "sizeBytes": 1311860,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_cavalry_move_01.png",
+      "sizeBytes": 1245605,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_cavalry_move_02.png",
+      "sizeBytes": 1256612,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_elite.png",
+      "sizeBytes": 1474161,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_elite_attack_01.png",
+      "sizeBytes": 1520637,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_elite_attack_02.png",
+      "sizeBytes": 1549838,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_elite_move_01.png",
+      "sizeBytes": 1474971,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_elite_move_02.png",
+      "sizeBytes": 1488428,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_soldier.png",
+      "sizeBytes": 849332,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_soldier_attack_01.png",
+      "sizeBytes": 874166,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_soldier_attack_02.png",
+      "sizeBytes": 895351,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_soldier_move_01.png",
+      "sizeBytes": 849887,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_soldier_move_02.png",
+      "sizeBytes": 857111,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_spearman.png",
+      "sizeBytes": 1112848,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_spearman_attack_01.png",
+      "sizeBytes": 1148634,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_spearman_attack_02.png",
+      "sizeBytes": 1180804,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_spearman_move_01.png",
+      "sizeBytes": 1114012,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_spearman_move_02.png",
+      "sizeBytes": 1125508,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_tiger_guard.png",
+      "sizeBytes": 1579044,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_tiger_guard_attack_01.png",
+      "sizeBytes": 1626498,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_tiger_guard_attack_02.png",
+      "sizeBytes": 1657777,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_tiger_guard_move_01.png",
+      "sizeBytes": 1580732,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_tiger_guard_move_02.png",
+      "sizeBytes": 1594273,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_wooden_ox.png",
+      "sizeBytes": 1310733,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_wooden_ox_move_01.png",
+      "sizeBytes": 1311755,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "enemies/asset_enemy_wooden_ox_move_02.png",
+      "sizeBytes": 1325848,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "generated/weapon-v2/effects/.gitkeep",
+      "sizeBytes": 1,
+      "reason": "AssetRuntime v2 fallback target"
+    },
+    {
+      "path": "generated/weapon-v2/weapons/.gitkeep",
+      "sizeBytes": 1,
+      "reason": "AssetRuntime v2 fallback target"
+    },
+    {
+      "path": "manifest.json",
+      "sizeBytes": 102547,
+      "reason": "asset metadata"
+    },
+    {
+      "path": "map/environment/asset_terrain_blood_slow.png",
+      "sizeBytes": 3936,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/environment/asset_terrain_fire_line.png",
+      "sizeBytes": 5506,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/environment/asset_terrain_mud_slow.png",
+      "sizeBytes": 4226,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_blood/asset_tile_blood1.png",
+      "sizeBytes": 3146219,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_blood/asset_tile_blood2.png",
+      "sizeBytes": 3137558,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_blood/asset_tile_blood3.png",
+      "sizeBytes": 3065482,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_blood/asset_tile_blood4.png",
+      "sizeBytes": 3131769,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_fire/asset_tile_fire.png",
+      "sizeBytes": 3139782,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_grass/asset_tile_grass1.png",
+      "sizeBytes": 3490552,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_grass/asset_tile_grass2.png",
+      "sizeBytes": 3451994,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_grass/asset_tile_grass3.png",
+      "sizeBytes": 3451975,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_grass/asset_tile_grass4.png",
+      "sizeBytes": 3641841,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_loess/asset_tile_loess1.png",
+      "sizeBytes": 3354754,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_loess/asset_tile_loess2.png",
+      "sizeBytes": 3442893,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_loess/asset_tile_loess3.png",
+      "sizeBytes": 3488683,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_loess/asset_tile_loess4.png",
+      "sizeBytes": 3541561,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_Rookie Training.png",
+      "sizeBytes": 3213321,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_stone/asset_tile_stone1.png",
+      "sizeBytes": 3332919,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_stone/asset_tile_stone2.png",
+      "sizeBytes": 3357109,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_stone/asset_tile_stone3.png",
+      "sizeBytes": 3376641,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/asset_tile_stone/asset_tile_stone4.png",
+      "sizeBytes": 3397094,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/main/legacy_scifi/asset_tile_void.png",
+      "sizeBytes": 475066,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_broken_bridge_lv.1.png",
+      "sizeBytes": 1495121,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_broken_chariot.png",
+      "sizeBytes": 2031933,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_broken_chariot_lv.4.png",
+      "sizeBytes": 2031933,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_broken_flag(shu)_lv.1.png",
+      "sizeBytes": 1773457,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_broken_flag(wei)_lv.1.png",
+      "sizeBytes": 1476218,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_burning_broken bridge_lv.3.png",
+      "sizeBytes": 2724904,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_burning_pillar_lv.2.png",
+      "sizeBytes": 1260754,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_burning_swamp_lv.3.png",
+      "sizeBytes": 2520973,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_caltrop_barricade_lv.2.png",
+      "sizeBytes": 1749899,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_collapsed_wall(Burning Earth)_lv.5.png",
+      "sizeBytes": 1749837,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_collapsed_wall(fire)_lv.5.png",
+      "sizeBytes": 2118098,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_corpse_mound_lv.4.png",
+      "sizeBytes": 2356872,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_fire_pile_lv.5.png",
+      "sizeBytes": 1999185,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_stone_small_lv.1.png",
+      "sizeBytes": 1604916,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_supply_cart_lv.3.png",
+      "sizeBytes": 2551316,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_wall_ruin_lv.2.png",
+      "sizeBytes": 2268425,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_weapon_pile.png",
+      "sizeBytes": 2206455,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_weapon_pile_lv.4.png",
+      "sizeBytes": 2206455,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_wood_crate_lv.3.png",
+      "sizeBytes": 2193424,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/obstacles/asset_terrain_wood_fence(fire)_lv.5.png",
+      "sizeBytes": 1701382,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "map/random-events/asset_enemy_prop_box.png",
+      "sizeBytes": 23199,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "minibosses/asset_miniboss_bianxi_01.png",
+      "sizeBytes": 103050,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "minibosses/asset_miniboss_bianxi_02.png",
+      "sizeBytes": 105903,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "minibosses/asset_miniboss_hanfu_01.png",
+      "sizeBytes": 88980,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "minibosses/asset_miniboss_hanfu_02.png",
+      "sizeBytes": 96263,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "minibosses/asset_miniboss_kongxiu_01.png",
+      "sizeBytes": 80529,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "minibosses/asset_miniboss_kongxiu_02.png",
+      "sizeBytes": 89947,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "minibosses/asset_miniboss_qinqi_01.png",
+      "sizeBytes": 59747,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "minibosses/asset_miniboss_qinqi_02.png",
+      "sizeBytes": 68615,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "minibosses/asset_miniboss_wangzhi_01.png",
+      "sizeBytes": 94277,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "minibosses/asset_miniboss_wangzhi_02.png",
+      "sizeBytes": 97708,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "pickups/asset_pickup_boss_exp.png",
+      "sizeBytes": 7999,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "pickups/asset_pickup_bun.png",
+      "sizeBytes": 6761,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "pickups/asset_pickup_chicken.png",
+      "sizeBytes": 6971,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "pickups/asset_pickup_exp.png",
+      "sizeBytes": 8230,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "pickups/asset_pickup_exp_large.png",
+      "sizeBytes": 8117,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "pickups/asset_pickup_magnet.png",
+      "sizeBytes": 6899,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "pickups/asset_pickup_resonance.png",
+      "sizeBytes": 7126,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "player/runtime/asset_player_guanyu_art_idle_01.png",
+      "sizeBytes": 1277098,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "player/runtime/asset_player_guanyu_art_idle_02.png",
+      "sizeBytes": 1282013,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "player/runtime/asset_player_guanyu_art_move_01.png",
+      "sizeBytes": 1280262,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "player/runtime/asset_player_guanyu_art_move_02.png",
+      "sizeBytes": 1287586,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "player/runtime/asset_player_guanyu_art_move_03.png",
+      "sizeBytes": 1293700,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "player/runtime/asset_player_guanyu_art_move_04.png",
+      "sizeBytes": 1277552,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "prompts/bosses.prompts.json",
+      "sizeBytes": 4373,
+      "reason": "generation prompt"
+    },
+    {
+      "path": "prompts/effects.prompts.json",
+      "sizeBytes": 2220,
+      "reason": "generation prompt"
+    },
+    {
+      "path": "prompts/enemies.prompts.json",
+      "sizeBytes": 3480,
+      "reason": "generation prompt"
+    },
+    {
+      "path": "prompts/pickups.prompts.json",
+      "sizeBytes": 2017,
+      "reason": "generation prompt"
+    },
+    {
+      "path": "prompts/player.prompts.json",
+      "sizeBytes": 1211,
+      "reason": "generation prompt"
+    },
+    {
+      "path": "prompts/skills.prompts.json",
+      "sizeBytes": 5583,
+      "reason": "generation prompt"
+    },
+    {
+      "path": "prompts/tiles.prompts.json",
+      "sizeBytes": 1028,
+      "reason": "generation prompt"
+    },
+    {
+      "path": "prompts/ui.prompts.json",
+      "sizeBytes": 2959,
+      "reason": "generation prompt"
+    },
+    {
+      "path": "prompts/weapon-v2.gpt-image-2.prompts.json",
+      "sizeBytes": 18325,
+      "reason": "generation prompt"
+    },
+    {
+      "path": "prompts/weapons.prompts.json",
+      "sizeBytes": 20837,
+      "reason": "generation prompt"
+    },
+    {
+      "path": "skills/asset_skill_AREA.png",
+      "sizeBytes": 18719,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "skills/asset_skill_ARMOR.png",
+      "sizeBytes": 14078,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "skills/asset_skill_COOLDOWN.png",
+      "sizeBytes": 16601,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "skills/asset_skill_DAMAGE.png",
+      "sizeBytes": 16833,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "skills/asset_skill_EXP.png",
+      "sizeBytes": 15959,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "skills/asset_skill_MAGNET.png",
+      "sizeBytes": 15334,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "skills/asset_skill_MAXHP.png",
+      "sizeBytes": 13865,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "skills/asset_skill_REGEN.png",
+      "sizeBytes": 17007,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "skills/asset_skill_RESONANCE.png",
+      "sizeBytes": 19481,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "skills/asset_skill_SPEED.png",
+      "sizeBytes": 16519,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "source/game_desginer/asset-generation-queue.json",
+      "sizeBytes": 33234,
+      "reason": "source documentation/tooling"
+    },
+    {
+      "path": "source/game_desginer/asset-mapping-template.json",
+      "sizeBytes": 5006,
+      "reason": "source documentation/tooling"
+    },
+    {
+      "path": "source/game_desginer/tools/AssetLoader.ts",
+      "sizeBytes": 6420,
+      "reason": "source documentation/tooling"
+    },
+    {
+      "path": "source/game_desginer/美术资源生成方案.md",
+      "sizeBytes": 35738,
+      "reason": "source documentation/tooling"
+    },
+    {
+      "path": "style-bible.md",
+      "sizeBytes": 797,
+      "reason": "asset metadata"
+    },
+    {
+      "path": "style-proofs/boss-animation-preview.png",
+      "sizeBytes": 375808,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "style-proofs/boss-effect-preview.png",
+      "sizeBytes": 203844,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "style-proofs/boss-sprite-preview.png",
+      "sizeBytes": 499188,
+      "reason": "style proof retained for offline reference"
+    },
+    {
+      "path": "style-proofs/combat-feedback-preview.png",
+      "sizeBytes": 144852,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "style-proofs/enemy-animation-preview.png",
+      "sizeBytes": 624872,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "style-proofs/enemy-sprite-atlas.png",
+      "sizeBytes": 218828,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "style-proofs/miniboss-animation-preview.png",
+      "sizeBytes": 83730,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "style-proofs/player-guanyu-preview.png",
+      "sizeBytes": 332235,
+      "reason": "style proof retained for offline reference"
+    },
+    {
+      "path": "style-proofs/prop-break-preview.png",
+      "sizeBytes": 16544,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "style-proofs/skill-pickup-icon-atlas.png",
+      "sizeBytes": 127726,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "style-proofs/tile-biome-preview.png",
+      "sizeBytes": 196000,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "style-proofs/tile-texture-preview.png",
+      "sizeBytes": 1812682,
+      "reason": "style proof retained for offline reference"
+    },
+    {
+      "path": "style-proofs/ui-skin-preview.png",
+      "sizeBytes": 34364,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "style-proofs/weapon-effect-preview.png",
+      "sizeBytes": 75916,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "style-proofs/weapon-icon-atlas-chromakey.png",
+      "sizeBytes": 2302601,
+      "reason": "style proof retained for offline reference"
+    },
+    {
+      "path": "style-proofs/weapon-icon-atlas.png",
+      "sizeBytes": 1780408,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "style-proofs/weapon-progression-atlas.png",
+      "sizeBytes": 1391901,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "ui/asset_ui_button_frame.png",
+      "sizeBytes": 4422,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "ui/asset_ui_dialog_panel.png",
+      "sizeBytes": 30507,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "ui/asset_ui_hud_bar_frame.png",
+      "sizeBytes": 1077,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "ui/asset_ui_menu_panel.png",
+      "sizeBytes": 33510,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "ui/asset_ui_pause_panel.png",
+      "sizeBytes": 7883,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "ui/asset_ui_status_panel.png",
+      "sizeBytes": 16555,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "ui/asset_ui_upgrade_card_frame.png",
+      "sizeBytes": 18117,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "ui/asset_ui_warning_banner.png",
+      "sizeBytes": 16263,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/asset_weapon_crossbow_lv1.png",
+      "sizeBytes": 283312,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_crossbow_lv2.png",
+      "sizeBytes": 283312,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_crossbow_lv3.png",
+      "sizeBytes": 278802,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_crossbow_lv4.png",
+      "sizeBytes": 277582,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_crossbow_lv5.png",
+      "sizeBytes": 338697,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_crossbow_lv6.png",
+      "sizeBytes": 353755,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_qinggang_lv1.png",
+      "sizeBytes": 2148788,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_qinggang_lv2.png",
+      "sizeBytes": 2148788,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_qinggang_lv3.png",
+      "sizeBytes": 2148788,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_qinggang_lv4.png",
+      "sizeBytes": 2148788,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_qinggang_lv5.png",
+      "sizeBytes": 2889138,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_qinggang_lv6.png",
+      "sizeBytes": 2999754,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_saber_lv1.png",
+      "sizeBytes": 280317,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_saber_lv2.png",
+      "sizeBytes": 303067,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_saber_lv3.png",
+      "sizeBytes": 283510,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_saber_lv4.png",
+      "sizeBytes": 300478,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_saber_lv5.png",
+      "sizeBytes": 300003,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_saber_lv6.png",
+      "sizeBytes": 298825,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_shield_lv1.png",
+      "sizeBytes": 329743,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_shield_lv2.png",
+      "sizeBytes": 330240,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_shield_lv3.png",
+      "sizeBytes": 326068,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_shield_lv4.png",
+      "sizeBytes": 324576,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_shield_lv5.png",
+      "sizeBytes": 318498,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_shield_lv6.png",
+      "sizeBytes": 310753,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_spear_lv1.png",
+      "sizeBytes": 140663,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_spear_lv2.png",
+      "sizeBytes": 211943,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_spear_lv3.png",
+      "sizeBytes": 209295,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_spear_lv4.png",
+      "sizeBytes": 211033,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_spear_lv5.png",
+      "sizeBytes": 2214926,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_spear_lv6.png",
+      "sizeBytes": 3015314,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_taiping_lv1.png",
+      "sizeBytes": 353134,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_taiping_lv2.png",
+      "sizeBytes": 354734,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_taiping_lv3.png",
+      "sizeBytes": 346811,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_taiping_lv4.png",
+      "sizeBytes": 346856,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_taiping_lv5.png",
+      "sizeBytes": 337797,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/asset_weapon_taiping_lv6.png",
+      "sizeBytes": 329251,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_crossbow_lv1.png",
+      "sizeBytes": 51852,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_crossbow_lv2.png",
+      "sizeBytes": 51852,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_crossbow_lv3.png",
+      "sizeBytes": 51852,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_crossbow_lv4.png",
+      "sizeBytes": 51852,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_crossbow_lv5.png",
+      "sizeBytes": 533255,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_crossbow_lv6.png",
+      "sizeBytes": 553219,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_crossbow_projectile_lv5.png",
+      "sizeBytes": 39050,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_crossbow_projectile_lv6.png",
+      "sizeBytes": 61294,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_qinggang_lv1.png",
+      "sizeBytes": 135598,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_qinggang_lv2.png",
+      "sizeBytes": 135598,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_qinggang_lv3.png",
+      "sizeBytes": 135598,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_qinggang_lv4.png",
+      "sizeBytes": 135598,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_qinggang_lv5.png",
+      "sizeBytes": 223189,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_qinggang_lv6.png",
+      "sizeBytes": 223189,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_qinggang_lv6_inner.png",
+      "sizeBytes": 2873732,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_qinggang_lv6_outer.png",
+      "sizeBytes": 2865557,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_saber_lv1.png",
+      "sizeBytes": 40778,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_saber_lv2.png",
+      "sizeBytes": 40778,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_saber_lv3.png",
+      "sizeBytes": 40778,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_saber_lv4.png",
+      "sizeBytes": 40778,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_saber_lv5.png",
+      "sizeBytes": 40778,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_saber_lv6.png",
+      "sizeBytes": 40778,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_shield_lv1_charge.png",
+      "sizeBytes": 2386911,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_shield_lv1_release.png",
+      "sizeBytes": 2206043,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_shield_lv2.png",
+      "sizeBytes": 1097,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_shield_lv3.png",
+      "sizeBytes": 1097,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_shield_lv4.png",
+      "sizeBytes": 2307195,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_shield_lv5.png",
+      "sizeBytes": 3062174,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_shield_lv6_charge.png",
+      "sizeBytes": 2726595,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_shield_lv6_release.png",
+      "sizeBytes": 2969833,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_spear_lv1.png",
+      "sizeBytes": 183995,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_spear_lv2.png",
+      "sizeBytes": 211943,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_spear_lv3.png",
+      "sizeBytes": 209295,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_spear_lv4.png",
+      "sizeBytes": 211033,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_spear_lv5.png",
+      "sizeBytes": 208013,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_spear_lv6.png",
+      "sizeBytes": 209517,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_taiping_lv1.png",
+      "sizeBytes": 2637080,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_taiping_lv2.png",
+      "sizeBytes": 2637080,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_taiping_lv3.png",
+      "sizeBytes": 2637080,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_taiping_lv4.png",
+      "sizeBytes": 2637080,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_taiping_lv5.png",
+      "sizeBytes": 2796409,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_taiping_lv6(steppable).png",
+      "sizeBytes": 2961550,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_taiping_lv6.png",
+      "sizeBytes": 2796409,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/asset_weapon_attack_taiping_lv6_nuke.png",
+      "sizeBytes": 3040988,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/attacks/source/asset_weapon_attack_crossbow_lv5_raw.png",
+      "sizeBytes": 2186647,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/attacks/source/asset_weapon_attack_crossbow_lv6_raw.png",
+      "sizeBytes": 2282590,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/attacks/source/asset_weapon_attack_qinggang_lv5_raw.png",
+      "sizeBytes": 1943749,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/attacks/source/asset_weapon_attack_qinggang_lv6_raw.png",
+      "sizeBytes": 2450321,
+      "reason": "lv1-lv6 retention rule"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_crossbow_lv1.png",
+      "sizeBytes": 283312,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_crossbow_lv2.png",
+      "sizeBytes": 283312,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_crossbow_lv3.png",
+      "sizeBytes": 278802,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_crossbow_lv4.png",
+      "sizeBytes": 277582,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_crossbow_lv5.png",
+      "sizeBytes": 338697,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_crossbow_lv6.png",
+      "sizeBytes": 353755,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_qinggang_lv1.png",
+      "sizeBytes": 2148788,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_qinggang_lv2.png",
+      "sizeBytes": 2148788,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_qinggang_lv3.png",
+      "sizeBytes": 2148788,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_qinggang_lv4.png",
+      "sizeBytes": 2148788,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_qinggang_lv5.png",
+      "sizeBytes": 2889138,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_qinggang_lv6.png",
+      "sizeBytes": 2999754,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_saber_lv1.png",
+      "sizeBytes": 280317,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_saber_lv2.png",
+      "sizeBytes": 303067,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_saber_lv3.png",
+      "sizeBytes": 283510,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_saber_lv4.png",
+      "sizeBytes": 300478,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_saber_lv5.png",
+      "sizeBytes": 300003,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_saber_lv6.png",
+      "sizeBytes": 298825,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_shield_lv1.png",
+      "sizeBytes": 329743,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_shield_lv2.png",
+      "sizeBytes": 330240,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_shield_lv3.png",
+      "sizeBytes": 326068,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_shield_lv4.png",
+      "sizeBytes": 324576,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_shield_lv5.png",
+      "sizeBytes": 318498,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_shield_lv6.png",
+      "sizeBytes": 310753,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_spear_lv1.png",
+      "sizeBytes": 183995,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_spear_lv2.png",
+      "sizeBytes": 211943,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_spear_lv3.png",
+      "sizeBytes": 209295,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_spear_lv4.png",
+      "sizeBytes": 211033,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_spear_lv5.png",
+      "sizeBytes": 2535613,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_spear_lv6.png",
+      "sizeBytes": 3460042,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_taiping_lv1.png",
+      "sizeBytes": 353134,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_taiping_lv2.png",
+      "sizeBytes": 354734,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_taiping_lv3.png",
+      "sizeBytes": 346811,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_taiping_lv4.png",
+      "sizeBytes": 346856,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_taiping_lv5.png",
+      "sizeBytes": 337797,
+      "reason": "manifest reference"
+    },
+    {
+      "path": "weapons/icons/asset_weapon_taiping_lv6.png",
+      "sizeBytes": 329251,
+      "reason": "manifest reference"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -6,7 +6,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <title>千里走单骑</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="game.css">
     <link rel="stylesheet" href="ui/game-ui.css">
     <script>
         (function () {
@@ -77,11 +78,22 @@
             <div id="bootMessage" class="boot-message">Preparing game runtime...</div>
         </div>
     </div>
-    <canvas id="gameCanvas"></canvas>
-    <div id="gameUiRoot" class="game-ui-root" aria-live="polite"></div>
+    <div id="gameEditorShell" class="game-editor-shell">
+        <main class="game-workbench" aria-label="Game preview">
+            <div id="gameViewport" class="game-viewport">
+                <canvas id="gameCanvas"></canvas>
+                <div id="gameUiRoot" class="game-ui-root" aria-live="polite"></div>
+            </div>
+        </main>
+        <aside id="gameEditorSidebar" class="game-editor-sidebar" aria-label="Game Edit Sidebar">
+            <div class="editor-loading">Loading editor data...</div>
+        </aside>
+    </div>
     <script src="GameSettings.js"></script>
     <script src="AudioManager.js"></script>
     <script src="AssetRuntime.js"></script>
+    <script src="SaveManager.js"></script>
+    <script type="module" src="ui/GameEditorSidebar.js"></script>
     <script src="ui/UIBridge.js"></script>
     <script src="game.js"></script>
 </body>

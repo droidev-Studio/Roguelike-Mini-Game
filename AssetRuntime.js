@@ -13,7 +13,7 @@
             window.__ASSET_STATUS__ = this.getStatus();
         }
 
-        async initialize(manifestPath = 'assets/asset-manifest.json') {
+        async initialize(manifestPath = 'assets/manifest.json') {
             try {
                 const response = await fetch(this.getAssetRequestPath(manifestPath), { cache: 'no-store' });
                 if (!response.ok) throw new Error(`manifest fetch failed: ${response.status}`);
@@ -63,6 +63,12 @@
                         if (typeof frame === 'string') paths.add(this.basePath + frame);
                     }
                 }
+                if (Array.isArray(entry.variants)) {
+                    for (const variant of entry.variants) {
+                        const variantSrc = typeof variant === 'string' ? variant : variant?.src;
+                        if (typeof variantSrc === 'string') paths.add(this.basePath + variantSrc);
+                    }
+                }
             };
             const visit = (value) => {
                 if (!value || typeof value !== 'object') return;
@@ -86,6 +92,7 @@
                     ['miniBosses'],
                     ['effects'],
                     ['ui'],
+                    ['map'],
                     ['tiles'],
                     ['terrain'],
                 ]
@@ -100,6 +107,7 @@
                     ['miniBosses'],
                     ['effects'],
                     ['ui'],
+                    ['map'],
                     ['tiles'],
                     ['terrain'],
                 ];
@@ -165,10 +173,6 @@
             const weapon = this.manifest?.weapons?.[weaponId];
             const safeLevel = Math.max(1, Math.min(6, level));
             const entry = weapon?.levels?.[String(safeLevel)] || weapon?.levels?.['1'];
-            if (window.FEATURE_FLAGS?.ENABLE_ART_WEAPON_V2) {
-                const v2Src = `generated/weapon-v2/weapons/asset_weapon_${weaponId}_lv${safeLevel}.png`;
-                return this.resolveImageWithFallback(v2Src, entry?.src);
-            }
             return this.resolveImage(entry?.src);
         }
 
@@ -239,13 +243,78 @@
             return Number.isFinite(size) && size > 0 ? size : null;
         }
 
-        getTileTexture(tileId) {
-            return this.resolveImage(this.manifest?.tiles?.[tileId]?.src);
+        normalizeMapLevel(level) {
+            if (level == null) return null;
+            if (typeof level === 'string' && /^lv[1-5]$/i.test(level)) return level.toLowerCase();
+            const numeric = Number(level);
+            if (!Number.isFinite(numeric)) return null;
+            return `lv${Math.max(1, Math.min(5, Math.round(numeric)))}`;
         }
 
-        getTerrainTexture(kind) {
+        getTileEntry(tileId, level = null) {
+            const mapMain = this.manifest?.map?.main || {};
+            const levelId = this.normalizeMapLevel(level);
+            return (
+                mapMain[tileId] ||
+                (levelId ? mapMain[levelId]?.[tileId] : null) ||
+                (levelId ? mapMain[levelId] : null) ||
+                this.manifest?.tiles?.[tileId]
+            );
+        }
+
+        getTileTexture(tileId, level = null) {
+            const entry = this.getTileEntry(tileId, level);
+            return this.resolveImage(entry?.src);
+        }
+
+        getTileTextureVariants(tileId, level = null) {
+            const entry = this.getTileEntry(tileId, level);
+            if (!entry) return [];
+            const variants = Array.isArray(entry.variants) ? entry.variants : [];
+            const sources = variants
+                .map(variant => typeof variant === 'string' ? variant : variant?.src)
+                .filter(src => typeof src === 'string');
+            if (sources.length === 0 && typeof entry.src === 'string') sources.push(entry.src);
+            return sources.map(src => this.resolveImage(src)).filter(Boolean);
+        }
+
+        getMapAssetEntries(category, level = null) {
+            const mapCategory = this.manifest?.map?.[category] || {};
+            const levelId = this.normalizeMapLevel(level);
+            if (levelId && mapCategory[levelId] && typeof mapCategory[levelId] === 'object') {
+                return mapCategory[levelId];
+            }
+            return mapCategory;
+        }
+
+        getMapAssetKinds(category, level = null) {
+            const entries = this.getMapAssetEntries(category, level);
+            return Object.keys(entries || {}).filter(key => !/^lv[1-5]$/i.test(key) && key !== 'legacy');
+        }
+
+        getTerrainTexture(kind, category = null, level = null) {
+            const map = this.manifest?.map || {};
             const terrain = this.manifest?.terrain || {};
-            const entry = terrain.blockers?.[kind] || terrain.hazards?.[kind];
+            const levelId = this.normalizeMapLevel(level);
+            const categoryBucket = category ? map[category] : null;
+            const levelEntry = categoryBucket && levelId ? categoryBucket[levelId]?.[kind] : null;
+            const categoryEntry = category ? categoryBucket?.[kind] : null;
+            const entry =
+                levelEntry ||
+                categoryEntry ||
+                (levelId ? map.obstacles?.[levelId]?.[kind] : null) ||
+                (levelId ? map.environment?.[levelId]?.[kind] : null) ||
+                (levelId ? map.randomEvents?.[levelId]?.[kind] : null) ||
+                map.obstacles?.[kind] ||
+                map.environment?.[kind] ||
+                map.randomEvents?.[kind] ||
+                terrain.blockers?.[kind] ||
+                terrain.hazards?.[kind];
+            return this.resolveImage(entry?.src);
+        }
+
+        getMapRandomEventTexture(eventId) {
+            const entry = this.manifest?.map?.randomEvents?.[eventId];
             return this.resolveImage(entry?.src);
         }
 
@@ -260,17 +329,6 @@
                 if (image && image.dataset.assetFailed !== '1') return image;
             }
             const src = this.manifest?.effects?.[effectId]?.src;
-            if (window.FEATURE_FLAGS?.ENABLE_ART_WEAPON_V2) {
-                const v2Map = {
-                    saber_arc: 'generated/weapon-v2/effects/asset_effect_saber_arc_v2.png',
-                    spear_stab: 'generated/weapon-v2/effects/asset_effect_spear_stab_v2.png',
-                    crossbow_arrow: 'generated/weapon-v2/effects/asset_effect_crossbow_arrow_v2.png',
-                    qinggang_orbit: 'generated/weapon-v2/effects/asset_effect_qinggang_orbit_v2.png',
-                    shield_pulse: 'generated/weapon-v2/effects/asset_effect_shield_pulse_v2.png',
-                    taiping_tornado: 'generated/weapon-v2/effects/asset_effect_taiping_tornado_v2.png',
-                };
-                if (v2Map[effectId]) return this.resolveImageWithFallback(v2Map[effectId], src);
-            }
             return this.resolveImage(src);
         }
 

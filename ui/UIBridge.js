@@ -84,8 +84,6 @@
                     <div class="main-panel">
                         <div class="main-title" data-ui="mainTitle">千里走单骑</div>
                         <div class="main-subtitle" data-ui="mainSubtitle">穿越时空只为找到你</div>
-                        <div class="main-loadout">初始武器：太平要术 Lv.1</div>
-                        <div class="main-weapon-preview" data-ui="mainWeaponPreview"></div>
                         <div class="main-actions">
                             <button class="main-button main-button-primary" type="button" data-action="start">开始新游戏</button>
                             <button class="main-button" type="button" data-action="openPerks">局外升级</button>
@@ -391,6 +389,16 @@
                 : '<span></span>').join('');
         }
 
+        renderPerkSegments(perk) {
+            const total = Math.max(1, Number(perk.segmentCount) || 100);
+            const filled = Math.max(0, Math.min(total, Number(perk.filledSegments) || 0));
+            let html = '';
+            for (let index = 0; index < total; index++) {
+                html += `<span class="${index < filled ? 'is-filled' : ''}"></span>`;
+            }
+            return html;
+        }
+
         updatePerkMenu(snapshot) {
             const perkMenu = snapshot.perkMenu || {};
             const key = JSON.stringify(perkMenu);
@@ -400,15 +408,24 @@
             const container = this.root.querySelector('[data-ui="perkList"]');
             if (!container) return;
             container.innerHTML = (perkMenu.perks || []).map(perk => `
-                <button class="perk-card ${perk.canAfford ? 'can-afford' : ''}" type="button" data-perk-index="${perk.index}">
+                <button class="perk-card ${perk.canAfford ? 'can-afford' : ''} ${perk.isMaxed ? 'is-maxed' : ''}" type="button" data-perk-index="${perk.index}" ${perk.isMaxed ? 'disabled' : ''}>
                     <div class="perk-card-main">
                         <div class="perk-name">${this.escape(perk.name)} <span>Lv.${this.escape(String(perk.level))}</span></div>
                         <div class="perk-desc">${this.escape(perk.description)}</div>
+                        <div class="perk-progress-row">
+                            <div class="perk-progress-grid" aria-label="${this.escapeAttr(`基因重塑进度 ${perk.level}/${perk.maxLevel || 100}`)}">
+                                ${this.renderPerkSegments(perk)}
+                            </div>
+                            <div class="perk-progress-meta">
+                                <b>${this.escape(perk.progressText || '0.0%')}</b>
+                                <span>${this.escape(perk.segmentStepText || '每格 +0.1%')}</span>
+                            </div>
+                        </div>
                         ${perk.nextText ? `<div class="perk-next">${this.escape(perk.nextText)}</div>` : ''}
                     </div>
                     <div class="perk-cost">
                         <span>价格</span>
-                        <b>${this.escape(String(perk.cost))}</b>
+                        <b>${this.escape(String(perk.costText || perk.cost))}</b>
                     </div>
                 </button>
             `).join('');

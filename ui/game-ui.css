@@ -9,18 +9,18 @@
     --ui-muted: rgba(244, 247, 244, 0.68);
     --ui-green: #61ffd6;
     --ui-panel-shadow: 0 10px 28px rgba(0, 0, 0, 0.34);
-    --ui-skin-menu: url("../assets/ui/asset_ui_menu_panel.png");
-    --ui-skin-button: url("../assets/ui/asset_ui_button_frame.png");
-    --ui-skin-card: url("../assets/ui/asset_ui_upgrade_card_frame.png");
-    --ui-skin-dialog: url("../assets/ui/asset_ui_dialog_panel.png");
-    --ui-skin-hud-bar: url("../assets/ui/asset_ui_hud_bar_frame.png");
-    --ui-skin-status: url("../assets/ui/asset_ui_status_panel.png");
-    --ui-skin-warning: url("../assets/ui/asset_ui_warning_banner.png");
-    --ui-skin-pause: url("../assets/ui/asset_ui_pause_panel.png");
+    --ui-skin-menu: url("../assets/Visual Style/ui/asset_ui_menu_panel.png");
+    --ui-skin-button: url("../assets/Visual Style/ui/asset_ui_button_frame.png");
+    --ui-skin-card: url("../assets/Visual Style/ui/asset_ui_upgrade_card_frame.png");
+    --ui-skin-dialog: url("../assets/Visual Style/ui/asset_ui_dialog_panel.png");
+    --ui-skin-hud-bar: url("../assets/Visual Style/ui/asset_ui_hud_bar_frame.png");
+    --ui-skin-status: url("../assets/Visual Style/ui/asset_ui_status_panel.png");
+    --ui-skin-warning: url("../assets/Visual Style/ui/asset_ui_warning_banner.png");
+    --ui-skin-pause: url("../assets/Visual Style/ui/asset_ui_pause_panel.png");
 }
 
 .game-ui-root {
-    position: fixed;
+    position: absolute;
     inset: 0;
     z-index: 8;
     pointer-events: none;
@@ -35,7 +35,21 @@
 
 .game-ui-root button {
     font: inherit;
+    line-height: 1.18;
     overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.game-ui-root *,
+.game-ui-root *::before,
+.game-ui-root *::after {
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.game-ui-root :is(.hud-label, .hud-stat-grid, .status-title, .status-row, .boss-banner, .main-panel, .main-title, .main-subtitle, .main-button, .perk-panel, .perk-card, .perk-name, .perk-desc, .perk-next, .menu-panel, .menu-title, .menu-subtitle, .menu-stats, .menu-button, .settings-panel, .settings-title, .settings-subtitle, .settings-row, .levelup-panel, .levelup-card, .levelup-card-title, .levelup-card-desc) {
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .dom-hud {
@@ -125,6 +139,7 @@
     cursor: pointer;
     font-size: 13px;
     font-weight: 800;
+    overflow: hidden;
 }
 
 .hud-button:hover,
@@ -141,11 +156,15 @@
     margin-bottom: 4px;
     font-size: 13px;
     color: var(--ui-muted);
+    min-width: 0;
 }
 
 .hud-label strong {
     color: var(--ui-text);
     font-size: 15px;
+    max-width: 68%;
+    overflow-wrap: anywhere;
+    text-align: right;
 }
 
 .meter {
@@ -193,9 +212,8 @@
     margin-top: 2px;
     color: var(--ui-text);
     font-size: 14px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    line-height: 1.12;
+    overflow-wrap: anywhere;
 }
 
 .level-text {
@@ -204,12 +222,14 @@
     font-size: 17px;
     line-height: 1.2;
     text-shadow: 0 0 12px rgba(255, 211, 106, 0.35);
+    overflow-wrap: anywhere;
 }
 
 .time-text {
     margin-top: 5px;
     color: var(--ui-muted);
     font-size: 13px;
+    overflow-wrap: anywhere;
 }
 
 .status-title {
@@ -220,6 +240,7 @@
     color: var(--ui-gold);
     font-weight: 800;
     font-size: 13px;
+    gap: 8px;
 }
 
 .status-list {
@@ -231,11 +252,12 @@
 .status-row {
     display: grid;
     grid-template-columns: 20px 1fr auto;
-    align-items: center;
+    align-items: start;
     gap: 6px;
     min-width: 0;
     color: var(--ui-text);
     font-size: 11px;
+    line-height: 1.15;
 }
 
 .status-row.is-muted {
@@ -258,13 +280,16 @@
 
 .status-name {
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .status-level {
     color: var(--ui-muted);
     font-family: Consolas, "Courier New", monospace;
+    white-space: nowrap;
 }
 
 .boss-banner {
@@ -291,6 +316,7 @@
     display: block;
     color: #ffef9a;
     font-size: 18px;
+    line-height: 1.16;
 }
 
 .boss-banner span {
@@ -298,6 +324,7 @@
     margin-top: 4px;
     color: #ff9382;
     font-size: 13px;
+    line-height: 1.24;
 }
 
 .weapon-cd-panel {
@@ -537,6 +564,8 @@
     font-weight: 800;
     font-size: 18px;
     cursor: pointer;
+    line-height: 1.18;
+    overflow: hidden;
 }
 
 .main-button:hover {
@@ -554,134 +583,272 @@
 }
 
 .perk-panel {
-    width: min(1120px, calc(100vw - 34px));
-    max-height: calc(100vh - 34px);
-    padding: 22px;
-    border: 1px solid rgba(255, 211, 106, 0.34);
+    position: relative;
+    width: min(1430px, calc(100vw - 40px));
+    max-height: calc(100vh - 38px);
+    padding: 28px 28px 24px;
+    border: 2px solid rgba(214, 166, 54, 0.78);
+    border-radius: 8px;
     background:
-        var(--ui-skin-dialog) center / 100% 100% no-repeat,
-        linear-gradient(135deg, rgba(255, 211, 106, 0.08), transparent 24%),
-        linear-gradient(180deg, rgba(10, 19, 26, 0.95), rgba(4, 8, 11, 0.93));
-    box-shadow: 0 26px 90px rgba(0, 0, 0, 0.58), inset 0 0 44px rgba(69, 240, 255, 0.06);
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 42px 100%,
+        linear-gradient(180deg, rgba(255, 255, 255, 0.026) 1px, transparent 1px) 0 0 / 100% 14px,
+        radial-gradient(circle at 50% 42%, rgba(116, 134, 150, 0.18), transparent 26%),
+        linear-gradient(180deg, rgba(9, 16, 20, 0.98), rgba(3, 8, 11, 0.96));
+    box-shadow:
+        0 28px 90px rgba(0, 0, 0, 0.64),
+        inset 0 0 0 1px rgba(69, 240, 255, 0.23),
+        inset 0 0 54px rgba(255, 211, 106, 0.08);
+    overflow: hidden;
+}
+
+.perk-panel::before,
+.perk-panel::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+}
+
+.perk-panel::before {
+    inset: 10px;
+    border: 1px solid rgba(69, 240, 255, 0.22);
+    box-shadow: inset 0 0 24px rgba(69, 240, 255, 0.06);
+}
+
+.perk-panel::after {
+    left: 22px;
+    right: 22px;
+    top: 28px;
+    height: 5px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(214, 166, 54, 0.10), rgba(214, 166, 54, 0.95), rgba(214, 166, 54, 0.10));
+    box-shadow: 0 0 16px rgba(255, 211, 106, 0.20);
 }
 
 .perk-header {
+    position: relative;
+    z-index: 1;
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 18px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid rgba(255, 211, 106, 0.22);
+    gap: 20px;
+    min-height: 106px;
+    padding: 16px 16px 22px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    min-width: 0;
 }
 
 .perk-title {
     color: var(--ui-gold);
     font-weight: 900;
-    font-size: clamp(26px, 4vw, 38px);
-    line-height: 1;
+    font-size: clamp(32px, 4.1vw, 56px);
+    line-height: 0.98;
+    text-shadow: 0 2px 0 #2b1a02, 0 0 12px rgba(255, 211, 106, 0.26);
+    max-width: 100%;
 }
 
 .perk-subtitle {
-    margin-top: 8px;
-    color: var(--ui-muted);
-    font-size: 14px;
+    margin-top: 10px;
+    color: rgba(244, 247, 244, 0.72);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.25;
 }
 
 .perk-currency {
-    min-width: 150px;
-    padding: 10px 12px;
-    border: 1px solid rgba(255, 211, 106, 0.28);
-    color: var(--ui-muted);
+    min-width: 172px;
+    max-width: 220px;
+    padding: 14px 14px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    color: rgba(244, 247, 244, 0.72);
     text-align: right;
-    background: rgba(0, 0, 0, 0.24);
+    background: linear-gradient(180deg, rgba(8, 15, 20, 0.72), rgba(3, 8, 11, 0.68));
+    box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.34);
 }
 
 .perk-currency b {
     display: block;
-    margin-top: 4px;
-    color: var(--ui-gold);
-    font: 900 24px/1 Consolas, "Courier New", monospace;
+    margin-top: 5px;
+    color: #ffe68a;
+    font: 900 29px/1 Consolas, "Courier New", monospace;
+    text-shadow: 0 0 8px rgba(255, 211, 106, 0.24);
+    overflow-wrap: anywhere;
 }
 
 .perk-list {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    margin-top: 16px;
-    max-height: calc(100vh - 252px);
+    gap: 12px;
+    margin-top: 18px;
+    max-height: calc(100vh - 270px);
     overflow: auto;
-    padding: 0 4px 8px 0;
+    padding: 0 8px 12px 0;
 }
 
 .perk-card {
+    position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 74px;
-    gap: 12px;
-    min-height: 86px;
-    padding: 13px 13px 12px;
-    border: 1px solid rgba(255, 211, 106, 0.20);
+    grid-template-columns: minmax(0, 1fr) 78px;
+    gap: 14px;
+    min-height: 118px;
+    padding: 16px 13px 14px 17px;
+    border: 1px solid rgba(226, 184, 74, 0.62);
+    border-radius: 3px;
     color: var(--ui-text);
     background:
-        var(--ui-skin-card) center / 100% 100% no-repeat,
-        rgba(5, 10, 13, 0.66);
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px) 0 0 / 56px 100%,
+        linear-gradient(180deg, rgba(255, 255, 255, 0.026) 1px, transparent 1px) 0 0 / 100% 13px,
+        linear-gradient(180deg, rgba(12, 20, 24, 0.82), rgba(4, 9, 12, 0.78));
+    box-shadow:
+        inset 0 0 0 1px rgba(69, 240, 255, 0.10),
+        inset 0 0 28px rgba(0, 0, 0, 0.28);
     text-align: left;
     cursor: pointer;
+    overflow: hidden;
+}
+
+.perk-card::before,
+.perk-card::after {
+    content: "";
+    position: absolute;
+    top: 7px;
+    bottom: 7px;
+    width: 8px;
+    border-top: 4px solid rgba(226, 184, 74, 0.88);
+    border-bottom: 4px solid rgba(226, 184, 74, 0.88);
+    pointer-events: none;
+}
+
+.perk-card::before {
+    left: 8px;
+    border-left: 4px solid rgba(226, 184, 74, 0.88);
+}
+
+.perk-card::after {
+    right: 8px;
+    border-right: 4px solid rgba(226, 184, 74, 0.88);
 }
 
 .perk-card.can-afford {
-    border-color: rgba(255, 211, 106, 0.48);
-    background:
-        var(--ui-skin-card) center / 100% 100% no-repeat,
-        linear-gradient(90deg, rgba(255, 211, 106, 0.07), transparent 35%),
-        rgba(5, 10, 13, 0.72);
+    border-color: rgba(255, 218, 104, 0.90);
+    box-shadow:
+        inset 0 0 0 1px rgba(69, 240, 255, 0.16),
+        inset 0 0 34px rgba(255, 211, 106, 0.08),
+        0 0 16px rgba(255, 211, 106, 0.07);
 }
 
 .perk-card:hover {
     border-color: #fff1a8;
+    transform: translateY(-1px);
+}
+
+.perk-card.is-maxed {
+    cursor: default;
+    opacity: 0.78;
+}
+
+.perk-card-main {
+    min-width: 0;
+    padding: 3px 0 0;
 }
 
 .perk-name {
-    color: #ffffff;
+    color: #fff4c7;
     font-weight: 900;
-    font-size: 17px;
-    line-height: 1.2;
+    font-size: clamp(17px, 1.8vw, 23px);
+    line-height: 1.1;
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.68);
+    overflow-wrap: anywhere;
 }
 
 .perk-name span {
-    color: var(--ui-muted);
-    font-size: 13px;
+    color: rgba(244, 247, 244, 0.78);
+    font-size: 14px;
 }
 
 .perk-desc {
     margin-top: 6px;
-    color: var(--ui-muted);
-    font-size: 13px;
-    line-height: 1.35;
+    color: rgba(244, 247, 244, 0.70);
+    font-size: 14px;
+    line-height: 1.3;
+    max-width: 100%;
+}
+
+.perk-progress-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(74px, 92px);
+    align-items: center;
+    gap: 10px;
+    margin-top: 9px;
+}
+
+.perk-progress-grid {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(9px, 1fr));
+    grid-auto-rows: 4px;
+    gap: 2px 4px;
+    padding: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    background: rgba(0, 0, 0, 0.24);
+}
+
+.perk-progress-grid span {
+    min-width: 0;
+    border: 1px solid rgba(215, 226, 218, 0.36);
+    background: rgba(10, 14, 14, 0.60);
+}
+
+.perk-progress-grid span.is-filled {
+    border-color: rgba(255, 230, 138, 0.88);
+    background: linear-gradient(90deg, #5ef6ff, #ffe68a);
+    box-shadow: 0 0 5px rgba(94, 246, 255, 0.34);
+}
+
+.perk-progress-meta {
+    display: grid;
+    gap: 3px;
+    justify-items: end;
+    color: rgba(244, 247, 244, 0.58);
+    font-size: 11px;
+    line-height: 1.08;
+}
+
+.perk-progress-meta b {
+    color: var(--ui-cyan);
+    font: 900 15px/1 Consolas, "Courier New", monospace;
 }
 
 .perk-next {
-    margin-top: 5px;
+    margin-top: 6px;
     color: var(--ui-cyan);
-    font: 800 14px/1.2 Consolas, "Courier New", monospace;
+    font: 900 15px/1.2 Consolas, "Courier New", monospace;
 }
 
 .perk-cost {
     align-self: stretch;
     display: grid;
     place-content: center;
-    border-left: 1px solid rgba(255, 211, 106, 0.18);
-    color: var(--ui-muted);
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
+    color: rgba(244, 247, 244, 0.70);
     text-align: center;
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
 }
 
 .perk-cost b {
-    margin-top: 6px;
-    color: var(--ui-gold);
-    font: 900 24px/1 Consolas, "Courier New", monospace;
+    margin-top: 8px;
+    color: #ffe68a;
+    font: 900 26px/1 Consolas, "Courier New", monospace;
+    text-shadow: 0 0 8px rgba(255, 211, 106, 0.22);
+    max-width: 100%;
+    overflow-wrap: anywhere;
 }
 
 .perk-footer {
+    position: relative;
+    z-index: 1;
     display: flex;
     justify-content: center;
     margin-top: 16px;
@@ -737,7 +904,7 @@
 
 .settings-row {
     display: grid;
-    grid-template-columns: 82px minmax(0, 1fr) 48px;
+    grid-template-columns: minmax(72px, 82px) minmax(0, 1fr) 48px;
     align-items: center;
     gap: 12px;
     color: var(--ui-muted);
@@ -753,10 +920,12 @@
     color: var(--ui-text);
     font-family: Consolas, "Courier New", monospace;
     text-align: right;
+    overflow-wrap: anywhere;
 }
 
 .settings-actions {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
     margin-top: 22px;
@@ -787,6 +956,7 @@
     font-size: clamp(32px, 5vw, 54px);
     line-height: 1.05;
     text-shadow: 0 0 18px rgba(255, 211, 106, 0.36);
+    max-width: 100%;
 }
 
 .game-ui-root.is-game-over .menu-title {
@@ -803,6 +973,7 @@
     margin-top: 10px;
     color: var(--ui-muted);
     font-size: 17px;
+    line-height: 1.28;
 }
 
 .menu-stats {
@@ -818,6 +989,7 @@
     background: rgba(0, 0, 0, 0.24);
     color: var(--ui-muted);
     font-size: 12px;
+    line-height: 1.18;
 }
 
 .menu-stats b {
@@ -825,6 +997,7 @@
     margin-top: 6px;
     color: var(--ui-text);
     font: 800 18px/1.1 Consolas, "Courier New", monospace;
+    overflow-wrap: anywhere;
 }
 
 .menu-actions {
@@ -846,6 +1019,8 @@
         linear-gradient(180deg, rgba(44, 54, 58, 0.96), rgba(10, 15, 19, 0.96));
     cursor: pointer;
     white-space: normal;
+    line-height: 1.18;
+    overflow: hidden;
 }
 
 .menu-button:hover {
@@ -987,6 +1162,23 @@
     color: var(--ui-gold);
     font-weight: 900;
     font-size: 22px;
+    overflow-wrap: anywhere;
+}
+
+.levelup-card::before {
+    content: "武器";
+}
+
+.levelup-card.is-passive::before {
+    content: "被动";
+}
+
+.levelup-card-title,
+.levelup-card-desc {
+    display: block;
+    max-width: 100%;
+    overflow: visible;
+    -webkit-line-clamp: initial;
 }
 
 .levelup-footer {
@@ -1122,8 +1314,20 @@
         flex-wrap: wrap;
     }
 
+    .perk-panel {
+        width: calc(100vw - 22px);
+        max-height: calc(100vh - 22px);
+        padding: 18px 14px 16px;
+    }
+
     .perk-header {
         display: block;
+        min-height: 0;
+        padding: 14px 10px 16px;
+    }
+
+    .perk-title {
+        font-size: 30px;
     }
 
     .perk-currency {
@@ -1133,6 +1337,29 @@
 
     .perk-list {
         grid-template-columns: 1fr;
+        max-height: calc(100vh - 244px);
+    }
+
+    .perk-card {
+        grid-template-columns: minmax(0, 1fr) 62px;
+        min-height: 128px;
+        gap: 10px;
+        padding: 14px 10px 13px 14px;
+    }
+
+    .perk-progress-row {
+        grid-template-columns: 1fr;
+    }
+
+    .perk-progress-meta {
+        display: flex;
+        justify-content: space-between;
+        justify-items: stretch;
+    }
+
+    .perk-progress-grid {
+        grid-auto-rows: 3px;
+        gap: 2px;
     }
 
     .menu-stats {

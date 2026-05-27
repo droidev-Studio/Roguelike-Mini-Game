@@ -1,0 +1,2107 @@
+{
+  "mode": "apply",
+  "archiveRoot": "_archive/asset-reclass-20260526-161949",
+  "movedCount": 305,
+  "archivedManifestReferenceCount": 0,
+  "archivedManifestReferences": [],
+  "moves": [
+    {
+      "oldPath": "map/main/asset_tile_blood/asset_tile_blood1.png",
+      "newPath": "Visual Style/map/main/asset_tile_blood/asset_tile_blood1.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_blood/asset_tile_blood2.png",
+      "newPath": "Visual Style/map/main/asset_tile_blood/asset_tile_blood2.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_blood/asset_tile_blood3.png",
+      "newPath": "Visual Style/map/main/asset_tile_blood/asset_tile_blood3.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_blood/asset_tile_blood4.png",
+      "newPath": "Visual Style/map/main/asset_tile_blood/asset_tile_blood4.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_fire/asset_tile_fire.png",
+      "newPath": "Visual Style/map/main/asset_tile_fire/asset_tile_fire.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_grass/asset_tile_grass1.png",
+      "newPath": "Visual Style/map/main/asset_tile_grass/asset_tile_grass1.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_grass/asset_tile_grass2.png",
+      "newPath": "Visual Style/map/main/asset_tile_grass/asset_tile_grass2.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_grass/asset_tile_grass3.png",
+      "newPath": "Visual Style/map/main/asset_tile_grass/asset_tile_grass3.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_grass/asset_tile_grass4.png",
+      "newPath": "Visual Style/map/main/asset_tile_grass/asset_tile_grass4.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_loess/asset_tile_loess1.png",
+      "newPath": "Visual Style/map/main/asset_tile_loess/asset_tile_loess1.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_loess/asset_tile_loess2.png",
+      "newPath": "Visual Style/map/main/asset_tile_loess/asset_tile_loess2.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_loess/asset_tile_loess3.png",
+      "newPath": "Visual Style/map/main/asset_tile_loess/asset_tile_loess3.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_loess/asset_tile_loess4.png",
+      "newPath": "Visual Style/map/main/asset_tile_loess/asset_tile_loess4.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_Rookie Training.png",
+      "newPath": "Visual Style/map/main/asset_tile_Rookie Training.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_stone/asset_tile_stone1.png",
+      "newPath": "Visual Style/map/main/asset_tile_stone/asset_tile_stone1.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_stone/asset_tile_stone2.png",
+      "newPath": "Visual Style/map/main/asset_tile_stone/asset_tile_stone2.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_stone/asset_tile_stone3.png",
+      "newPath": "Visual Style/map/main/asset_tile_stone/asset_tile_stone3.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/asset_tile_stone/asset_tile_stone4.png",
+      "newPath": "Visual Style/map/main/asset_tile_stone/asset_tile_stone4.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/main/legacy_scifi/asset_tile_void.png",
+      "newPath": "Visual Style/map/main/legacy_scifi/asset_tile_void.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_broken_bridge_lv.1.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_broken_bridge_lv.1.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_broken_chariot.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_broken_chariot.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_broken_chariot_lv.4.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_broken_chariot_lv.4.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_broken_flag(shu)_lv.1.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_broken_flag(shu)_lv.1.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_broken_flag(wei)_lv.1.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_broken_flag(wei)_lv.1.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_burning_broken bridge_lv.3.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_burning_broken bridge_lv.3.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_burning_pillar_lv.2.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_burning_pillar_lv.2.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_burning_swamp_lv.3.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_burning_swamp_lv.3.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_caltrop_barricade_lv.2.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_caltrop_barricade_lv.2.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_collapsed_wall(Burning Earth)_lv.5.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_collapsed_wall(Burning Earth)_lv.5.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_collapsed_wall(fire)_lv.5.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_collapsed_wall(fire)_lv.5.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_corpse_mound_lv.4.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_corpse_mound_lv.4.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_fire_pile_lv.5.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_fire_pile_lv.5.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_stone_small_lv.1.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_stone_small_lv.1.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_supply_cart_lv.3.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_supply_cart_lv.3.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_wall_ruin_lv.2.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_wall_ruin_lv.2.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_weapon_pile.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_weapon_pile.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_weapon_pile_lv.4.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_weapon_pile_lv.4.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_wood_crate_lv.3.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_wood_crate_lv.3.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/obstacles/asset_terrain_wood_fence(fire)_lv.5.png",
+      "newPath": "Visual Style/map/obstacles/asset_terrain_wood_fence(fire)_lv.5.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/environment/asset_terrain_blood_slow.png",
+      "newPath": "Visual Style/map/environment/asset_terrain_blood_slow.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/environment/asset_terrain_fire_line.png",
+      "newPath": "Visual Style/map/environment/asset_terrain_fire_line.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/environment/asset_terrain_mud_slow.png",
+      "newPath": "Visual Style/map/environment/asset_terrain_mud_slow.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "player/runtime/asset_player_guanyu_art_idle_01.png",
+      "newPath": "Visual Style/player/runtime/asset_player_guanyu_art_idle_01.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "player/runtime/asset_player_guanyu_art_idle_02.png",
+      "newPath": "Visual Style/player/runtime/asset_player_guanyu_art_idle_02.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "player/runtime/asset_player_guanyu_art_move_01.png",
+      "newPath": "Visual Style/player/runtime/asset_player_guanyu_art_move_01.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "player/runtime/asset_player_guanyu_art_move_02.png",
+      "newPath": "Visual Style/player/runtime/asset_player_guanyu_art_move_02.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "player/runtime/asset_player_guanyu_art_move_03.png",
+      "newPath": "Visual Style/player/runtime/asset_player_guanyu_art_move_03.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "player/runtime/asset_player_guanyu_art_move_04.png",
+      "newPath": "Visual Style/player/runtime/asset_player_guanyu_art_move_04.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/boss-animation-preview.png",
+      "newPath": "Visual Style/style-proofs/boss-animation-preview.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/boss-effect-preview.png",
+      "newPath": "Visual Style/style-proofs/boss-effect-preview.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/boss-sprite-preview.png",
+      "newPath": "Visual Style/style-proofs/boss-sprite-preview.png",
+      "category": "Visual Style",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/combat-feedback-preview.png",
+      "newPath": "Visual Style/style-proofs/combat-feedback-preview.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/enemy-animation-preview.png",
+      "newPath": "Visual Style/style-proofs/enemy-animation-preview.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/enemy-sprite-atlas.png",
+      "newPath": "Visual Style/style-proofs/enemy-sprite-atlas.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/miniboss-animation-preview.png",
+      "newPath": "Visual Style/style-proofs/miniboss-animation-preview.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/player-guanyu-preview.png",
+      "newPath": "Visual Style/style-proofs/player-guanyu-preview.png",
+      "category": "Visual Style",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/prop-break-preview.png",
+      "newPath": "Visual Style/style-proofs/prop-break-preview.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/skill-pickup-icon-atlas.png",
+      "newPath": "Visual Style/style-proofs/skill-pickup-icon-atlas.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/tile-biome-preview.png",
+      "newPath": "Visual Style/style-proofs/tile-biome-preview.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/tile-texture-preview.png",
+      "newPath": "Visual Style/style-proofs/tile-texture-preview.png",
+      "category": "Visual Style",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/ui-skin-preview.png",
+      "newPath": "Visual Style/style-proofs/ui-skin-preview.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/weapon-effect-preview.png",
+      "newPath": "Visual Style/style-proofs/weapon-effect-preview.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/weapon-icon-atlas-chromakey.png",
+      "newPath": "Visual Style/style-proofs/weapon-icon-atlas-chromakey.png",
+      "category": "Visual Style",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/weapon-icon-atlas.png",
+      "newPath": "Visual Style/style-proofs/weapon-icon-atlas.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-proofs/weapon-progression-atlas.png",
+      "newPath": "Visual Style/style-proofs/weapon-progression-atlas.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "ui/asset_ui_button_frame.png",
+      "newPath": "Visual Style/ui/asset_ui_button_frame.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "ui/asset_ui_dialog_panel.png",
+      "newPath": "Visual Style/ui/asset_ui_dialog_panel.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "ui/asset_ui_hud_bar_frame.png",
+      "newPath": "Visual Style/ui/asset_ui_hud_bar_frame.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "ui/asset_ui_menu_panel.png",
+      "newPath": "Visual Style/ui/asset_ui_menu_panel.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "ui/asset_ui_pause_panel.png",
+      "newPath": "Visual Style/ui/asset_ui_pause_panel.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "ui/asset_ui_status_panel.png",
+      "newPath": "Visual Style/ui/asset_ui_status_panel.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "ui/asset_ui_upgrade_card_frame.png",
+      "newPath": "Visual Style/ui/asset_ui_upgrade_card_frame.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "ui/asset_ui_warning_banner.png",
+      "newPath": "Visual Style/ui/asset_ui_warning_banner.png",
+      "category": "Visual Style",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_crossbow_lv1.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_crossbow_lv1.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_crossbow_lv2.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_crossbow_lv2.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_crossbow_lv3.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_crossbow_lv3.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_crossbow_lv4.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_crossbow_lv4.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_crossbow_lv5.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_crossbow_lv5.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_crossbow_lv6.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_crossbow_lv6.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_qinggang_lv1.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_qinggang_lv1.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_qinggang_lv2.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_qinggang_lv2.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_qinggang_lv3.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_qinggang_lv3.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_qinggang_lv4.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_qinggang_lv4.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_qinggang_lv5.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_qinggang_lv5.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_qinggang_lv6.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_qinggang_lv6.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_saber_lv1.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_saber_lv1.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_saber_lv2.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_saber_lv2.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_saber_lv3.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_saber_lv3.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_saber_lv4.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_saber_lv4.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_saber_lv5.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_saber_lv5.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_saber_lv6.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_saber_lv6.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_shield_lv1.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_shield_lv1.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_shield_lv2.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_shield_lv2.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_shield_lv3.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_shield_lv3.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_shield_lv4.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_shield_lv4.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_shield_lv5.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_shield_lv5.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_shield_lv6.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_shield_lv6.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_spear_lv1.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_spear_lv1.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_spear_lv2.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_spear_lv2.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_spear_lv3.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_spear_lv3.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_spear_lv4.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_spear_lv4.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_spear_lv5.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_spear_lv5.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_spear_lv6.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_spear_lv6.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_taiping_lv1.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_taiping_lv1.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_taiping_lv2.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_taiping_lv2.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_taiping_lv3.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_taiping_lv3.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_taiping_lv4.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_taiping_lv4.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_taiping_lv5.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_taiping_lv5.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/icons/asset_weapon_taiping_lv6.png",
+      "newPath": "Game Art/weapons/icons/asset_weapon_taiping_lv6.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_crossbow_lv1.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_crossbow_lv1.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_crossbow_lv2.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_crossbow_lv2.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_crossbow_lv3.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_crossbow_lv3.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_crossbow_lv4.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_crossbow_lv4.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_crossbow_lv5.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_crossbow_lv5.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_crossbow_lv6.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_crossbow_lv6.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_crossbow_projectile_lv5.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_crossbow_projectile_lv5.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_crossbow_projectile_lv6.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_crossbow_projectile_lv6.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_qinggang_lv1.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_qinggang_lv1.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_qinggang_lv2.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_qinggang_lv2.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_qinggang_lv3.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_qinggang_lv3.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_qinggang_lv4.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_qinggang_lv4.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_qinggang_lv5.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_qinggang_lv5.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_qinggang_lv6.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_qinggang_lv6.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_qinggang_lv6_inner.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_qinggang_lv6_inner.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_qinggang_lv6_outer.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_qinggang_lv6_outer.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_saber_lv1.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_saber_lv1.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_saber_lv2.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_saber_lv2.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_saber_lv3.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_saber_lv3.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_saber_lv4.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_saber_lv4.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_saber_lv5.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_saber_lv5.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_saber_lv6.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_saber_lv6.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_shield_lv1_charge.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_shield_lv1_charge.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_shield_lv1_release.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_shield_lv1_release.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_shield_lv2.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_shield_lv2.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_shield_lv3.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_shield_lv3.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_shield_lv4.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_shield_lv4.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_shield_lv5.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_shield_lv5.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_shield_lv6_charge.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_shield_lv6_charge.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_shield_lv6_release.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_shield_lv6_release.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_spear_lv1.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_spear_lv1.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_spear_lv2.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_spear_lv2.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_spear_lv3.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_spear_lv3.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_spear_lv4.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_spear_lv4.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_spear_lv5.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_spear_lv5.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_spear_lv6.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_spear_lv6.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_taiping_lv1.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_taiping_lv1.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_taiping_lv2.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_taiping_lv2.png",
+      "category": "Game Art",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_taiping_lv3.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_taiping_lv3.png",
+      "category": "Game Art",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_taiping_lv4.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_taiping_lv4.png",
+      "category": "Game Art",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_taiping_lv5.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_taiping_lv5.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_taiping_lv6(steppable).png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_taiping_lv6(steppable).png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_taiping_lv6.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_taiping_lv6.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/asset_weapon_attack_taiping_lv6_nuke.png",
+      "newPath": "Game Art/weapons/attacks/asset_weapon_attack_taiping_lv6_nuke.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/source/asset_weapon_attack_crossbow_lv5_raw.png",
+      "newPath": "Game Art/weapons/attacks/source/asset_weapon_attack_crossbow_lv5_raw.png",
+      "category": "Game Art",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/source/asset_weapon_attack_crossbow_lv6_raw.png",
+      "newPath": "Game Art/weapons/attacks/source/asset_weapon_attack_crossbow_lv6_raw.png",
+      "category": "Game Art",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/source/asset_weapon_attack_qinggang_lv5_raw.png",
+      "newPath": "Game Art/weapons/attacks/source/asset_weapon_attack_qinggang_lv5_raw.png",
+      "category": "Game Art",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "weapons/attacks/source/asset_weapon_attack_qinggang_lv6_raw.png",
+      "newPath": "Game Art/weapons/attacks/source/asset_weapon_attack_qinggang_lv6_raw.png",
+      "category": "Game Art",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_archer.png",
+      "newPath": "Game Art/enemies/asset_enemy_archer.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_archer_attack_01.png",
+      "newPath": "Game Art/enemies/asset_enemy_archer_attack_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_archer_attack_02.png",
+      "newPath": "Game Art/enemies/asset_enemy_archer_attack_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_archer_move_01.png",
+      "newPath": "Game Art/enemies/asset_enemy_archer_move_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_archer_move_02.png",
+      "newPath": "Game Art/enemies/asset_enemy_archer_move_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_cavalry.png",
+      "newPath": "Game Art/enemies/asset_enemy_cavalry.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_cavalry_attack_01.png",
+      "newPath": "Game Art/enemies/asset_enemy_cavalry_attack_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_cavalry_attack_02.png",
+      "newPath": "Game Art/enemies/asset_enemy_cavalry_attack_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_cavalry_move_01.png",
+      "newPath": "Game Art/enemies/asset_enemy_cavalry_move_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_cavalry_move_02.png",
+      "newPath": "Game Art/enemies/asset_enemy_cavalry_move_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_elite.png",
+      "newPath": "Game Art/enemies/asset_enemy_elite.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_elite_attack_01.png",
+      "newPath": "Game Art/enemies/asset_enemy_elite_attack_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_elite_attack_02.png",
+      "newPath": "Game Art/enemies/asset_enemy_elite_attack_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_elite_move_01.png",
+      "newPath": "Game Art/enemies/asset_enemy_elite_move_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_elite_move_02.png",
+      "newPath": "Game Art/enemies/asset_enemy_elite_move_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_soldier.png",
+      "newPath": "Game Art/enemies/asset_enemy_soldier.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_soldier_attack_01.png",
+      "newPath": "Game Art/enemies/asset_enemy_soldier_attack_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_soldier_attack_02.png",
+      "newPath": "Game Art/enemies/asset_enemy_soldier_attack_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_soldier_move_01.png",
+      "newPath": "Game Art/enemies/asset_enemy_soldier_move_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_soldier_move_02.png",
+      "newPath": "Game Art/enemies/asset_enemy_soldier_move_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_spearman.png",
+      "newPath": "Game Art/enemies/asset_enemy_spearman.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_spearman_attack_01.png",
+      "newPath": "Game Art/enemies/asset_enemy_spearman_attack_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_spearman_attack_02.png",
+      "newPath": "Game Art/enemies/asset_enemy_spearman_attack_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_spearman_move_01.png",
+      "newPath": "Game Art/enemies/asset_enemy_spearman_move_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_spearman_move_02.png",
+      "newPath": "Game Art/enemies/asset_enemy_spearman_move_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_tiger_guard.png",
+      "newPath": "Game Art/enemies/asset_enemy_tiger_guard.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_tiger_guard_attack_01.png",
+      "newPath": "Game Art/enemies/asset_enemy_tiger_guard_attack_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_tiger_guard_attack_02.png",
+      "newPath": "Game Art/enemies/asset_enemy_tiger_guard_attack_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_tiger_guard_move_01.png",
+      "newPath": "Game Art/enemies/asset_enemy_tiger_guard_move_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_tiger_guard_move_02.png",
+      "newPath": "Game Art/enemies/asset_enemy_tiger_guard_move_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_wooden_ox.png",
+      "newPath": "Game Art/enemies/asset_enemy_wooden_ox.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_wooden_ox_move_01.png",
+      "newPath": "Game Art/enemies/asset_enemy_wooden_ox_move_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "enemies/asset_enemy_wooden_ox_move_02.png",
+      "newPath": "Game Art/enemies/asset_enemy_wooden_ox_move_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_bianxi_cast_01.png",
+      "newPath": "Game Art/bosses/asset_boss_bianxi_cast_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_bianxi_cast_02.png",
+      "newPath": "Game Art/bosses/asset_boss_bianxi_cast_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_bianxi_idle_01.png",
+      "newPath": "Game Art/bosses/asset_boss_bianxi_idle_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_bianxi_idle_02.png",
+      "newPath": "Game Art/bosses/asset_boss_bianxi_idle_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_hanfu_cast_01.png",
+      "newPath": "Game Art/bosses/asset_boss_hanfu_cast_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_hanfu_cast_02.png",
+      "newPath": "Game Art/bosses/asset_boss_hanfu_cast_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_hanfu_idle_01.png",
+      "newPath": "Game Art/bosses/asset_boss_hanfu_idle_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_hanfu_idle_02.png",
+      "newPath": "Game Art/bosses/asset_boss_hanfu_idle_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_kongxiu_cast_01.png",
+      "newPath": "Game Art/bosses/asset_boss_kongxiu_cast_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_kongxiu_cast_02.png",
+      "newPath": "Game Art/bosses/asset_boss_kongxiu_cast_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_kongxiu_idle_01.png",
+      "newPath": "Game Art/bosses/asset_boss_kongxiu_idle_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_kongxiu_idle_02.png",
+      "newPath": "Game Art/bosses/asset_boss_kongxiu_idle_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_qinqi_cast_01.png",
+      "newPath": "Game Art/bosses/asset_boss_qinqi_cast_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_qinqi_cast_02.png",
+      "newPath": "Game Art/bosses/asset_boss_qinqi_cast_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_qinqi_idle_01.png",
+      "newPath": "Game Art/bosses/asset_boss_qinqi_idle_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_qinqi_idle_02.png",
+      "newPath": "Game Art/bosses/asset_boss_qinqi_idle_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_wangzhi_cast_01.png",
+      "newPath": "Game Art/bosses/asset_boss_wangzhi_cast_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_wangzhi_cast_02.png",
+      "newPath": "Game Art/bosses/asset_boss_wangzhi_cast_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_wangzhi_idle_01.png",
+      "newPath": "Game Art/bosses/asset_boss_wangzhi_idle_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "bosses/asset_boss_wangzhi_idle_02.png",
+      "newPath": "Game Art/bosses/asset_boss_wangzhi_idle_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "minibosses/asset_miniboss_bianxi_01.png",
+      "newPath": "Game Art/minibosses/asset_miniboss_bianxi_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "minibosses/asset_miniboss_bianxi_02.png",
+      "newPath": "Game Art/minibosses/asset_miniboss_bianxi_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "minibosses/asset_miniboss_hanfu_01.png",
+      "newPath": "Game Art/minibosses/asset_miniboss_hanfu_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "minibosses/asset_miniboss_hanfu_02.png",
+      "newPath": "Game Art/minibosses/asset_miniboss_hanfu_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "minibosses/asset_miniboss_kongxiu_01.png",
+      "newPath": "Game Art/minibosses/asset_miniboss_kongxiu_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "minibosses/asset_miniboss_kongxiu_02.png",
+      "newPath": "Game Art/minibosses/asset_miniboss_kongxiu_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "minibosses/asset_miniboss_qinqi_01.png",
+      "newPath": "Game Art/minibosses/asset_miniboss_qinqi_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "minibosses/asset_miniboss_qinqi_02.png",
+      "newPath": "Game Art/minibosses/asset_miniboss_qinqi_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "minibosses/asset_miniboss_wangzhi_01.png",
+      "newPath": "Game Art/minibosses/asset_miniboss_wangzhi_01.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "minibosses/asset_miniboss_wangzhi_02.png",
+      "newPath": "Game Art/minibosses/asset_miniboss_wangzhi_02.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "skills/asset_skill_AREA.png",
+      "newPath": "Game Art/skills/asset_skill_AREA.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "skills/asset_skill_ARMOR.png",
+      "newPath": "Game Art/skills/asset_skill_ARMOR.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "skills/asset_skill_COOLDOWN.png",
+      "newPath": "Game Art/skills/asset_skill_COOLDOWN.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "skills/asset_skill_DAMAGE.png",
+      "newPath": "Game Art/skills/asset_skill_DAMAGE.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "skills/asset_skill_EXP.png",
+      "newPath": "Game Art/skills/asset_skill_EXP.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "skills/asset_skill_MAGNET.png",
+      "newPath": "Game Art/skills/asset_skill_MAGNET.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "skills/asset_skill_MAXHP.png",
+      "newPath": "Game Art/skills/asset_skill_MAXHP.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "skills/asset_skill_REGEN.png",
+      "newPath": "Game Art/skills/asset_skill_REGEN.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "skills/asset_skill_RESONANCE.png",
+      "newPath": "Game Art/skills/asset_skill_RESONANCE.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "skills/asset_skill_SPEED.png",
+      "newPath": "Game Art/skills/asset_skill_SPEED.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "pickups/asset_pickup_boss_exp.png",
+      "newPath": "Game Art/pickups/asset_pickup_boss_exp.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "pickups/asset_pickup_bun.png",
+      "newPath": "Game Art/pickups/asset_pickup_bun.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "pickups/asset_pickup_chicken.png",
+      "newPath": "Game Art/pickups/asset_pickup_chicken.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "pickups/asset_pickup_exp.png",
+      "newPath": "Game Art/pickups/asset_pickup_exp.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "pickups/asset_pickup_exp_large.png",
+      "newPath": "Game Art/pickups/asset_pickup_exp_large.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "pickups/asset_pickup_magnet.png",
+      "newPath": "Game Art/pickups/asset_pickup_magnet.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "pickups/asset_pickup_resonance.png",
+      "newPath": "Game Art/pickups/asset_pickup_resonance.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "map/random-events/asset_enemy_prop_box.png",
+      "newPath": "Game Art/map/random-events/asset_enemy_prop_box.png",
+      "category": "Game Art",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "effects/asset_effect_boss_affix_arrow.png",
+      "newPath": "Audio & Feel/effects/asset_effect_boss_affix_arrow.png",
+      "category": "Audio & Feel",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "effects/asset_effect_boss_dark_arrow.png",
+      "newPath": "Audio & Feel/effects/asset_effect_boss_dark_arrow.png",
+      "category": "Audio & Feel",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "effects/asset_effect_boss_fire_area.png",
+      "newPath": "Audio & Feel/effects/asset_effect_boss_fire_area.png",
+      "category": "Audio & Feel",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "effects/asset_effect_boss_scorched_ground.png",
+      "newPath": "Audio & Feel/effects/asset_effect_boss_scorched_ground.png",
+      "category": "Audio & Feel",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "effects/asset_effect_crossbow_arrow.png",
+      "newPath": "Audio & Feel/effects/asset_effect_crossbow_arrow.png",
+      "category": "Audio & Feel",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "effects/asset_effect_levelup_nova.png",
+      "newPath": "Audio & Feel/effects/asset_effect_levelup_nova.png",
+      "category": "Audio & Feel",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "effects/asset_effect_lightning_aoe.png",
+      "newPath": "Audio & Feel/effects/asset_effect_lightning_aoe.png",
+      "category": "Audio & Feel",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "effects/asset_effect_lightning_column.png",
+      "newPath": "Audio & Feel/effects/asset_effect_lightning_column.png",
+      "category": "Audio & Feel",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "effects/asset_effect_prop_break.png",
+      "newPath": "Audio & Feel/effects/asset_effect_prop_break.png",
+      "category": "Audio & Feel",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "effects/asset_effect_qinggang_orbit.png",
+      "newPath": "Audio & Feel/effects/asset_effect_qinggang_orbit.png",
+      "category": "Audio & Feel",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "effects/asset_effect_saber_arc.png",
+      "newPath": "Audio & Feel/effects/asset_effect_saber_arc.png",
+      "category": "Audio & Feel",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "effects/asset_effect_shield_pulse.png",
+      "newPath": "Audio & Feel/effects/asset_effect_shield_pulse.png",
+      "category": "Audio & Feel",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "effects/asset_effect_spear_stab.png",
+      "newPath": "Audio & Feel/effects/asset_effect_spear_stab.png",
+      "category": "Audio & Feel",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "effects/asset_effect_taiping_tornado.png",
+      "newPath": "Audio & Feel/effects/asset_effect_taiping_tornado.png",
+      "category": "Audio & Feel",
+      "manifestReferenced": true,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "style-bible.md",
+      "newPath": "_archive/asset-reclass-20260526-161949/style-bible.md",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_crossbow_lv1.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_crossbow_lv1.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_crossbow_lv2.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_crossbow_lv2.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_crossbow_lv3.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_crossbow_lv3.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_crossbow_lv4.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_crossbow_lv4.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_crossbow_lv5.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_crossbow_lv5.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_crossbow_lv6.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_crossbow_lv6.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_qinggang_lv1.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_qinggang_lv1.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_qinggang_lv2.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_qinggang_lv2.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_qinggang_lv3.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_qinggang_lv3.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_qinggang_lv4.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_qinggang_lv4.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_qinggang_lv5.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_qinggang_lv5.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_qinggang_lv6.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_qinggang_lv6.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_saber_lv1.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_saber_lv1.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_saber_lv2.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_saber_lv2.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_saber_lv3.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_saber_lv3.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_saber_lv4.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_saber_lv4.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_saber_lv5.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_saber_lv5.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_saber_lv6.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_saber_lv6.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_shield_lv1.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_shield_lv1.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_shield_lv2.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_shield_lv2.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_shield_lv3.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_shield_lv3.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_shield_lv4.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_shield_lv4.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_shield_lv5.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_shield_lv5.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_shield_lv6.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_shield_lv6.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_spear_lv1.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_spear_lv1.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_spear_lv2.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_spear_lv2.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_spear_lv3.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_spear_lv3.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_spear_lv4.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_spear_lv4.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_spear_lv5.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_spear_lv5.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_spear_lv6.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_spear_lv6.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_taiping_lv1.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_taiping_lv1.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_taiping_lv2.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_taiping_lv2.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_taiping_lv3.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_taiping_lv3.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_taiping_lv4.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_taiping_lv4.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_taiping_lv5.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_taiping_lv5.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "weapons/asset_weapon_taiping_lv6.png",
+      "newPath": "_archive/asset-reclass-20260526-161949/weapons/asset_weapon_taiping_lv6.png",
+      "category": "_archive",
+      "manifestReferenced": false
+    },
+    {
+      "oldPath": "generated/weapon-v2/effects/.gitkeep",
+      "newPath": "_archive/asset-reclass-20260526-161949/generated/weapon-v2/effects/.gitkeep",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "generated/weapon-v2/weapons/.gitkeep",
+      "newPath": "_archive/asset-reclass-20260526-161949/generated/weapon-v2/weapons/.gitkeep",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "prompts/bosses.prompts.json",
+      "newPath": "_archive/asset-reclass-20260526-161949/prompts/bosses.prompts.json",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "prompts/effects.prompts.json",
+      "newPath": "_archive/asset-reclass-20260526-161949/prompts/effects.prompts.json",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "prompts/enemies.prompts.json",
+      "newPath": "_archive/asset-reclass-20260526-161949/prompts/enemies.prompts.json",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "prompts/pickups.prompts.json",
+      "newPath": "_archive/asset-reclass-20260526-161949/prompts/pickups.prompts.json",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "prompts/player.prompts.json",
+      "newPath": "_archive/asset-reclass-20260526-161949/prompts/player.prompts.json",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "prompts/skills.prompts.json",
+      "newPath": "_archive/asset-reclass-20260526-161949/prompts/skills.prompts.json",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "prompts/tiles.prompts.json",
+      "newPath": "_archive/asset-reclass-20260526-161949/prompts/tiles.prompts.json",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "prompts/ui.prompts.json",
+      "newPath": "_archive/asset-reclass-20260526-161949/prompts/ui.prompts.json",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "prompts/weapon-v2.gpt-image-2.prompts.json",
+      "newPath": "_archive/asset-reclass-20260526-161949/prompts/weapon-v2.gpt-image-2.prompts.json",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "prompts/weapons.prompts.json",
+      "newPath": "_archive/asset-reclass-20260526-161949/prompts/weapons.prompts.json",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "source/game_desginer/asset-generation-queue.json",
+      "newPath": "_archive/asset-reclass-20260526-161949/source/game_desginer/asset-generation-queue.json",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "source/game_desginer/asset-mapping-template.json",
+      "newPath": "_archive/asset-reclass-20260526-161949/source/game_desginer/asset-mapping-template.json",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "source/game_desginer/tools/AssetLoader.ts",
+      "newPath": "_archive/asset-reclass-20260526-161949/source/game_desginer/tools/AssetLoader.ts",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    },
+    {
+      "oldPath": "source/game_desginer/美术资源生成方案.md",
+      "newPath": "_archive/asset-reclass-20260526-161949/source/game_desginer/美术资源生成方案.md",
+      "category": "_archive",
+      "manifestReferenced": false,
+      "alreadyMoved": true
+    }
+  ]
+}
