@@ -1,0 +1,45 @@
+{
+  "dropSettingsKey": "drops",
+  "types": ["exp", "resonance", "food", "magnet", "none"],
+  "rareTracks": {
+    "woodenOx": [
+      { "type": "MAGNET", "kind": "magnet", "weight": 5 },
+      { "type": "CHICKEN", "kind": "food", "weight": 10 },
+      { "type": "BUN", "kind": "food", "weight": 50 },
+      { "type": null, "kind": "none", "weight": 35 }
+    ],
+    "boss": {
+      "chance": 0.3,
+      "items": [
+        { "type": "MAGNET", "kind": "magnet", "weight": 10 },
+        { "type": "CHICKEN", "kind": "food", "weight": 30 },
+        { "type": "BUN", "kind": "food", "weight": 60 }
+      ]
+    },
+    "elite": [
+      { "type": "MAGNET", "kind": "magnet", "weight": 1 },
+      { "type": "BUN", "kind": "food", "weight": 4 },
+      { "type": null, "kind": "none", "weight": 95 }
+    ]
+  },
+  "bossSpecial": {
+    "bossExp": {
+      "enabled": true,
+      "size": 30
+    },
+    "resonanceFallbackCount": 15,
+    "resonanceRadius": 40
+  },
+  "normal": [
+    { "type": "EXP", "kind": "exp", "weight": 80 },
+    { "type": "RESONANCE", "kind": "resonance", "weight": 15 },
+    { "type": null, "kind": "none", "weight": 5 }
+  ],
+  "eliteBonus": {
+    "enabled": true,
+    "spacing": 15
+  },
+  "expMerge": {
+    "maxPickups": 300
+  }
+}

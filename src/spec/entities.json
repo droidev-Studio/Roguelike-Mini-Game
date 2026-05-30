@@ -1,0 +1,11 @@
+{
+  "player": {
+    "id": "guan-yu",
+    "name": "关羽",
+    "baseHp": 100,
+    "baseSpeed": 200,
+    "collisionRadius": 18
+  },
+  "enemiesSource": "enemies.json",
+  "bossesSource": "waves.json"
+}

@@ -24,6 +24,39 @@
             },
         },
 
+        COMBAT_RULES: {
+            STORAGE_KEY: 'zeroDowntimeCombatRuleSettings',
+            DEFAULTS: {
+                playerHealth: 100,
+                playerIntensity: 'normal',
+                gameHard: 'normal',
+                drops: 'normal',
+                level: 'normal',
+            },
+            PRESETS: {
+                playerIntensity: {
+                    easy: { speed: 1.25, damage: 1.6, cooldown: 0.65, area: 1.25 },
+                    normal: { speed: 1, damage: 1, cooldown: 1, area: 1 },
+                    hard: { speed: 0.85, damage: 0.65, cooldown: 1.45, area: 0.8 },
+                },
+                gameHard: {
+                    easy: { enemyHp: 0.6, enemySpeed: 0.8, contactDamage: 0.6, bossHp: 0.65, waveCount: 0.7, spawnInterval: 1.3 },
+                    normal: { enemyHp: 1, enemySpeed: 1, contactDamage: 1, bossHp: 1, waveCount: 1, spawnInterval: 1 },
+                    hard: { enemyHp: 1.75, enemySpeed: 1.25, contactDamage: 1.6, bossHp: 2, waveCount: 1.45, spawnInterval: 0.65 },
+                },
+                drops: {
+                    easy: { exp: 1.35, resonance: 1.5, food: 1.4, magnet: 1.3, none: 0.35 },
+                    normal: { exp: 1, resonance: 1, food: 1, magnet: 1, none: 1 },
+                    hard: { exp: 0.65, resonance: 0.6, food: 0.6, magnet: 0.6, none: 2 },
+                },
+                level: {
+                    easy: { expRequirement: 0.7 },
+                    normal: { expRequirement: 1 },
+                    hard: { expRequirement: 1.45 },
+                },
+            },
+        },
+
         PLAYER: {
             BASE_SPEED: 200,
             BASE_MAX_HP: 100,

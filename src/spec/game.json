@@ -1,0 +1,8 @@
+{
+  "id": "thousand-mile-solo-ride",
+  "title": "千里走单骑",
+  "runDurationSeconds": 600,
+  "finalBossTriggerSecond": 600,
+  "maxWeaponSlots": 6,
+  "levelUpChoiceCount": 3
+}

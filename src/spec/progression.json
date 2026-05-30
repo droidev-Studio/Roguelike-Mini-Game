@@ -1,0 +1,241 @@
+{
+  "levelUpChoiceCount": 3,
+  "rerollEveryLevels": 3,
+  "levelUpHealFlat": 10,
+  "inGamePassiveMaxLevel": 5,
+  "expRequirement": {
+    "scaleCombatRule": true,
+    "tiers": [
+      { "belowLevel": 5, "base": 35, "perLevel": 35, "levelOffset": 0 },
+      { "belowLevel": 20, "base": 175, "perLevel": 75, "levelOffset": 4 },
+      { "belowLevel": 40, "base": 1300, "perLevel": 300, "levelOffset": 19 },
+      { "base": 7300, "perLevel": 800, "levelOffset": 39 }
+    ]
+  },
+  "levelUpNova": {
+    "radius": 250,
+    "bossDamageRatio": 0.05,
+    "miniBossDamageRatio": 0.15,
+    "eliteDamageRatio": 0.5,
+    "normalDamageRatio": 2,
+    "knockbackForce": 120,
+    "screenShake": 0.5
+  },
+  "perks": {
+    "maxLevel": 100,
+    "progressSegments": 100,
+    "progressStepPercent": 0.1,
+    "cost": {
+      "majorSize": 10,
+      "majorQuadratic": 200,
+      "majorLinear": 100,
+      "minorOffset": 1,
+      "minorNextOffset": 2,
+      "multiplierBase": 1,
+      "multiplierPerMajor": 3
+    }
+  },
+  "passiveUpgrades": {
+    "DAMAGE": {
+      "type": "passive",
+      "name": "陷阵杀气",
+      "baseValue": 0.1,
+      "levels": [
+        { "level": 1, "name": "陷阵杀气Lv1", "desc": "全伤害 +10%", "baseValue": 0.1 },
+        { "level": 2, "name": "陷阵杀气Lv2", "desc": "全伤害 +20%", "baseValue": 0.1 },
+        { "level": 3, "name": "陷阵杀气Lv3", "desc": "全伤害 +30%", "baseValue": 0.1 },
+        { "level": 4, "name": "陷阵杀气Lv4", "desc": "全伤害 +40%", "baseValue": 0.1 },
+        { "level": 5, "name": "陷阵杀气Lv5", "desc": "全伤害 +50%", "baseValue": 0.1 }
+      ]
+    },
+    "SPEED": {
+      "type": "passive",
+      "name": "绝影无痕",
+      "baseValue": 0.06,
+      "levels": [
+        { "level": 1, "name": "绝影无痕Lv1", "desc": "移速 +6%", "baseValue": 0.06 },
+        { "level": 2, "name": "绝影无痕Lv2", "desc": "移速 +12%", "baseValue": 0.06 },
+        { "level": 3, "name": "绝影无痕Lv3", "desc": "移速 +18%", "baseValue": 0.06 },
+        { "level": 4, "name": "绝影无痕Lv4", "desc": "移速 +24%", "baseValue": 0.06 },
+        { "level": 5, "name": "绝影无痕Lv5", "desc": "移速 +30%", "baseValue": 0.06 }
+      ]
+    },
+    "COOLDOWN": {
+      "type": "passive",
+      "name": "迅雷风烈",
+      "baseValue": -0.08,
+      "levels": [
+        { "level": 1, "name": "迅雷风烈Lv1", "desc": "武器CD -8%", "baseValue": -0.08 },
+        { "level": 2, "name": "迅雷风烈Lv2", "desc": "武器CD -16%", "baseValue": -0.08 },
+        { "level": 3, "name": "迅雷风烈Lv3", "desc": "武器CD -24%", "baseValue": -0.08 },
+        { "level": 4, "name": "迅雷风烈Lv4", "desc": "武器CD -32%", "baseValue": -0.08 },
+        { "level": 5, "name": "迅雷风烈Lv5", "desc": "武器CD -40%", "baseValue": -0.08 }
+      ]
+    },
+    "MAGNET": {
+      "type": "passive",
+      "name": "摸金秘术",
+      "baseValue": 0.2,
+      "levels": [
+        { "level": 1, "name": "摸金秘术Lv1", "desc": "拾取范围 +20%", "baseValue": 0.2 },
+        { "level": 2, "name": "摸金秘术Lv2", "desc": "拾取范围 +40%", "baseValue": 0.2 },
+        { "level": 3, "name": "摸金秘术Lv3", "desc": "拾取范围 +60%", "baseValue": 0.2 },
+        { "level": 4, "name": "摸金秘术Lv4", "desc": "拾取范围 +80%", "baseValue": 0.2 },
+        { "level": 5, "name": "摸金秘术Lv5", "desc": "拾取范围 +100%", "baseValue": 0.2 }
+      ]
+    },
+    "MAXHP": {
+      "type": "passive",
+      "name": "虎卫霸体",
+      "baseValue": 20,
+      "levels": [
+        { "level": 1, "name": "虎卫霸体Lv1", "desc": "最大生命 +20", "baseValue": 20 },
+        { "level": 2, "name": "虎卫霸体Lv2", "desc": "最大生命 +40", "baseValue": 20 },
+        { "level": 3, "name": "虎卫霸体Lv3", "desc": "最大生命 +60", "baseValue": 20 },
+        { "level": 4, "name": "虎卫霸体Lv4", "desc": "最大生命 +80", "baseValue": 20 },
+        { "level": 5, "name": "虎卫霸体Lv5", "desc": "最大生命 +100", "baseValue": 20 }
+      ]
+    },
+    "AREA": {
+      "type": "passive",
+      "name": "气吞山河",
+      "baseValue": 0.08,
+      "levels": [
+        { "level": 1, "name": "气吞山河Lv1", "desc": "攻击范围 +8%", "baseValue": 0.08 },
+        { "level": 2, "name": "气吞山河Lv2", "desc": "攻击范围 +16%", "baseValue": 0.08 },
+        { "level": 3, "name": "气吞山河Lv3", "desc": "攻击范围 +24%", "baseValue": 0.08 },
+        { "level": 4, "name": "气吞山河Lv4", "desc": "攻击范围 +32%", "baseValue": 0.08 },
+        { "level": 5, "name": "气吞山河Lv5", "desc": "攻击范围 +40%", "baseValue": 0.08 }
+      ]
+    },
+    "REGEN": {
+      "type": "passive",
+      "name": "青囊秘卷",
+      "baseValue": 0.4,
+      "levels": [
+        { "level": 1, "name": "青囊秘卷Lv1", "desc": "每秒回血 +0.4/s", "baseValue": 0.4 },
+        { "level": 2, "name": "青囊秘卷Lv2", "desc": "每秒回血 +0.8/s", "baseValue": 0.4 },
+        { "level": 3, "name": "青囊秘卷Lv3", "desc": "每秒回血 +1.2/s", "baseValue": 0.4 },
+        { "level": 4, "name": "青囊秘卷Lv4", "desc": "每秒回血 +1.6/s", "baseValue": 0.4 },
+        { "level": 5, "name": "青囊秘卷Lv5", "desc": "每秒回血 +2.0/s", "baseValue": 0.4 }
+      ]
+    },
+    "EXP": {
+      "type": "passive",
+      "name": "天命所归",
+      "baseValue": 0.1,
+      "levels": [
+        { "level": 1, "name": "天命所归Lv1", "desc": "经验获取 +10%", "baseValue": 0.1 },
+        { "level": 2, "name": "天命所归Lv2", "desc": "经验获取 +20%", "baseValue": 0.1 },
+        { "level": 3, "name": "天命所归Lv3", "desc": "经验获取 +30%", "baseValue": 0.1 },
+        { "level": 4, "name": "天命所归Lv4", "desc": "经验获取 +40%", "baseValue": 0.1 },
+        { "level": 5, "name": "天命所归Lv5", "desc": "经验获取 +50%", "baseValue": 0.1 }
+      ]
+    },
+    "RESONANCE": {
+      "type": "passive",
+      "name": "历史共鸣",
+      "baseValue": 0.1,
+      "levels": [
+        { "level": 1, "name": "历史共鸣Lv1", "desc": "残响掉落 +10%", "baseValue": 0.1 },
+        { "level": 2, "name": "历史共鸣Lv2", "desc": "残响掉落 +20%", "baseValue": 0.1 },
+        { "level": 3, "name": "历史共鸣Lv3", "desc": "残响掉落 +30%", "baseValue": 0.1 },
+        { "level": 4, "name": "历史共鸣Lv4", "desc": "残响掉落 +40%", "baseValue": 0.1 },
+        { "level": 5, "name": "历史共鸣Lv5", "desc": "残响掉落 +50%", "baseValue": 0.1 }
+      ]
+    },
+    "ARMOR": {
+      "type": "passive",
+      "name": "不动如山",
+      "baseValue": 0.06,
+      "levels": [
+        { "level": 1, "name": "不动如山Lv1", "desc": "受到伤害 -6%", "baseValue": 0.06 },
+        { "level": 2, "name": "不动如山Lv2", "desc": "受到伤害 -12%", "baseValue": 0.06 },
+        { "level": 3, "name": "不动如山Lv3", "desc": "受到伤害 -18%", "baseValue": 0.06 },
+        { "level": 4, "name": "不动如山Lv4", "desc": "受到伤害 -24%", "baseValue": 0.06 },
+        { "level": 5, "name": "不动如山Lv5", "desc": "受到伤害 -30%", "baseValue": 0.06 }
+      ]
+    }
+  },
+  "perkUpgrades": [
+    {
+      "id": "damage",
+      "name": "基因重塑·陷阵",
+      "description": "永久增加陷阵杀气等级 +1 → 全伤害 +0.5%",
+      "baseCost": 2,
+      "effect": "level"
+    },
+    {
+      "id": "speed",
+      "name": "基因重塑·绝影",
+      "description": "永久增加绝影无痕等级 +1 → 移速 +0.3%",
+      "baseCost": 2,
+      "effect": "level"
+    },
+    {
+      "id": "cooldown",
+      "name": "基因重塑·迅雷",
+      "description": "永久增加迅雷风烈等级 +1 → 武器CD -0.4%",
+      "baseCost": 3,
+      "effect": "level"
+    },
+    {
+      "id": "magnet",
+      "name": "基因重塑·摸金",
+      "description": "永久增加摸金秘术等级 +1 → 拾取范围 +1%",
+      "baseCost": 3,
+      "effect": "level"
+    },
+    {
+      "id": "maxHp",
+      "name": "基因重塑·虎卫",
+      "description": "永久增加虎卫霸体等级 +1 → 最大生命 +1",
+      "baseCost": 1,
+      "effect": "level"
+    },
+    {
+      "id": "area",
+      "name": "基因重塑·气吞",
+      "description": "永久增加气吞山河等级 +1 → 攻击范围 +0.4%",
+      "baseCost": 3,
+      "effect": "level"
+    },
+    {
+      "id": "regen",
+      "name": "基因重塑·青囊",
+      "description": "永久增加青囊秘卷等级 +1 → 每秒回血 +0.02/s",
+      "baseCost": 3,
+      "effect": "level"
+    },
+    {
+      "id": "exp",
+      "name": "基因重塑·天命",
+      "description": "永久增加天命所归等级 +1 → 经验获取 +0.5%",
+      "baseCost": 2,
+      "effect": "level"
+    },
+    {
+      "id": "resonance",
+      "name": "基因重塑·共鸣",
+      "description": "永久增加历史共鸣等级 +1 → 残响掉落 +0.5%",
+      "baseCost": 2,
+      "effect": "level"
+    },
+    {
+      "id": "armor",
+      "name": "基因重塑·不动",
+      "description": "永久增加不动如山等级 +1 → 受到伤害 -0.3%",
+      "baseCost": 3,
+      "effect": "level"
+    },
+    {
+      "id": "resonanceBonus",
+      "name": "历史共鸣",
+      "description": "每局额外增加历史残响掉落 +10%",
+      "baseCost": 5,
+      "effect": "resonanceBonus",
+      "baseMultiplier": 1,
+      "multiplierPerLevel": 0.1
+    }
+  ]
+}

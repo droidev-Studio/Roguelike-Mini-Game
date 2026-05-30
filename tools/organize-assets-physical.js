@@ -27,7 +27,7 @@ const moves = [
   ['map/environment', 'Visual Style/map/environment', 'Visual Style'],
   ['player/runtime', 'Visual Style/player/runtime', 'Visual Style'],
   ['style-proofs', 'Visual Style/style-proofs', 'Visual Style'],
-  ['ui', 'Visual Style/ui', 'Visual Style'],
+  ['ui', 'ui-art', ''],
   ['weapons/icons', 'Game Art/weapons/icons', 'Game Art'],
   ['weapons/attacks', 'Game Art/weapons/attacks', 'Game Art'],
   ['enemies', 'Game Art/enemies', 'Game Art'],
@@ -44,7 +44,7 @@ const pathRewrites = moves
   .sort((a, b) => b[0].length - a[0].length);
 const plannedMovePrefixes = moves.map(([from]) => `${from}/`);
 
-const targetRoots = new Set(['Visual Style', 'Game Art', 'Audio & Feel']);
+const targetRoots = new Set(['Visual Style', 'Game Art', 'Audio & Feel', 'ui-art']);
 const protectedRootNames = new Set(['manifest.json', '_archive', ...targetRoots]);
 
 function toPosix(value) {

@@ -6,7 +6,8 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "dev": "vite --host 127.0.0.1",
-    "validate": "node tools/validate-assets.js"
+    "validate": "node tools/validate-assets.js",
+    "smoke:p0": "node tools/p0-gameplay-smoke.js"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",

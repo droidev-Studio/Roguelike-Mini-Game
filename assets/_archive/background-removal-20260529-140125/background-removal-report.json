@@ -1,0 +1,676 @@
+[
+  {
+    "path": "Game Art/minibosses/asset_miniboss_archer_captain.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1254,
+      1254
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1143988,
+    "transparentPixels": 1143988
+  },
+  {
+    "path": "Game Art/minibosses/asset_miniboss_charger_captain.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1254,
+      1254
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1169492,
+    "transparentPixels": 1169492
+  },
+  {
+    "path": "Game Art/minibosses/asset_miniboss_scorcher_captain.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1254,
+      1254
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1165304,
+    "transparentPixels": 1165304
+  },
+  {
+    "path": "Game Art/minibosses/asset_miniboss_shield_captain.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1254,
+      1254
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1305448,
+    "transparentPixels": 1305448
+  },
+  {
+    "path": "Game Art/minibosses/asset_miniboss_summoner_captain.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1254,
+      1254
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1212175,
+    "transparentPixels": 1212175
+  },
+  {
+    "path": "Game Art/pickups/asset_pickup_boss_exp.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1254,
+      1254
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 998138,
+    "transparentPixels": 998138
+  },
+  {
+    "path": "Game Art/pickups/asset_pickup_bun.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1254,
+      1254
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1035611,
+    "transparentPixels": 1035611
+  },
+  {
+    "path": "Game Art/pickups/asset_pickup_chicken.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1254,
+      1254
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1107701,
+    "transparentPixels": 1107701
+  },
+  {
+    "path": "Game Art/pickups/asset_pickup_exp.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1254,
+      1254
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1134748,
+    "transparentPixels": 1134748
+  },
+  {
+    "path": "Game Art/pickups/asset_pickup_exp_large.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1254,
+      1254
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 916919,
+    "transparentPixels": 916919
+  },
+  {
+    "path": "Game Art/pickups/asset_pickup_magnet.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1254,
+      1254
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1107918,
+    "transparentPixels": 1107918
+  },
+  {
+    "path": "Game Art/pickups/asset_pickup_resonance.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1254,
+      1254
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1110930,
+    "transparentPixels": 1110930
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_arrow_projectile.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      252
+    ],
+    "afterAlpha": [
+      0,
+      252
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv1.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1254,
+      1254
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1508867,
+    "transparentPixels": 1508867
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv2.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv3.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv4.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv5.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv6.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_projectile_lv5.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_projectile_lv6.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv1.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv2.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv3.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv4.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv5.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv6.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_orbit_blade.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_saber_lv1.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_saber_lv2.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_saber_lv3.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_saber_lv4.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_saber_lv5.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_saber_lv6.png",
+    "mode": "white-edge",
+    "status": "skipped-no-alpha",
+    "beforeAlpha": [
+      0,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 0
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv1.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1672,
+      941
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1514360,
+    "transparentPixels": 1514360
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv2.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1672,
+      941
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1514360,
+    "transparentPixels": 1514360
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv3.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1672,
+      941
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1499668,
+    "transparentPixels": 1499668
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv4.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1672,
+      941
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1499668,
+    "transparentPixels": 1499668
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv5.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1672,
+      941
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1473705,
+    "transparentPixels": 1473705
+  },
+  {
+    "path": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv6.png",
+    "mode": "white-edge",
+    "status": "processed",
+    "size": [
+      1672,
+      941
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1434729,
+    "transparentPixels": 1434729
+  },
+  {
+    "path": "Visual Style/style-proofs/weapon-icon-atlas-chromakey.png",
+    "mode": "green-key",
+    "status": "processed",
+    "size": [
+      1536,
+      1024
+    ],
+    "beforeAlpha": [
+      255,
+      255
+    ],
+    "afterAlpha": [
+      0,
+      255
+    ],
+    "removedPixels": 1053800,
+    "transparentPixels": 1053800
+  }
+]

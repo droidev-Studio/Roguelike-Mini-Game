@@ -1,0 +1,2681 @@
+[
+  {
+    "category": "pickup",
+    "source": "Game Art/pickups/asset_pickup_exp.png",
+    "output": "Game Art/pickups/asset_pickup_exp_token.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      256,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      42,
+      28,
+      214,
+      227
+    ],
+    "fit": {
+      "inputBbox": [
+        246,
+        165,
+        1001,
+        1039
+      ],
+      "outputBbox": [
+        42,
+        28,
+        214,
+        227
+      ],
+      "scale": 0.22768878718535468,
+      "paste": [
+        42,
+        28,
+        172,
+        199
+      ]
+    }
+  },
+  {
+    "category": "pickup",
+    "source": "Game Art/pickups/asset_pickup_exp_large.png",
+    "output": "Game Art/pickups/asset_pickup_exp_large_token.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      256,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      42,
+      28,
+      215,
+      227
+    ],
+    "fit": {
+      "inputBbox": [
+        167,
+        86,
+        1101,
+        1160
+      ],
+      "outputBbox": [
+        42,
+        28,
+        215,
+        227
+      ],
+      "scale": 0.18528864059590316,
+      "paste": [
+        42,
+        28,
+        173,
+        199
+      ]
+    }
+  },
+  {
+    "category": "pickup",
+    "source": "Game Art/pickups/asset_pickup_boss_exp.png",
+    "output": "Game Art/pickups/asset_pickup_boss_exp_token.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      256,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      58,
+      28,
+      197,
+      227
+    ],
+    "fit": {
+      "inputBbox": [
+        253,
+        89,
+        1013,
+        1176
+      ],
+      "outputBbox": [
+        58,
+        28,
+        197,
+        227
+      ],
+      "scale": 0.18307267709291627,
+      "paste": [
+        58,
+        28,
+        139,
+        199
+      ]
+    }
+  },
+  {
+    "category": "pickup",
+    "source": "Game Art/pickups/asset_pickup_resonance.png",
+    "output": "Game Art/pickups/asset_pickup_resonance_token.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      256,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      43,
+      28,
+      213,
+      227
+    ],
+    "fit": {
+      "inputBbox": [
+        237,
+        187,
+        1015,
+        1099
+      ],
+      "outputBbox": [
+        43,
+        28,
+        213,
+        227
+      ],
+      "scale": 0.21820175438596492,
+      "paste": [
+        43,
+        28,
+        170,
+        199
+      ]
+    }
+  },
+  {
+    "category": "pickup",
+    "source": "Game Art/pickups/asset_pickup_bun.png",
+    "output": "Game Art/pickups/asset_pickup_bun_token.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      256,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      28,
+      40,
+      227,
+      217
+    ],
+    "fit": {
+      "inputBbox": [
+        172,
+        245,
+        1078,
+        1050
+      ],
+      "outputBbox": [
+        28,
+        40,
+        227,
+        217
+      ],
+      "scale": 0.2196467991169978,
+      "paste": [
+        28,
+        40,
+        199,
+        177
+      ]
+    }
+  },
+  {
+    "category": "pickup",
+    "source": "Game Art/pickups/asset_pickup_chicken.png",
+    "output": "Game Art/pickups/asset_pickup_chicken_token.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      256,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      28,
+      35,
+      227,
+      221
+    ],
+    "fit": {
+      "inputBbox": [
+        180,
+        223,
+        1067,
+        1050
+      ],
+      "outputBbox": [
+        28,
+        35,
+        227,
+        221
+      ],
+      "scale": 0.22435174746335965,
+      "paste": [
+        28,
+        35,
+        199,
+        186
+      ]
+    }
+  },
+  {
+    "category": "pickup",
+    "source": "Game Art/pickups/asset_pickup_magnet.png",
+    "output": "Game Art/pickups/asset_pickup_magnet_token.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      256,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      34,
+      28,
+      222,
+      227
+    ],
+    "fit": {
+      "inputBbox": [
+        230,
+        222,
+        1012,
+        1050
+      ],
+      "outputBbox": [
+        34,
+        28,
+        222,
+        227
+      ],
+      "scale": 0.24033816425120774,
+      "paste": [
+        34,
+        28,
+        188,
+        199
+      ]
+    }
+  },
+  {
+    "category": "miniBoss",
+    "source": "Game Art/minibosses/asset_miniboss_charger_captain.png",
+    "output": "Game Art/minibosses/asset_miniboss_charger_captain.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      64,
+      0,
+      447,
+      440
+    ],
+    "fit": {
+      "inputBbox": [
+        219,
+        150,
+        1059,
+        1114
+      ],
+      "outputBbox": [
+        64,
+        0,
+        447,
+        440
+      ],
+      "scale": 0.45643153526970953,
+      "paste": [
+        64,
+        0,
+        383,
+        440
+      ]
+    }
+  },
+  {
+    "category": "miniBoss",
+    "source": "Game Art/minibosses/asset_miniboss_archer_captain.png",
+    "output": "Game Art/minibosses/asset_miniboss_archer_captain.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      36,
+      80,
+      476,
+      406
+    ],
+    "fit": {
+      "inputBbox": [
+        20,
+        153,
+        1220,
+        1041
+      ],
+      "outputBbox": [
+        36,
+        80,
+        476,
+        406
+      ],
+      "scale": 0.36666666666666664,
+      "paste": [
+        36,
+        80,
+        440,
+        326
+      ]
+    }
+  },
+  {
+    "category": "miniBoss",
+    "source": "Game Art/minibosses/asset_miniboss_shield_captain.png",
+    "output": "Game Art/minibosses/asset_miniboss_shield_captain.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      36,
+      15,
+      476,
+      407
+    ],
+    "fit": {
+      "inputBbox": [
+        210,
+        235,
+        1047,
+        980
+      ],
+      "outputBbox": [
+        36,
+        15,
+        476,
+        407
+      ],
+      "scale": 0.5256869772998806,
+      "paste": [
+        36,
+        15,
+        440,
+        392
+      ]
+    }
+  },
+  {
+    "category": "miniBoss",
+    "source": "Game Art/minibosses/asset_miniboss_scorcher_captain.png",
+    "output": "Game Art/minibosses/asset_miniboss_scorcher_captain.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      36,
+      11,
+      476,
+      407
+    ],
+    "fit": {
+      "inputBbox": [
+        5,
+        10,
+        1125,
+        1018
+      ],
+      "outputBbox": [
+        36,
+        11,
+        476,
+        407
+      ],
+      "scale": 0.39285714285714285,
+      "paste": [
+        36,
+        11,
+        440,
+        396
+      ]
+    }
+  },
+  {
+    "category": "miniBoss",
+    "source": "Game Art/minibosses/asset_miniboss_summoner_captain.png",
+    "output": "Game Art/minibosses/asset_miniboss_summoner_captain.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      76,
+      0,
+      436,
+      440
+    ],
+    "fit": {
+      "inputBbox": [
+        254,
+        139,
+        1027,
+        1085
+      ],
+      "outputBbox": [
+        76,
+        0,
+        436,
+        440
+      ],
+      "scale": 0.46511627906976744,
+      "paste": [
+        76,
+        0,
+        360,
+        440
+      ]
+    }
+  },
+  {
+    "category": "weapon:saber.1.primary",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_saber_arc_lv1.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_saber_arc_lv1.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      56,
+      31,
+      457,
+      481
+    ],
+    "fit": {
+      "inputBbox": [
+        309,
+        214,
+        1025,
+        1018
+      ],
+      "outputBbox": [
+        56,
+        31,
+        457,
+        481
+      ],
+      "scale": 0.5597014925373134,
+      "paste": [
+        56,
+        31,
+        401,
+        450
+      ]
+    }
+  },
+  {
+    "category": "weapon:saber.2.primary",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_saber_lv2.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_saber_lv2.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      512,
+      512
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      31,
+      53,
+      481,
+      459
+    ],
+    "fit": {
+      "inputBbox": [
+        42,
+        49,
+        512,
+        473
+      ],
+      "outputBbox": [
+        31,
+        53,
+        481,
+        459
+      ],
+      "scale": 0.9574468085106383,
+      "paste": [
+        31,
+        53,
+        450,
+        406
+      ]
+    }
+  },
+  {
+    "category": "weapon:saber.3.primary",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_saber_arc_lv3.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_saber_arc_lv3.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      94,
+      31,
+      419,
+      481
+    ],
+    "fit": {
+      "inputBbox": [
+        337,
+        85,
+        1092,
+        1130
+      ],
+      "outputBbox": [
+        94,
+        31,
+        419,
+        481
+      ],
+      "scale": 0.430622009569378,
+      "paste": [
+        94,
+        31,
+        325,
+        450
+      ]
+    }
+  },
+  {
+    "category": "weapon:saber.4.primary",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_saber_lv4.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_saber_lv4.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      512,
+      512
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      32,
+      42,
+      481,
+      470
+    ],
+    "fit": {
+      "inputBbox": [
+        25,
+        25,
+        512,
+        488
+      ],
+      "outputBbox": [
+        32,
+        42,
+        481,
+        470
+      ],
+      "scale": 0.9240246406570842,
+      "paste": [
+        31,
+        42,
+        450,
+        428
+      ]
+    }
+  },
+  {
+    "category": "weapon:saber.5.primary",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_saber_arc_lv5.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_saber_arc_lv5.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      31,
+      46,
+      481,
+      465
+    ],
+    "fit": {
+      "inputBbox": [
+        41,
+        55,
+        1226,
+        1159
+      ],
+      "outputBbox": [
+        31,
+        46,
+        481,
+        465
+      ],
+      "scale": 0.379746835443038,
+      "paste": [
+        31,
+        46,
+        450,
+        419
+      ]
+    }
+  },
+  {
+    "category": "weapon:saber.6.primary",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_saber_arc_lv6.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_saber_arc_lv6.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      54,
+      31,
+      459,
+      481
+    ],
+    "fit": {
+      "inputBbox": [
+        197,
+        49,
+        1239,
+        1207
+      ],
+      "outputBbox": [
+        54,
+        31,
+        459,
+        481
+      ],
+      "scale": 0.38860103626943004,
+      "paste": [
+        54,
+        31,
+        405,
+        450
+      ]
+    }
+  },
+  {
+    "category": "weapon:spear.1.body",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv1.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv1.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1672,
+      941
+    ],
+    "outputSize": [
+      1024,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      52,
+      110,
+      973,
+      146
+    ],
+    "fit": {
+      "inputBbox": [
+        20,
+        425,
+        1653,
+        489
+      ],
+      "outputBbox": [
+        52,
+        110,
+        973,
+        146
+      ],
+      "scale": 0.5639926515615432,
+      "paste": [
+        52,
+        110,
+        921,
+        36
+      ]
+    }
+  },
+  {
+    "category": "weapon:spear.1.fx",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_spear_thrust_lv1.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_spear_thrust_lv1.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      2172,
+      724
+    ],
+    "outputSize": [
+      1024,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      52,
+      88,
+      973,
+      168
+    ],
+    "fit": {
+      "inputBbox": [
+        212,
+        286,
+        2062,
+        446
+      ],
+      "outputBbox": [
+        52,
+        88,
+        973,
+        168
+      ],
+      "scale": 0.49783783783783786,
+      "paste": [
+        52,
+        88,
+        921,
+        80
+      ]
+    }
+  },
+  {
+    "category": "weapon:spear.2.body",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv2.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv2.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1672,
+      941
+    ],
+    "outputSize": [
+      1024,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      52,
+      110,
+      973,
+      146
+    ],
+    "fit": {
+      "inputBbox": [
+        20,
+        425,
+        1653,
+        489
+      ],
+      "outputBbox": [
+        52,
+        110,
+        973,
+        146
+      ],
+      "scale": 0.5639926515615432,
+      "paste": [
+        52,
+        110,
+        921,
+        36
+      ]
+    }
+  },
+  {
+    "category": "weapon:spear.3.body",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv3.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv3.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1672,
+      941
+    ],
+    "outputSize": [
+      1024,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      52,
+      92,
+      973,
+      165
+    ],
+    "fit": {
+      "inputBbox": [
+        22,
+        393,
+        1651,
+        523
+      ],
+      "outputBbox": [
+        52,
+        92,
+        973,
+        165
+      ],
+      "scale": 0.565377532228361,
+      "paste": [
+        52,
+        92,
+        921,
+        73
+      ]
+    }
+  },
+  {
+    "category": "weapon:spear.3.fx",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_spear_thrust_lv3.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_spear_thrust_lv3.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      2172,
+      724
+    ],
+    "outputSize": [
+      1024,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      52,
+      74,
+      973,
+      181
+    ],
+    "fit": {
+      "inputBbox": [
+        83,
+        245,
+        2067,
+        476
+      ],
+      "outputBbox": [
+        52,
+        74,
+        973,
+        181
+      ],
+      "scale": 0.4642137096774194,
+      "paste": [
+        52,
+        74,
+        921,
+        107
+      ]
+    }
+  },
+  {
+    "category": "weapon:spear.4.body",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv4.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv4.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1672,
+      941
+    ],
+    "outputSize": [
+      1024,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      52,
+      92,
+      973,
+      165
+    ],
+    "fit": {
+      "inputBbox": [
+        22,
+        393,
+        1651,
+        523
+      ],
+      "outputBbox": [
+        52,
+        92,
+        973,
+        165
+      ],
+      "scale": 0.565377532228361,
+      "paste": [
+        52,
+        92,
+        921,
+        73
+      ]
+    }
+  },
+  {
+    "category": "weapon:spear.5.body",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv5.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv5.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1672,
+      941
+    ],
+    "outputSize": [
+      1024,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      52,
+      44,
+      973,
+      213
+    ],
+    "fit": {
+      "inputBbox": [
+        21,
+        349,
+        1654,
+        648
+      ],
+      "outputBbox": [
+        52,
+        44,
+        973,
+        213
+      ],
+      "scale": 0.5639926515615432,
+      "paste": [
+        52,
+        44,
+        921,
+        169
+      ]
+    }
+  },
+  {
+    "category": "weapon:spear.5.fx",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_spear_thrust_lv5.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_spear_thrust_lv5.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      2172,
+      724
+    ],
+    "outputSize": [
+      1024,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      52,
+      48,
+      973,
+      209
+    ],
+    "fit": {
+      "inputBbox": [
+        41,
+        185,
+        2095,
+        545
+      ],
+      "outputBbox": [
+        52,
+        48,
+        973,
+        209
+      ],
+      "scale": 0.44839337877312563,
+      "paste": [
+        52,
+        48,
+        921,
+        161
+      ]
+    }
+  },
+  {
+    "category": "weapon:spear.6.body",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv6.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv6.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1672,
+      941
+    ],
+    "outputSize": [
+      1024,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      52,
+      14,
+      973,
+      242
+    ],
+    "fit": {
+      "inputBbox": [
+        28,
+        291,
+        1654,
+        693
+      ],
+      "outputBbox": [
+        52,
+        14,
+        973,
+        242
+      ],
+      "scale": 0.566420664206642,
+      "paste": [
+        52,
+        14,
+        921,
+        228
+      ]
+    }
+  },
+  {
+    "category": "weapon:spear.6.fx",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_spear_thrust_lv6.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_spear_thrust_lv6.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      2172,
+      724
+    ],
+    "outputSize": [
+      1024,
+      256
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      124,
+      13,
+      900,
+      243
+    ],
+    "fit": {
+      "inputBbox": [
+        94,
+        74,
+        2106,
+        670
+      ],
+      "outputBbox": [
+        124,
+        13,
+        900,
+        243
+      ],
+      "scale": 0.3859060402684564,
+      "paste": [
+        124,
+        13,
+        776,
+        230
+      ]
+    }
+  },
+  {
+    "category": "weapon:crossbow.1.projectile",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_arrow_projectile.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_arrow_projectile.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      512,
+      128
+    ],
+    "outputSize": [
+      512,
+      128
+    ],
+    "alpha": [
+      0,
+      252
+    ],
+    "bbox": [
+      31,
+      46,
+      481,
+      81
+    ],
+    "fit": {
+      "inputBbox": [
+        45,
+        47,
+        500,
+        82
+      ],
+      "outputBbox": [
+        31,
+        46,
+        481,
+        81
+      ],
+      "scale": 0.989010989010989,
+      "paste": [
+        31,
+        46,
+        450,
+        35
+      ]
+    }
+  },
+  {
+    "category": "weapon:crossbow.2.projectile",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv2.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv2.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      512,
+      512
+    ],
+    "outputSize": [
+      512,
+      128
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      137,
+      8,
+      375,
+      120
+    ],
+    "fit": {
+      "inputBbox": [
+        35,
+        153,
+        491,
+        368
+      ],
+      "outputBbox": [
+        137,
+        8,
+        375,
+        120
+      ],
+      "scale": 0.5209302325581395,
+      "paste": [
+        137,
+        8,
+        238,
+        112
+      ]
+    }
+  },
+  {
+    "category": "weapon:crossbow.3.projectile",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv3.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv3.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      512,
+      512
+    ],
+    "outputSize": [
+      512,
+      128
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      137,
+      8,
+      375,
+      120
+    ],
+    "fit": {
+      "inputBbox": [
+        35,
+        153,
+        491,
+        368
+      ],
+      "outputBbox": [
+        137,
+        8,
+        375,
+        120
+      ],
+      "scale": 0.5209302325581395,
+      "paste": [
+        137,
+        8,
+        238,
+        112
+      ]
+    }
+  },
+  {
+    "category": "weapon:crossbow.4.projectile",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv4.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv4.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      512,
+      512
+    ],
+    "outputSize": [
+      512,
+      128
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      137,
+      8,
+      375,
+      120
+    ],
+    "fit": {
+      "inputBbox": [
+        35,
+        153,
+        491,
+        368
+      ],
+      "outputBbox": [
+        137,
+        8,
+        375,
+        120
+      ],
+      "scale": 0.5209302325581395,
+      "paste": [
+        137,
+        8,
+        238,
+        112
+      ]
+    }
+  },
+  {
+    "category": "weapon:crossbow.5.projectile",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_projectile_lv5.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_projectile_lv5.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      512,
+      512
+    ],
+    "outputSize": [
+      512,
+      128
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      173,
+      8,
+      339,
+      120
+    ],
+    "fit": {
+      "inputBbox": [
+        0,
+        110,
+        463,
+        422
+      ],
+      "outputBbox": [
+        173,
+        8,
+        339,
+        120
+      ],
+      "scale": 0.358974358974359,
+      "paste": [
+        173,
+        8,
+        166,
+        112
+      ]
+    }
+  },
+  {
+    "category": "weapon:crossbow.5.aoe",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv5.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv5.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      512,
+      512
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      26,
+      38,
+      486,
+      474
+    ],
+    "fit": {
+      "inputBbox": [
+        9,
+        23,
+        509,
+        497
+      ],
+      "outputBbox": [
+        26,
+        38,
+        486,
+        474
+      ],
+      "scale": 0.92,
+      "paste": [
+        26,
+        38,
+        460,
+        436
+      ]
+    }
+  },
+  {
+    "category": "weapon:crossbow.6.projectile",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_projectile_lv6.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_projectile_lv6.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      512,
+      512
+    ],
+    "outputSize": [
+      512,
+      128
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      186,
+      8,
+      326,
+      120
+    ],
+    "fit": {
+      "inputBbox": [
+        0,
+        62,
+        485,
+        449
+      ],
+      "outputBbox": [
+        186,
+        8,
+        326,
+        120
+      ],
+      "scale": 0.28940568475452194,
+      "paste": [
+        186,
+        8,
+        140,
+        112
+      ]
+    }
+  },
+  {
+    "category": "weapon:crossbow.6.column",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv6.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv6.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      512,
+      512
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      28,
+      26,
+      484,
+      486
+    ],
+    "fit": {
+      "inputBbox": [
+        1,
+        0,
+        509,
+        512
+      ],
+      "outputBbox": [
+        28,
+        26,
+        484,
+        486
+      ],
+      "scale": 0.8984375,
+      "paste": [
+        28,
+        26,
+        456,
+        460
+      ]
+    }
+  },
+  {
+    "category": "weapon:qinggang.1.primary",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_orbit_blade.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_orbit_blade.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      216,
+      31,
+      297,
+      481
+    ],
+    "fit": {
+      "inputBbox": [
+        528,
+        79,
+        726,
+        1185
+      ],
+      "outputBbox": [
+        216,
+        31,
+        297,
+        481
+      ],
+      "scale": 0.40687160940325495,
+      "paste": [
+        216,
+        31,
+        81,
+        450
+      ]
+    }
+  },
+  {
+    "category": "weapon:qinggang.2.primary",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv2.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv2.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      512,
+      512
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      170,
+      31,
+      342,
+      481
+    ],
+    "fit": {
+      "inputBbox": [
+        181,
+        30,
+        360,
+        499
+      ],
+      "outputBbox": [
+        170,
+        31,
+        342,
+        481
+      ],
+      "scale": 0.9594882729211087,
+      "paste": [
+        170,
+        31,
+        172,
+        450
+      ]
+    }
+  },
+  {
+    "category": "weapon:qinggang.3.primary",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv3.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv3.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      512,
+      512
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      170,
+      31,
+      342,
+      481
+    ],
+    "fit": {
+      "inputBbox": [
+        181,
+        30,
+        360,
+        499
+      ],
+      "outputBbox": [
+        170,
+        31,
+        342,
+        481
+      ],
+      "scale": 0.9594882729211087,
+      "paste": [
+        170,
+        31,
+        172,
+        450
+      ]
+    }
+  },
+  {
+    "category": "weapon:qinggang.4.primary",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv4.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv4.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      512,
+      512
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      170,
+      31,
+      342,
+      481
+    ],
+    "fit": {
+      "inputBbox": [
+        181,
+        30,
+        360,
+        499
+      ],
+      "outputBbox": [
+        170,
+        31,
+        342,
+        481
+      ],
+      "scale": 0.9594882729211087,
+      "paste": [
+        170,
+        31,
+        172,
+        450
+      ]
+    }
+  },
+  {
+    "category": "weapon:qinggang.5.primary",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv5.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv5.png",
+    "status": "processed",
+    "mode": "white-edge",
+    "removedPixels": 1,
+    "sourceSizeBefore": [
+      512,
+      512
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      150,
+      31,
+      362,
+      481
+    ],
+    "fit": {
+      "inputBbox": [
+        138,
+        8,
+        375,
+        512
+      ],
+      "outputBbox": [
+        150,
+        31,
+        362,
+        481
+      ],
+      "scale": 0.8928571428571429,
+      "paste": [
+        150,
+        31,
+        212,
+        450
+      ]
+    }
+  },
+  {
+    "category": "weapon:qinggang.6.primary",
+    "source": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv6.png",
+    "output": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv6.png",
+    "status": "processed",
+    "mode": "white-edge",
+    "removedPixels": 1,
+    "sourceSizeBefore": [
+      512,
+      512
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      150,
+      31,
+      362,
+      481
+    ],
+    "fit": {
+      "inputBbox": [
+        138,
+        8,
+        375,
+        512
+      ],
+      "outputBbox": [
+        150,
+        31,
+        362,
+        481
+      ],
+      "scale": 0.8928571428571429,
+      "paste": [
+        150,
+        31,
+        212,
+        450
+      ]
+    }
+  },
+  {
+    "category": "weapon:qinggang.6.inner",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_qinggang_lv6_inner.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_qinggang_lv6_inner.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      31,
+      31,
+      481,
+      481
+    ],
+    "fit": {
+      "inputBbox": [
+        146,
+        146,
+        1109,
+        1109
+      ],
+      "outputBbox": [
+        31,
+        31,
+        481,
+        481
+      ],
+      "scale": 0.4672897196261682,
+      "paste": [
+        31,
+        31,
+        450,
+        450
+      ]
+    }
+  },
+  {
+    "category": "weapon:qinggang.6.outer",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_qinggang_lv6_outer.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_qinggang_lv6_outer.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      31,
+      51,
+      481,
+      461
+    ],
+    "fit": {
+      "inputBbox": [
+        6,
+        55,
+        1246,
+        1186
+      ],
+      "outputBbox": [
+        31,
+        51,
+        481,
+        461
+      ],
+      "scale": 0.3629032258064516,
+      "paste": [
+        31,
+        51,
+        450,
+        410
+      ]
+    }
+  },
+  {
+    "category": "weapon:shield.1.primary",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_shield_pulse_circle.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_shield_pulse_circle.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      28,
+      26,
+      485,
+      486
+    ],
+    "fit": {
+      "inputBbox": [
+        24,
+        9,
+        1234,
+        1226
+      ],
+      "outputBbox": [
+        28,
+        26,
+        485,
+        486
+      ],
+      "scale": 0.3779786359901397,
+      "paste": [
+        28,
+        26,
+        457,
+        460
+      ]
+    }
+  },
+  {
+    "category": "weapon:shield.2.primary",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_shield_lv2.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_shield_lv2.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      26,
+      30,
+      486,
+      483
+    ],
+    "fit": {
+      "inputBbox": [
+        72,
+        77,
+        1183,
+        1171
+      ],
+      "outputBbox": [
+        26,
+        30,
+        486,
+        483
+      ],
+      "scale": 0.414041404140414,
+      "paste": [
+        26,
+        30,
+        460,
+        453
+      ]
+    }
+  },
+  {
+    "category": "weapon:shield.3.primary",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_shield_lv3.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_shield_lv3.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      26,
+      30,
+      486,
+      483
+    ],
+    "fit": {
+      "inputBbox": [
+        72,
+        77,
+        1183,
+        1171
+      ],
+      "outputBbox": [
+        26,
+        30,
+        486,
+        483
+      ],
+      "scale": 0.414041404140414,
+      "paste": [
+        26,
+        30,
+        460,
+        453
+      ]
+    }
+  },
+  {
+    "category": "weapon:shield.4.primary",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_shield_lv4.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_shield_lv4.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      26,
+      30,
+      486,
+      483
+    ],
+    "fit": {
+      "inputBbox": [
+        72,
+        77,
+        1183,
+        1171
+      ],
+      "outputBbox": [
+        26,
+        30,
+        486,
+        483
+      ],
+      "scale": 0.414041404140414,
+      "paste": [
+        26,
+        30,
+        460,
+        453
+      ]
+    }
+  },
+  {
+    "category": "weapon:shield.5.primary",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_shield_lv5.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_shield_lv5.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      26,
+      26,
+      485,
+      486
+    ],
+    "fit": {
+      "inputBbox": [
+        9,
+        3,
+        1244,
+        1240
+      ],
+      "outputBbox": [
+        26,
+        26,
+        485,
+        486
+      ],
+      "scale": 0.3718674211802749,
+      "paste": [
+        26,
+        26,
+        459,
+        460
+      ]
+    }
+  },
+  {
+    "category": "weapon:shield.6.primary",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_shield_lv6_release.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_shield_lv6_release.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      26,
+      28,
+      486,
+      485
+    ],
+    "fit": {
+      "inputBbox": [
+        5,
+        9,
+        1249,
+        1246
+      ],
+      "outputBbox": [
+        26,
+        28,
+        486,
+        485
+      ],
+      "scale": 0.36977491961414793,
+      "paste": [
+        26,
+        28,
+        460,
+        457
+      ]
+    }
+  },
+  {
+    "category": "weapon:shield.6.charge",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_shield_lv6_charge.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_shield_lv6_charge.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      29,
+      26,
+      483,
+      486
+    ],
+    "fit": {
+      "inputBbox": [
+        35,
+        0,
+        1216,
+        1197
+      ],
+      "outputBbox": [
+        29,
+        26,
+        483,
+        486
+      ],
+      "scale": 0.3842940685045948,
+      "paste": [
+        29,
+        26,
+        454,
+        460
+      ]
+    }
+  },
+  {
+    "category": "weapon:taiping.1.primary",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_taiping_magic_circle.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_taiping_magic_circle.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      26,
+      28,
+      486,
+      485
+    ],
+    "fit": {
+      "inputBbox": [
+        19,
+        12,
+        1237,
+        1223
+      ],
+      "outputBbox": [
+        26,
+        28,
+        486,
+        485
+      ],
+      "scale": 0.37766830870279144,
+      "paste": [
+        26,
+        28,
+        460,
+        457
+      ]
+    }
+  },
+  {
+    "category": "weapon:taiping.2.primary",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_taiping_lv1.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_taiping_lv1.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      26,
+      38,
+      486,
+      473
+    ],
+    "fit": {
+      "inputBbox": [
+        19,
+        49,
+        1239,
+        1202
+      ],
+      "outputBbox": [
+        26,
+        38,
+        486,
+        473
+      ],
+      "scale": 0.3770491803278688,
+      "paste": [
+        26,
+        38,
+        460,
+        435
+      ]
+    }
+  },
+  {
+    "category": "weapon:taiping.5.primary",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_taiping_lv5.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_taiping_lv5.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      26,
+      34,
+      486,
+      478
+    ],
+    "fit": {
+      "inputBbox": [
+        19,
+        39,
+        1246,
+        1224
+      ],
+      "outputBbox": [
+        26,
+        34,
+        486,
+        478
+      ],
+      "scale": 0.37489812550937246,
+      "paste": [
+        26,
+        34,
+        460,
+        444
+      ]
+    }
+  },
+  {
+    "category": "weapon:taiping.6.primary",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_taiping_lv6.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_taiping_lv6.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      26,
+      34,
+      486,
+      478
+    ],
+    "fit": {
+      "inputBbox": [
+        19,
+        39,
+        1246,
+        1224
+      ],
+      "outputBbox": [
+        26,
+        34,
+        486,
+        478
+      ],
+      "scale": 0.37489812550937246,
+      "paste": [
+        26,
+        34,
+        460,
+        444
+      ]
+    }
+  },
+  {
+    "category": "weapon:taiping.6.steppable",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_taiping_lv6(steppable).png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_taiping_lv6(steppable).png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      26,
+      36,
+      486,
+      477
+    ],
+    "fit": {
+      "inputBbox": [
+        16,
+        47,
+        1243,
+        1224
+      ],
+      "outputBbox": [
+        26,
+        36,
+        486,
+        477
+      ],
+      "scale": 0.37489812550937246,
+      "paste": [
+        26,
+        36,
+        460,
+        441
+      ]
+    }
+  },
+  {
+    "category": "weapon:taiping.6.detonate",
+    "source": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_taiping_lv6_nuke.png",
+    "output": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_taiping_lv6_nuke.png",
+    "status": "processed",
+    "mode": "existing-alpha",
+    "removedPixels": 0,
+    "sourceSizeBefore": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bbox": [
+      26,
+      41,
+      486,
+      471
+    ],
+    "fit": {
+      "inputBbox": [
+        0,
+        34,
+        1254,
+        1207
+      ],
+      "outputBbox": [
+        26,
+        41,
+        486,
+        471
+      ],
+      "scale": 0.3668261562998405,
+      "paste": [
+        26,
+        41,
+        460,
+        430
+      ]
+    }
+  }
+]

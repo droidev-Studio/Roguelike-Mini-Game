@@ -22,6 +22,24 @@ export interface SpawnSystemWorld {
   updateSpawn(deltaTime: number): void;
 }
 
+export interface BossSystemWorld {
+  updateBosses?(deltaTime: number): void;
+}
+
+export interface MapSystemWorld {
+  updateMap?(deltaTime: number): void;
+}
+
+export interface DropSystemWorld {
+  updateDrops?(deltaTime: number): void;
+}
+
+export interface ProgressionSystemWorld {
+  hasPendingLevelProgression?(): boolean;
+  processPendingLevelProgression?(): void;
+  updateProgression?(deltaTime: number): void;
+}
+
 export interface PickupSystemWorld {
   updatePickups(deltaTime: number): void;
 }

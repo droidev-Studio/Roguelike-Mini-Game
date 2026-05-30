@@ -8,7 +8,7 @@
     <title>千里走单骑</title>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="game.css">
-    <link rel="stylesheet" href="ui/game-ui.css">
+    <link rel="stylesheet" href="src/ui/game-ui.css">
     <script>
         (function () {
             const isGitHubPages = window.location.hostname.endsWith('github.io')
@@ -88,13 +88,16 @@
         <aside id="gameEditorSidebar" class="game-editor-sidebar" aria-label="Game Edit Sidebar">
             <div class="editor-loading">Loading editor data...</div>
         </aside>
+        <button id="gameEditorToggle" class="game-editor-toggle" type="button" aria-controls="gameEditorSidebar" aria-expanded="false">
+            编辑
+        </button>
     </div>
     <script src="GameSettings.js"></script>
     <script src="AudioManager.js"></script>
     <script src="AssetRuntime.js"></script>
     <script src="SaveManager.js"></script>
-    <script type="module" src="ui/GameEditorSidebar.js"></script>
-    <script src="ui/UIBridge.js"></script>
+    <script type="module" src="src/ui/GameEditorSidebar.js"></script>
+    <script src="src/ui/UIBridge.js"></script>
     <script src="game.js"></script>
 </body>
 </html>

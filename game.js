@@ -47,6 +47,7 @@ const FEATURE_FLAGS = {
     ENABLE_ART_PIXI_TEXTURES: false,
     ENABLE_ART_DEBUG_PREVIEW: false,
     ENABLE_ART_WEAPON_V2: false,
+    ENABLE_PROCEDURAL_MAP_BASE: true,
     ENABLE_SABER_FIRE_ANIMATION: false,
     ENABLE_MAP_TERRAIN_OBSTACLES: true,
 };
@@ -69,6 +70,12 @@ if (FEATURE_FLAG_PARAMS.get('artPreview') === '1') {
     FEATURE_FLAGS.ENABLE_ART_EFFECTS = true;
     FEATURE_FLAGS.ENABLE_ART_UI_SKIN = true;
     FEATURE_FLAGS.ENABLE_ART_DEBUG_PREVIEW = true;
+}
+if (FEATURE_FLAG_PARAMS.get('artDebug') === '1' || FEATURE_FLAG_PARAMS.get('artAdapterDebug') === '1') {
+    FEATURE_FLAGS.ENABLE_ART_DEBUG_PREVIEW = true;
+}
+if (FEATURE_FLAG_PARAMS.get('aiTileBase') === '1') {
+    FEATURE_FLAGS.ENABLE_PROCEDURAL_MAP_BASE = false;
 }
 if (FEATURE_FLAG_PARAMS.get('artHud') === '1') {
     FEATURE_FLAGS.ENABLE_ART_ASSETS = true;
@@ -157,6 +164,7 @@ if (FEATURE_FLAG_PARAMS.get('pickupMerge') === '1') FEATURE_FLAGS.ENABLE_EXP_PIC
 if (FEATURE_FLAG_PARAMS.get('aiTuning') === '1') FEATURE_FLAGS.ENABLE_AI_BEHAVIOR_TUNING = true;
 if (FEATURE_FLAG_PARAMS.get('qinqiPhantoms') === '1') FEATURE_FLAGS.ENABLE_QINQI_PHANTOMS = true;
 if (FEATURE_FLAG_PARAMS.get('effectModulesV2') === '1') FEATURE_FLAGS.ENABLE_EFFECT_MODULES_V2 = true;
+window.FEATURE_FLAGS = FEATURE_FLAGS;
 
 const ART_FEATURE_FLAGS = [
     'ENABLE_ART_ASSETS',
@@ -202,37 +210,18 @@ function getNumericGameSetting(path, fallback) {
     return Number.isFinite(value) ? value : fallback;
 }
 
-const COMBAT_RULE_STORAGE_KEY = 'zeroDowntimeCombatRuleSettings';
+const COMBAT_RULE_CONFIG = window.GAME_SETTINGS?.COMBAT_RULES || window.DEFAULT_GAME_SETTINGS?.COMBAT_RULES || {};
+const COMBAT_RULE_STORAGE_KEY = COMBAT_RULE_CONFIG.STORAGE_KEY || 'zeroDowntimeCombatRuleSettings';
 const COMBAT_RULE_DEFAULTS = {
     playerHealth: 100,
     playerIntensity: 'normal',
     gameHard: 'normal',
     drops: 'normal',
     level: 'normal',
+    ...(COMBAT_RULE_CONFIG.DEFAULTS || {}),
 };
-
-const COMBAT_RULE_PRESETS = {
-    playerIntensity: {
-        easy: { speed: 1.25, damage: 1.6, cooldown: 0.65, area: 1.25 },
-        normal: { speed: 1, damage: 1, cooldown: 1, area: 1 },
-        hard: { speed: 0.85, damage: 0.65, cooldown: 1.45, area: 0.8 },
-    },
-    gameHard: {
-        easy: { enemyHp: 0.6, enemySpeed: 0.8, contactDamage: 0.6, bossHp: 0.65, waveCount: 0.7, spawnInterval: 1.3 },
-        normal: { enemyHp: 1, enemySpeed: 1, contactDamage: 1, bossHp: 1, waveCount: 1, spawnInterval: 1 },
-        hard: { enemyHp: 1.75, enemySpeed: 1.25, contactDamage: 1.6, bossHp: 2, waveCount: 1.45, spawnInterval: 0.65 },
-    },
-    drops: {
-        easy: { exp: 1.35, resonance: 1.5, food: 1.4, magnet: 1.3, none: 0.35 },
-        normal: { exp: 1, resonance: 1, food: 1, magnet: 1, none: 1 },
-        hard: { exp: 0.65, resonance: 0.6, food: 0.6, magnet: 0.6, none: 2 },
-    },
-    level: {
-        easy: { expRequirement: 0.7 },
-        normal: { expRequirement: 1 },
-        hard: { expRequirement: 1.45 },
-    },
-};
+const COMBAT_RULE_PRESETS = COMBAT_RULE_CONFIG.PRESETS || {};
+const COMBAT_RULE_NEUTRAL_PRESET = { speed: 1, damage: 1, cooldown: 1, area: 1, enemyHp: 1, enemySpeed: 1, contactDamage: 1, bossHp: 1, waveCount: 1, spawnInterval: 1, exp: 1, resonance: 1, food: 1, magnet: 1, none: 1, expRequirement: 1 };
 
 function normalizeCombatRuleSettings(next = {}) {
     const enumValue = (value) => ['easy', 'normal', 'hard'].includes(value) ? value : 'normal';
@@ -257,11 +246,12 @@ function readCombatRuleSettings() {
 
 function getCombatRuleMultipliers(settings = readCombatRuleSettings()) {
     const normalized = normalizeCombatRuleSettings(settings);
+    const preset = (group, value) => COMBAT_RULE_PRESETS[group]?.[value] || COMBAT_RULE_PRESETS[group]?.normal || COMBAT_RULE_NEUTRAL_PRESET;
     return {
-        player: COMBAT_RULE_PRESETS.playerIntensity[normalized.playerIntensity],
-        game: COMBAT_RULE_PRESETS.gameHard[normalized.gameHard],
-        drops: COMBAT_RULE_PRESETS.drops[normalized.drops],
-        level: COMBAT_RULE_PRESETS.level[normalized.level],
+        player: preset('playerIntensity', normalized.playerIntensity),
+        game: preset('gameHard', normalized.gameHard),
+        drops: preset('drops', normalized.drops),
+        level: preset('level', normalized.level),
     };
 }
 
@@ -279,6 +269,25 @@ function weightedCombatDrop(entries, dropSettings = readCombatRuleSettings()) {
         if (roll <= 0) return entry.type || null;
     }
     return weighted[weighted.length - 1]?.type || null;
+}
+
+function resolvePickupType(type) {
+    if (!type) return null;
+    return PICKUP_TYPES[type] || PICKUP_TYPES[String(type).toUpperCase()] || type;
+}
+
+function resolveDropEntries(entries = []) {
+    if (!Array.isArray(entries)) return [];
+    return entries.map(entry => ({
+        ...entry,
+        type: resolvePickupType(entry.type),
+        kind: entry.kind || 'none',
+        weight: Number(entry.weight) || 0,
+    }));
+}
+
+function rollDropTrack(entries, dropSettings) {
+    return weightedCombatDrop(resolveDropEntries(entries), dropSettings);
 }
 
 window.getCombatRuleSettings = readCombatRuleSettings;
@@ -315,58 +324,157 @@ function getDrawableImageSrc(image) {
     return image.currentSrc || image.src || '';
 }
 
+function isArtAdapterDebugEnabled() {
+    return Boolean(FEATURE_FLAGS.ENABLE_ART_DEBUG_PREVIEW);
+}
+
+function drawRuntimeAsset(ctx, image, entry, x, y, width, height, options = {}) {
+    const assets = window.assetRuntime;
+    if (!assets?.canDraw?.(image)) return false;
+    if (!assets?.drawGameAsset) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(options.angle || 0);
+        ctx.globalAlpha *= Math.max(0, Math.min(1, options.alpha === undefined ? 1 : options.alpha));
+        ctx.imageSmoothingEnabled = true;
+        if (options.filter) ctx.filter = options.filter;
+        ctx.drawImage(image, -width * (options.anchor?.[0] ?? 0.5), -height * (options.anchor?.[1] ?? 0.5), width, height);
+        ctx.restore();
+        return true;
+    }
+    assets.drawGameAsset(ctx, image, entry || {}, x, y, {
+        ...options,
+        width,
+        height,
+        debug: options.debug ?? isArtAdapterDebugEnabled(),
+    });
+    return true;
+}
+
 function drawArtEffectTexture(ctx, effectId, x, y, width, height, angle = 0, alpha = 1, anchorX = 0.5, anchorY = 0.5, weaponLevel = null) {
     const assets = window.assetRuntime;
-    if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !FEATURE_FLAGS.ENABLE_ART_EFFECTS || !assets?.getEffectTexture) return false;
+    if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !FEATURE_FLAGS.ENABLE_ART_EFFECTS || !assets) return false;
+    const binding = assets.manifest?.weaponAttacks?.bindings?.[effectId];
+    if (binding) {
+        const requestedLevel = weaponLevel == null ? NaN : Number(weaponLevel);
+        const resolvedLevel = Number.isFinite(requestedLevel) ? requestedLevel : (binding.defaultLevel || 1);
+        return drawArtWeaponAttackTexture(ctx, binding.weapon, resolvedLevel, binding.slot || 'primary', x, y, width, height, angle, alpha, anchorX, anchorY);
+    }
+    if (!assets.getEffectTexture) return false;
     const image = assets.getEffectTexture(effectId, weaponLevel);
     if (!assets.canDraw?.(image)) return false;
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(angle);
-    ctx.globalAlpha *= Math.max(0, Math.min(1, alpha));
-    ctx.imageSmoothingEnabled = true;
-    ctx.drawImage(image, -width * anchorX, -height * anchorY, width, height);
-    ctx.restore();
-    return true;
+    const entry = assets.getEffectEntry?.(effectId, weaponLevel) || {};
+    return drawRuntimeAsset(ctx, image, entry, x, y, width, height, {
+        angle,
+        alpha,
+        anchor: [anchorX, anchorY],
+        blendMode: entry.blendMode,
+    });
 }
 
-function drawArtWeaponAttackTexture(ctx, weaponId, level, slot, x, y, width, height, angle = 0, alpha = 1, anchorX = 0.5, anchorY = 0.5) {
-    const assets = window.assetRuntime;
-    if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !FEATURE_FLAGS.ENABLE_ART_EFFECTS || !assets?.getWeaponAttackTexture) return false;
-    const image = assets.getWeaponAttackTexture(weaponId, level, slot);
-    if (!assets.canDraw?.(image)) return false;
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(angle);
-    ctx.globalAlpha *= Math.max(0, Math.min(1, alpha));
-    ctx.imageSmoothingEnabled = true;
-    ctx.drawImage(image, -width * anchorX, -height * anchorY, width, height);
-    ctx.restore();
-    return true;
+function getWeaponAttackLevelSlots(assets, weaponId, level) {
+    const attacks = assets?.manifest?.weaponAttacks?.[weaponId];
+    const levels = attacks?.levels || {};
+    const requestedLevel = Number(level);
+    const safeLevel = Number.isFinite(requestedLevel)
+        ? Math.max(1, Math.min(6, Math.round(requestedLevel)))
+        : 1;
+    return {
+        exact: levels[String(safeLevel)] || {},
+        fallback: levels['1'] || {},
+    };
 }
 
-function drawArtWeaponAttackTextureAdvanced(ctx, weaponId, level, slot, x, y, width, height, options = {}) {
+function getWeaponAttackEntryExact(assets, weaponId, level, slot) {
+    const slots = getWeaponAttackLevelSlots(assets, weaponId, level);
+    return slots.exact?.[slot] || slots.fallback?.[slot] || null;
+}
+
+function getWeaponEffectOverlaySlots(slot) {
+    if (slot === 'fx' || slot === 'effect' || slot?.endsWith?.('Fx')) return [];
+    if (slot === 'charge') return ['chargeFx', 'fx', 'effect'];
+    if (slot === 'release') return ['releaseFx', 'fx', 'effect'];
+    if (slot === 'projectile') return ['trail', 'fx', 'effect'];
+    if (slot === 'body' || slot === 'primary') return ['fx', 'effect'];
+    return ['fx', 'effect'];
+}
+
+function drawArtWeaponAttackComposite(ctx, weaponId, level, slot, x, y, width, height, options = {}) {
     const assets = window.assetRuntime;
     if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !FEATURE_FLAGS.ENABLE_ART_EFFECTS || !assets?.getWeaponAttackTexture) return false;
-    const image = assets.getWeaponAttackTexture(weaponId, level, slot);
-    if (!assets.canDraw?.(image)) return false;
     const angle = options.angle || 0;
     const alpha = options.alpha === undefined ? 1 : options.alpha;
     const anchorX = options.anchorX === undefined ? 0.5 : options.anchorX;
     const anchorY = options.anchorY === undefined ? 0.5 : options.anchorY;
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(angle);
-    ctx.globalAlpha *= Math.max(0, Math.min(1, alpha));
-    ctx.imageSmoothingEnabled = true;
-    if (options.filter) ctx.filter = options.filter;
-    if (options.shadowBlur) {
-        ctx.shadowBlur = options.shadowBlur;
-        ctx.shadowColor = options.shadowColor || 'rgba(255, 190, 42, 0.9)';
+    const drawnSrc = new Set();
+    let drewAny = false;
+
+    const drawEntry = (entry, layerOptions = {}) => {
+        if (!entry?.src || drawnSrc.has(entry.src)) return false;
+        const image = assets.resolveImage?.(entry.src);
+        if (!assets.canDraw?.(image)) return false;
+        drawnSrc.add(entry.src);
+        drewAny = drawRuntimeAsset(ctx, image, entry, x, y, width, height, {
+            angle,
+            alpha: alpha * (layerOptions.alphaMultiplier ?? 1),
+            anchor: [anchorX, anchorY],
+            filter: options.filter,
+            shadowBlur: options.shadowBlur,
+            shadowColor: options.shadowColor,
+            blendMode: layerOptions.blendMode || options.blendMode || entry.blendMode,
+        }) || drewAny;
+        return true;
+    };
+
+    const baseEntry = getWeaponAttackEntryExact(assets, weaponId, level, slot) || assets.getWeaponAttackEntry?.(weaponId, level, slot) || {};
+    drawEntry(baseEntry);
+
+    if (options.layered !== false) {
+        for (const effectSlot of getWeaponEffectOverlaySlots(slot)) {
+            const effectEntry = getWeaponAttackEntryExact(assets, weaponId, level, effectSlot);
+            if (!effectEntry) continue;
+            drawEntry(effectEntry, {
+                alphaMultiplier: Number(effectEntry.overlayAlpha ?? 1),
+                blendMode: effectEntry.blendMode || 'screen',
+            });
+        }
     }
-    ctx.drawImage(image, -width * anchorX, -height * anchorY, width, height);
-    ctx.restore();
-    return true;
+
+    return drewAny;
+}
+
+function drawArtWeaponAttackTexture(ctx, weaponId, level, slot, x, y, width, height, angle = 0, alpha = 1, anchorX = 0.5, anchorY = 0.5) {
+    return drawArtWeaponAttackComposite(ctx, weaponId, level, slot, x, y, width, height, {
+        angle,
+        alpha,
+        anchorX,
+        anchorY,
+    });
+}
+
+function drawArtWeaponAttackTextureAdvanced(ctx, weaponId, level, slot, x, y, width, height, options = {}) {
+    return drawArtWeaponAttackComposite(ctx, weaponId, level, slot, x, y, width, height, options);
+}
+
+function drawArtWeaponAttackTextureExact(ctx, weaponId, level, slot, x, y, width, height, options = {}) {
+    const assets = window.assetRuntime;
+    if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !FEATURE_FLAGS.ENABLE_ART_EFFECTS || !assets?.resolveImage) return false;
+    const entry = getWeaponAttackEntryExact(assets, weaponId, level, slot);
+    if (!entry?.src) return false;
+    const image = assets.resolveImage(entry.src);
+    if (!assets.canDraw?.(image)) return false;
+    return drawRuntimeAsset(ctx, image, entry, x, y, width, height, {
+        angle: options.angle || 0,
+        alpha: options.alpha === undefined ? 1 : options.alpha,
+        anchor: [
+            options.anchorX === undefined ? 0.5 : options.anchorX,
+            options.anchorY === undefined ? 0.5 : options.anchorY,
+        ],
+        filter: options.filter,
+        shadowBlur: options.shadowBlur,
+        shadowColor: options.shadowColor,
+        blendMode: options.blendMode || entry.blendMode,
+    });
 }
 
 function drawArtUiTexture(ctx, uiId, x, y, width, height, alpha = 1) {
@@ -387,12 +495,11 @@ function drawArtTerrainTexture(ctx, kind, category, width, height, alpha = 1, ma
     if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !assets?.getTerrainTexture) return false;
     const image = assets.getTerrainTexture(kind, category, mapLevel);
     if (!assets.canDraw?.(image)) return false;
-    ctx.save();
-    ctx.globalAlpha *= Math.max(0, Math.min(1, alpha));
-    ctx.imageSmoothingEnabled = true;
-    ctx.drawImage(image, -width / 2, -height / 2, width, height);
-    ctx.restore();
-    return true;
+    const entry = assets.getTerrainEntry?.(kind, category, mapLevel) || {};
+    return drawRuntimeAsset(ctx, image, entry, 0, 0, width, height, {
+        alpha,
+        anchor: [0.5, 0.5],
+    });
 }
 
 const MAP_TERRAIN_PHASES = [
@@ -441,6 +548,398 @@ const MAP_TERRAIN_BIOMES = [
         hazardCount: 7,
     },
 ];
+
+const GAME_RULE_CONFIG = {
+    id: 'thousand-mile-solo-ride',
+    title: '千里走单骑',
+    runDurationSeconds: 600,
+    finalBossTriggerSecond: 600,
+    maxWeaponSlots: 6,
+    levelUpChoiceCount: 3,
+};
+
+function getMapBiomeIndexById(id) {
+    return MAP_TERRAIN_BIOMES.findIndex(biome => biome.id === id);
+}
+
+const WAVE_TIMELINE_CONFIG = {
+    timeline: {
+        durationMinutes: 10,
+        specialMinuteStart: 1,
+        specialMinuteEnd: 10,
+        miniBossOddMinutes: true,
+        swarmStartMinute: 1,
+        swarmEndMinute: 9,
+        destructiblePropsPerMinute: 1,
+        initialDestructibleProps: 2,
+        cutsceneDuration: 5,
+    },
+    miniBoss: {
+        baseHp: 400,
+        hpPerMinute: 200,
+        hpPerMinuteSquared: 40,
+        playerLevelHpMultiplier: 0.15,
+        spawnOffset: 200,
+        speedMultiplier: 1.2,
+        size: 50,
+        resonanceDrop: 10,
+    },
+    tigerGuards: {
+        triggerMinutes: [3, 6, 9, 10],
+        orbitRadiusBase: 180,
+        orbitRadiusPerMinuteAfterFirst: 15,
+        bodySpacing: 38,
+        spawnRadiusPadding: 200,
+        baseHp: 5,
+        hpPerMinute: 2,
+        hpPerStage: 2,
+        playerLevelHpMultiplier: 0.15,
+        maxSpawnPerFrame: 6,
+    },
+    swarm: {
+        startMinute: 1,
+        endMinute: 9,
+        baseLayers: 3,
+        layerPerMinutes: 2,
+        maxLayers: 6,
+        countPerLayerBase: 20,
+        countPerLayerRandom: 10,
+        spacingX: 30,
+        spacingY: 40,
+        depthOffsetBase: 50,
+        jitter: 5,
+        cavalryMainChance: 0.5,
+        cavalryChanceWhenMain: 0.8,
+        cavalryChanceWhenSupport: 0.2,
+        maxSpawnPerFrame: 8,
+        cavalryBaseHp: 3,
+        cavalryHpPerWave: 1,
+        cavalrySpeedBase: 2.5,
+        cavalrySpeedRandom: 0.5,
+        spearmanBaseHp: 5,
+        spearmanHpPerWave: 2,
+        spearmanSpeedBase: 2,
+        spearmanSpeedRandom: 0.2,
+        playerLevelHpMultiplier: 0.15,
+        mobSize: 16,
+        cavalryExp: 1,
+        spearmanExp: 2,
+    },
+    finalBoss: {
+        phantomCount: 4,
+        phantomDistance: 150,
+        phantomHpMultiplier: 0.4,
+        phantomSize: 30,
+        phantomColors: ['#59f2a9', '#b56cff', '#5fb2ff', '#ff6b48'],
+    },
+};
+
+const MINI_BOSS_P0_TYPES = ['charger_captain', 'archer_captain', 'shield_captain'];
+const MINI_BOSS_SCHEDULE_P0 = {
+    1: 'charger_captain',
+    3: 'archer_captain',
+    5: 'shield_captain',
+};
+const MINI_BOSS_CONFIG = {
+    charger_captain: {
+        name: 'Charger Captain',
+        role: 'dash',
+        artId: 'archer_captain',
+        hpMultiplier: 1.0,
+        speedMultiplier: 1.25,
+        size: 54,
+        color: '#c0392b',
+        resonanceDrop: 10,
+        skillCooldown: 4.5,
+        initialSkillDelay: 1.6,
+        windupSeconds: 0.6,
+        chargeSpeedMultiplier: 4.0,
+        chargeDuration: 0.8,
+        recoverySeconds: 1.0,
+        contactDamageMultiplier: 1.5,
+        warningColor: '#ff3b30',
+        hint: 'Dodge the charge line.',
+    },
+    archer_captain: {
+        name: 'Archer Captain',
+        role: 'ranged',
+        artId: 'charger_captain',
+        hpMultiplier: 0.85,
+        speedMultiplier: 0.9,
+        size: 48,
+        color: '#2ecc71',
+        resonanceDrop: 10,
+        preferredRange: 420,
+        retreatRange: 260,
+        skillCooldown: 3.5,
+        initialSkillDelay: 1.4,
+        windupSeconds: 0.45,
+        recoverySeconds: 0.35,
+        projectileSpeed: 420,
+        projectileDamage: 16,
+        halfHpVolleyCount: 3,
+        warningColor: '#5ad7ff',
+        hint: 'Close the distance or dodge arrows.',
+    },
+    shield_captain: {
+        name: 'Shield Captain',
+        role: 'control',
+        artId: 'scorcher_captain',
+        hpMultiplier: 1.25,
+        speedMultiplier: 0.75,
+        size: 58,
+        color: '#95a5a6',
+        resonanceDrop: 10,
+        skillCooldown: 7.0,
+        initialSkillDelay: 1.2,
+        windupSeconds: 0.55,
+        recoverySeconds: 0.6,
+        guardCountBase: 8,
+        guardCountPerMinute: 1,
+        ringDuration: 10,
+        warningColor: '#d6d6d6',
+        hint: 'Break the guard ring.',
+    },
+};
+
+const DROP_RULE_CONFIG = {
+    dropSettingsKey: 'drops',
+    types: ['exp', 'resonance', 'food', 'magnet', 'none'],
+    rareTracks: {
+        woodenOx: [
+            { type: 'MAGNET', kind: 'magnet', weight: 5 },
+            { type: 'CHICKEN', kind: 'food', weight: 10 },
+            { type: 'BUN', kind: 'food', weight: 50 },
+            { type: null, kind: 'none', weight: 35 },
+        ],
+        boss: {
+            chance: 0.3,
+            items: [
+                { type: 'MAGNET', kind: 'magnet', weight: 10 },
+                { type: 'CHICKEN', kind: 'food', weight: 30 },
+                { type: 'BUN', kind: 'food', weight: 60 },
+            ],
+        },
+        elite: [
+            { type: 'MAGNET', kind: 'magnet', weight: 1 },
+            { type: 'BUN', kind: 'food', weight: 4 },
+            { type: null, kind: 'none', weight: 95 },
+        ],
+    },
+    bossSpecial: {
+        bossExp: {
+            enabled: true,
+            size: 30,
+        },
+        resonanceFallbackCount: 15,
+        resonanceRadius: 40,
+    },
+    normal: [
+        { type: 'EXP', kind: 'exp', weight: 80 },
+        { type: 'RESONANCE', kind: 'resonance', weight: 15 },
+        { type: null, kind: 'none', weight: 5 },
+    ],
+    eliteBonus: {
+        enabled: true,
+        spacing: 15,
+    },
+    expMerge: {
+        maxPickups: 300,
+    },
+};
+
+const PROGRESSION_RULE_CONFIG = {
+    levelUpChoiceCount: 3,
+    rerollEveryLevels: 3,
+    levelUpHealFlat: 10,
+    inGamePassiveMaxLevel: 5,
+    expRequirement: {
+        scaleCombatRule: true,
+        tiers: [
+            { belowLevel: 5, base: 35, perLevel: 35, levelOffset: 0 },
+            { belowLevel: 20, base: 175, perLevel: 75, levelOffset: 4 },
+            { belowLevel: 40, base: 1300, perLevel: 300, levelOffset: 19 },
+            { base: 7300, perLevel: 800, levelOffset: 39 },
+        ],
+    },
+    levelUpNova: {
+        radius: 250,
+        bossDamageRatio: 0.05,
+        miniBossDamageRatio: 0.15,
+        eliteDamageRatio: 0.5,
+        normalDamageRatio: 2,
+        knockbackForce: 120,
+        screenShake: 0.5,
+    },
+    perks: {
+        maxLevel: 100,
+        progressSegments: 100,
+        progressStepPercent: 0.1,
+        cost: {
+            majorSize: 10,
+            majorQuadratic: 200,
+            majorLinear: 100,
+            minorOffset: 1,
+            minorNextOffset: 2,
+            multiplierBase: 1,
+            multiplierPerMajor: 3,
+        },
+    },
+};
+
+const ENTITY_RULE_CONFIG = {
+    player: {
+        id: 'guan-yu',
+        name: '关羽',
+        baseHp: 100,
+        baseSpeed: 200,
+        size: 30,
+        collisionRadius: 18,
+        magnetRadius: 75,
+        initialRerolls: 3,
+    },
+    enemies: {
+        soldier: {
+            hp: 10,
+            speed: 80,
+            size: 20,
+            damage: 10,
+            resonanceDrop: 1,
+            params: { baseHealthMultiplier: 1, speedMultiplier: 1, knockbackResist: 0 },
+        },
+        elite: {
+            hp: 30,
+            speed: 88,
+            size: 28,
+            damage: 10,
+            resonanceDrop: 3,
+            params: { baseHealthMultiplier: 3, speedMultiplier: 1.1, knockbackResist: 0.5 },
+        },
+        archer: {
+            hp: 6,
+            speed: 40,
+            size: 18,
+            damage: 2,
+            resonanceDrop: 1,
+            params: { baseHealthMultiplier: 0.6, speedMultiplier: 0.5, preferredRange: 400, shootInterval: 3, projectileSize: 10, knockbackResist: 0.3 },
+        },
+        wooden_ox: {
+            hp: 50,
+            speed: 176,
+            size: 25,
+            damage: 0,
+            resonanceDrop: 5,
+            params: { baseHealthMultiplier: 5, speedMultiplier: 2.2, escapeTimer: 15, directionChangeMin: 1.5, directionChangeRandom: 1, knockbackResist: 1 },
+        },
+        tiger_guard: {
+            hp: 52,
+            speed: 80,
+            size: 35,
+            damage: 10,
+            resonanceDrop: 2,
+            params: { baseHealthMultiplier: 5.2, orbitSpeed: 0.35, closingSpeed: 60, brokenFormationSpeed: 40, shieldSize: 40, knockbackResist: 1 },
+        },
+        destructible_prop: {
+            hp: 30,
+            speed: 0,
+            size: 32,
+            damage: 0,
+            resonanceDrop: 0,
+            params: { knockbackResist: 1 },
+        },
+        stage_boss: {
+            hp: 800,
+            speed: 90,
+            size: 60,
+            damage: 20,
+            resonanceDrop: 15,
+            params: { normalSize: 60, finalStageSize: 80, abilityCooldown: 3, knockbackResist: 1 },
+        },
+    },
+};
+
+const UI_TEXT_CONFIG = {
+    title: '千里走单骑',
+    subtitle: '穿越时空只为找到你',
+    hud: {
+        hp: '生命',
+        stage: '关卡',
+        boss: 'Boss',
+        wave: '波次',
+        resonance: '残响',
+        level: '等级',
+        time: '生存时间',
+        home: '主页',
+        settings: '设置',
+        pause: '暂停',
+        resume: '继续',
+        restart: '重启',
+        weapons: '武器',
+        passives: '被动技能',
+        inRun: '局内',
+        weaponCooldown: '武器冷却',
+    },
+    systemMenu: {
+        paused: '已暂停',
+        pausedSubtitle: '战斗逻辑已冻结',
+        pauseHint: '按 ESC 或 P 继续',
+        victory: '历史回路已接通',
+        victorySubtitle: '千里走单骑完成',
+        gameOver: '历史推演失败',
+        gameOverSubtitle: '回到最初的开始吧',
+    },
+    perkMenu: {
+        title: '历史残响 基因重塑',
+        currency: '当前残响',
+        subtitle: '点击购买永久升级，死亡后保留效果',
+        maxed: '已满级',
+        next: '下级',
+    },
+};
+
+function mergePlainConfig(target, source) {
+    if (!source || typeof source !== 'object') return target;
+    for (const [key, value] of Object.entries(source)) {
+        if (value && typeof value === 'object' && !Array.isArray(value)) {
+            target[key] = mergePlainConfig(target[key] || {}, value);
+        } else {
+            target[key] = value;
+        }
+    }
+    return target;
+}
+
+function getUiText(path, fallback = '') {
+    let cursor = UI_TEXT_CONFIG;
+    for (const key of String(path).split('.')) {
+        if (!cursor || typeof cursor !== 'object' || !(key in cursor)) return fallback;
+        cursor = cursor[key];
+    }
+    return typeof cursor === 'string' ? cursor : fallback;
+}
+
+function getEntitySpec(kind, fallback = {}) {
+    if (kind === 'player') return ENTITY_RULE_CONFIG.player || fallback;
+    return ENTITY_RULE_CONFIG.enemies?.[kind] || fallback;
+}
+
+function getEntityParam(kind, path, fallback) {
+    let cursor = getEntitySpec(kind, {});
+    for (const key of path.split('.')) {
+        if (!cursor || typeof cursor !== 'object' || !(key in cursor)) return fallback;
+        cursor = cursor[key];
+    }
+    return cursor;
+}
+
+function getEntityNumber(kind, path, fallback) {
+    const value = Number(getEntityParam(kind, path, fallback));
+    return Number.isFinite(value) ? value : fallback;
+}
+
+function getMaxWeaponSlots() {
+    return Math.max(1, Math.floor(Number(GAME_RULE_CONFIG.maxWeaponSlots) || 6));
+}
 
 const MAP_BLOCKER_SHAPES = {
     lv1_stone_small: { shape: 'circle', radius: 42, artWidth: 118, artHeight: 88, color: 'rgba(71, 70, 66, 0.94)', accent: 'rgba(170, 154, 116, 0.52)' },
@@ -689,8 +1188,65 @@ const GAME_STATE = {
     GAME_OVER: 4,    // 游戏结束（等待重开）
     VICTORY: 5,      // 通关
     PERK_UPGRADE: 6, // 局外升级
-    CUTSCENE: 7      // 新增：过场动画
+    CUTSCENE: 7,     // 终局过场动画
+    OPENING_CUTSCENE: 8, // 首次启动叙事
+    RUN_ENTRY: 9     // 每局传送门入场
 };
+const GAME_STATE_NAME = Object.fromEntries(Object.entries(GAME_STATE).map(([name, value]) => [value, name]));
+window.GAME_STATE = GAME_STATE;
+window.GAME_STATE_NAME = GAME_STATE_NAME;
+
+const OPENING_CUTSCENE_STORAGE_KEY = 'zeroDowntimeOpeningSeenV1';
+const OPENING_CUTSCENE_LINES = [
+    '挂印封金辞汉相，寻兄遥望远途还。',
+    '马骑赤兔行千里，刀偃青龙出五关。',
+    '忠义慨然冲宇宙，英雄从此震江山。',
+    '独行斩将应无敌，今古留题翰墨间。'
+];
+const OPENING_CUTSCENE_STORY = '汉末乱世，关云长封金挂印，辞曹寻兄。五关之路，烽火连天，忠义一念，照破山河。';
+const OPENING_ART_PATHS = {
+    ember: 'assets/ui-art/opening/opening_ember.png',
+    wildfireBg: 'assets/ui-art/opening/opening_wildfire_bg.png',
+    fireFg: 'assets/ui-art/opening/opening_fire_fg.png',
+};
+const OPENING_TIMELINE = {
+    duration: 8.9,
+    wildfireBg: [1.1, 5.4],
+    fireFg: [0.7, 4.8],
+    ember: [0.25, 3.4],
+    story: [0.75, 1.1, 7.7, 0.8],
+    poemStart: 1.9,
+    poemStep: 1.18,
+    poemFade: 1.0,
+    holdAfterPoem: 2.0,
+    title: [6.6, 1.4],
+    skipHint: [0.9, 1.0],
+};
+const RUN_ENTRY_TIMELINE = {
+    duration: 1.8,
+    seal: [0.0, 0.25],
+    portalOpen: [0.25, 0.45],
+    emerge: [0.7, 0.65],
+    close: [1.35, 0.45],
+};
+
+function clamp01(value) {
+    return Math.max(0, Math.min(1, Number(value) || 0));
+}
+
+function easeOutCubic(value) {
+    const t = clamp01(value);
+    return 1 - Math.pow(1 - t, 3);
+}
+
+function easeInOutCubic(value) {
+    const t = clamp01(value);
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function timelineProgress(time, range) {
+    return clamp01((time - range[0]) / Math.max(0.001, range[1]));
+}
 
 // 掉落物类型
 const PICKUP_TYPES = {
@@ -731,9 +1287,9 @@ const STAGES = [
         bossHp: 6500, bossSpeed: 80, bossAbility: 'summonPhantoms' // 10分：6500 (终极考验)
     }];
 
-const PERK_MAX_LEVEL = 100;
-const PERK_PROGRESS_SEGMENTS = 100;
-const PERK_PROGRESS_STEP_PERCENT = 0.1;
+let PERK_MAX_LEVEL = PROGRESSION_RULE_CONFIG.perks.maxLevel;
+let PERK_PROGRESS_SEGMENTS = PROGRESSION_RULE_CONFIG.perks.progressSegments;
+let PERK_PROGRESS_STEP_PERCENT = PROGRESSION_RULE_CONFIG.perks.progressStepPercent;
 
 // 局外升级选项
 // 双轨制整合：十个被动技能分别支持局外升级，id 对应 metaSkills key，getEffect 返回等级值（存入 metaSkills 存等级）
@@ -818,6 +1374,40 @@ const PERK_UPGRADES = [
     }
 ];
 
+function createPerkEffect(perk) {
+    if (perk?.effect === 'resonanceBonus') {
+        const baseMultiplier = Number(perk.baseMultiplier) || 1;
+        const multiplierPerLevel = Number(perk.multiplierPerLevel) || 0.1;
+        return level => baseMultiplier + level * multiplierPerLevel;
+    }
+    return level => level;
+}
+
+function applyPerkUpgradeSpec(perkUpgrades = []) {
+    if (!Array.isArray(perkUpgrades) || perkUpgrades.length === 0) return false;
+    PERK_UPGRADES.length = 0;
+    for (const perk of perkUpgrades) {
+        if (!perk || typeof perk !== 'object' || !perk.id) continue;
+        PERK_UPGRADES.push({
+            id: String(perk.id),
+            name: String(perk.name || perk.id),
+            description: String(perk.description || ''),
+            baseCost: Math.max(1, Math.floor(Number(perk.baseCost) || 1)),
+            effect: perk.effect || 'level',
+            baseMultiplier: perk.baseMultiplier,
+            multiplierPerLevel: perk.multiplierPerLevel,
+            getEffect: createPerkEffect(perk),
+        });
+    }
+    window.__PERK_UPGRADES__ = PERK_UPGRADES;
+    window.__PERK_UPGRADE_SPEC_APPLIED__ = {
+        count: PERK_UPGRADES.length,
+        ids: PERK_UPGRADES.map(perk => perk.id),
+        appliedAtFrame: GameRuntime.getFrame(),
+    };
+    return true;
+}
+
 // ==================== 核心类定义 ====================
 
 // ==================== 武器系统 ====================
@@ -831,6 +1421,7 @@ class Weapon {
         this.lastCooldown = attackInterval;
         this.type = 'base';
         this.level = 1; // 默认初始等级 1，每升一级 +1
+        this.renderLayer = 'aboveEntities';
     }
 
     // 属性更新后刷新冷却缩减 - 已废弃：CD现在开火时即时计算
@@ -940,14 +1531,14 @@ let LEGACY_JSON_WEAPON_CONFIG_HASH = '';
 let LEGACY_JSON_CONFIG_POISON_PILL = 0;
 
 function getWeaponJsonParam(weaponId, key, fallback) {
-    if (!FEATURE_FLAGS.ENABLE_JSON_CONFIG || !LEGACY_JSON_WEAPON_CONFIG) return fallback;
+    if (!LEGACY_JSON_WEAPON_CONFIG) return fallback;
     const params = LEGACY_JSON_WEAPON_CONFIG[weaponId]?.params;
     const value = params ? params[key] : undefined;
     return typeof value === 'number' || typeof value === 'boolean' ? value : fallback;
 }
 
 function getWeaponJsonAttackInterval(weaponId, fallback) {
-    if (!FEATURE_FLAGS.ENABLE_JSON_CONFIG || !LEGACY_JSON_WEAPON_CONFIG) return fallback;
+    if (!LEGACY_JSON_WEAPON_CONFIG) return fallback;
     const value = LEGACY_JSON_WEAPON_CONFIG[weaponId]?.attackInterval;
     return typeof value === 'number' ? value : fallback;
 }
@@ -969,6 +1560,12 @@ function applyWeaponJsonConfig(weaponSpec, options = {}) {
     }
     LEGACY_JSON_WEAPON_CONFIG = weaponSpec || {};
     LEGACY_JSON_WEAPON_CONFIG_HASH = nextHash;
+    window.__WEAPON_SPEC_CONFIG__ = LEGACY_JSON_WEAPON_CONFIG;
+    window.__WEAPON_SPEC_APPLIED__ = {
+        weapons: Object.keys(LEGACY_JSON_WEAPON_CONFIG).length,
+        hash: LEGACY_JSON_WEAPON_CONFIG_HASH,
+        appliedAtFrame: GameRuntime.getFrame(),
+    };
     for (const [weaponId, config] of Object.entries(weaponSpec || {})) {
         const legacyConfig = WEAPON_UPGRADES[weaponId];
         if (!legacyConfig) continue;
@@ -1208,6 +1805,41 @@ function collectCircleShadowHits(originX, originY, radius, candidates, excluded)
         if (excluded?.has(enemy)) continue;
         const dist = Math.hypot(enemy.x - originX, enemy.y - originY);
         if (dist < radius + enemy.size / 2) {
+            hits.push(getDebugEntityId(enemy));
+        }
+    }
+    return hits.sort((a, b) => a - b);
+}
+
+function getPointSegmentDistanceSq(px, py, ax, ay, bx, by) {
+    const abx = bx - ax;
+    const aby = by - ay;
+    const apx = px - ax;
+    const apy = py - ay;
+    const abLenSq = abx * abx + aby * aby;
+    const t = abLenSq > 0 ? Math.max(0, Math.min(1, (apx * abx + apy * aby) / abLenSq)) : 0;
+    const cx = ax + abx * t;
+    const cy = ay + aby * t;
+    const dx = px - cx;
+    const dy = py - cy;
+    return dx * dx + dy * dy;
+}
+
+function isCapsuleHit(cx, cy, dirX, dirY, length, width, entity) {
+    const halfLength = Math.max(0, length / 2);
+    const ax = cx - dirX * halfLength;
+    const ay = cy - dirY * halfLength;
+    const bx = cx + dirX * halfLength;
+    const by = cy + dirY * halfLength;
+    const radius = Math.max(1, width / 2) + (entity.size || 0) / 2;
+    return getPointSegmentDistanceSq(entity.x, entity.y, ax, ay, bx, by) <= radius * radius;
+}
+
+function collectCapsuleShadowHits(cx, cy, dirX, dirY, length, width, candidates, excluded) {
+    const hits = [];
+    for (const enemy of candidates) {
+        if (excluded?.has(enemy)) continue;
+        if (isCapsuleHit(cx, cy, dirX, dirY, length, width, enemy)) {
             hits.push(getDebugEntityId(enemy));
         }
     }
@@ -1535,52 +2167,307 @@ function fetchSpecJson(name, cacheBust = false) {
         });
 }
 
-function loadRuntimeSpecConfig(cacheBust = false) {
-    return Promise.all([
-        fetchSpecJson('weapons', cacheBust),
-        fetchSpecJson('enemies', cacheBust),
-        fetchSpecJson('balance', cacheBust),
-        fetchSpecJson('waves', cacheBust),
-        fetchSpecJson('effects', cacheBust),
-    ]).then(([weapons, enemies, balance, waves, effects]) => ({
-        weapons,
-        enemies,
-        balance,
-        waves,
-        effects,
-    }));
+async function loadRuntimeSpecConfig(cacheBust = false) {
+    const names = ['game', 'stages', 'entities', 'weapons', 'enemies', 'balance', 'waves', 'effects', 'progression', 'drops', 'ui-text'];
+    try {
+        const { SpecLoader } = await import('./src/core/SpecLoader.ts');
+        const loader = new SpecLoader('src/spec/', cacheBust);
+        const specs = await loader.loadAll(names.map(name => `${name}.json`));
+        window.__SPEC_LOADER__ = loader;
+        window.__SPEC_LOADER_STATUS__ = {
+            status: 'module',
+            source: 'src/core/SpecLoader.ts',
+            specs: Object.keys(specs).sort(),
+        };
+        return specs;
+    } catch (moduleError) {
+        console.warn('[SpecLoader] Module loader unavailable; falling back to legacy fetch loader.', moduleError);
+        window.__SPEC_LOADER_STATUS__ = {
+            status: 'legacy-fetch-fallback',
+            source: 'game.js',
+            error: moduleError?.message || String(moduleError),
+        };
+    }
+    const specs = await Promise.all(names.map(name => fetchSpecJson(name, cacheBust).catch(error => {
+        console.warn(`[SpecLoader] Optional spec unavailable: ${name}`, error);
+        return {};
+    }))).then(values => Object.fromEntries(names.map((name, index) => [name.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()), values[index]])));
+    window.__SPEC_LOADER_STATUS__ = {
+        ...(window.__SPEC_LOADER_STATUS__ || {}),
+        specs: Object.keys(specs).sort(),
+    };
+    return specs;
+}
+
+function applyStageSpecConfig(stageSpec = {}) {
+    if (!Array.isArray(stageSpec.stages) || stageSpec.stages.length === 0) return false;
+    for (let i = 0; i < Math.min(STAGES.length, stageSpec.stages.length); i++) {
+        const stage = stageSpec.stages[i];
+        Object.assign(STAGES[i], {
+            id: stage.id ?? STAGES[i].id,
+            name: stage.name ?? STAGES[i].name,
+            boss: stage.boss ?? STAGES[i].boss,
+            description: stage.description ?? STAGES[i].description,
+            minSpawnCount: stage.minSpawnCount ?? STAGES[i].minSpawnCount,
+            maxSpawnCount: stage.maxSpawnCount ?? STAGES[i].maxSpawnCount,
+            spawnInterval: stage.spawnInterval ?? STAGES[i].spawnInterval,
+            bossHp: stage.bossHp ?? STAGES[i].bossHp,
+            bossSpeed: stage.bossSpeed ?? STAGES[i].bossSpeed,
+            bossAbility: stage.bossAbility ?? STAGES[i].bossAbility,
+            fromSecond: stage.fromSecond ?? STAGES[i].fromSecond,
+            toSecond: stage.toSecond ?? STAGES[i].toSecond,
+            bossSecond: stage.bossSecond ?? STAGES[i].bossSecond,
+            mapKey: stage.mapKey ?? STAGES[i].mapKey,
+            obstacleEnableSecond: stage.obstacleEnableSecond ?? stage.bossSecond ?? STAGES[i].obstacleEnableSecond,
+            obstacleLevel: stage.obstacleLevel ?? STAGES[i].obstacleLevel,
+        });
+    }
+
+    const phases = [];
+    for (let i = 0; i < stageSpec.stages.length; i++) {
+        const stage = stageSpec.stages[i];
+        const mapKey = stage.mapKey || (i === 0 ? 'grass' : MAP_TERRAIN_BIOMES[i]?.id) || 'grass';
+        const threshold = Math.max(0, Number(stage.fromSecond) || 0);
+        const obstacleEnableSecond = Math.max(threshold, Number(stage.obstacleEnableSecond ?? stage.bossSecond ?? threshold) || threshold);
+        const obstacleLevel = Math.max(0, Math.min(5, Number(stage.obstacleLevel) || 0));
+        const biomeIndex = getMapBiomeIndexById(mapKey);
+        phases.push({
+            key: `${mapKey}_intro_${i + 1}`,
+            threshold,
+            tileId: mapKey,
+            biomeIndex: -1,
+            obstacleLevel: 0,
+            levelId: `lv${Math.max(1, obstacleLevel || 1)}`,
+        });
+        if (obstacleLevel > 0 && obstacleEnableSecond > threshold) {
+            phases.push({
+                key: `${mapKey}_lv${obstacleLevel}`,
+                threshold: obstacleEnableSecond,
+                tileId: mapKey,
+                biomeIndex,
+                obstacleLevel,
+                levelId: `lv${obstacleLevel}`,
+            });
+        } else if (obstacleLevel > 0) {
+            phases[phases.length - 1] = {
+                key: `${mapKey}_lv${obstacleLevel}`,
+                threshold,
+                tileId: mapKey,
+                biomeIndex,
+                obstacleLevel,
+                levelId: `lv${obstacleLevel}`,
+            };
+        }
+    }
+    phases.sort((a, b) => a.threshold - b.threshold);
+    MAP_TERRAIN_PHASES.length = 0;
+    MAP_TERRAIN_PHASES.push(...phases);
+    window.__STAGE_SPEC_APPLIED__ = {
+        stages: stageSpec.stages.length,
+        phases: MAP_TERRAIN_PHASES.length,
+        appliedAtFrame: GameRuntime.getFrame(),
+    };
+    return true;
+}
+
+function applyWaveSpecConfig(waveSpec = {}) {
+    if (!waveSpec || typeof waveSpec !== 'object') return false;
+    mergePlainConfig(WAVE_TIMELINE_CONFIG, waveSpec);
+    if (!Array.isArray(WAVE_TIMELINE_CONFIG.tigerGuards.triggerMinutes)) {
+        WAVE_TIMELINE_CONFIG.tigerGuards.triggerMinutes = [3, 6, 9, 10];
+    }
+    if (!Array.isArray(WAVE_TIMELINE_CONFIG.finalBoss.phantomColors)) {
+        WAVE_TIMELINE_CONFIG.finalBoss.phantomColors = ['#59f2a9', '#b56cff', '#5fb2ff', '#ff6b48'];
+    }
+    window.__WAVE_TIMELINE_CONFIG__ = WAVE_TIMELINE_CONFIG;
+    window.__WAVE_SPEC_APPLIED__ = {
+        timeline: Boolean(waveSpec.timeline),
+        miniBoss: Boolean(waveSpec.miniBoss),
+        tigerGuards: Boolean(waveSpec.tigerGuards),
+        swarm: Boolean(waveSpec.swarm),
+        finalBoss: Boolean(waveSpec.finalBoss),
+        appliedAtFrame: GameRuntime.getFrame(),
+    };
+    return true;
+}
+
+function applyDropSpecConfig(dropSpec = {}) {
+    if (!dropSpec || typeof dropSpec !== 'object') return false;
+    mergePlainConfig(DROP_RULE_CONFIG, dropSpec);
+    if (!Array.isArray(DROP_RULE_CONFIG.normal)) {
+        DROP_RULE_CONFIG.normal = [];
+    }
+    if (!Array.isArray(DROP_RULE_CONFIG.rareTracks?.woodenOx)) {
+        DROP_RULE_CONFIG.rareTracks.woodenOx = [];
+    }
+    if (!Array.isArray(DROP_RULE_CONFIG.rareTracks?.boss?.items)) {
+        DROP_RULE_CONFIG.rareTracks.boss.items = [];
+    }
+    if (!Array.isArray(DROP_RULE_CONFIG.rareTracks?.elite)) {
+        DROP_RULE_CONFIG.rareTracks.elite = [];
+    }
+    window.__DROP_RULE_CONFIG__ = DROP_RULE_CONFIG;
+    window.__DROP_SPEC_APPLIED__ = {
+        normal: DROP_RULE_CONFIG.normal.length,
+        woodenOx: DROP_RULE_CONFIG.rareTracks.woodenOx.length,
+        boss: DROP_RULE_CONFIG.rareTracks.boss.items.length,
+        elite: DROP_RULE_CONFIG.rareTracks.elite.length,
+        appliedAtFrame: GameRuntime.getFrame(),
+    };
+    return true;
+}
+
+function applyGameSpecConfig(gameSpec = {}) {
+    if (!gameSpec || typeof gameSpec !== 'object') return false;
+    mergePlainConfig(GAME_RULE_CONFIG, gameSpec);
+    if (typeof gameSpec.title === 'string' && gameSpec.title) {
+        UI_TEXT_CONFIG.title = gameSpec.title;
+    }
+    const runDurationSeconds = Number(GAME_RULE_CONFIG.runDurationSeconds);
+    if (Number.isFinite(runDurationSeconds) && runDurationSeconds > 0) {
+        WAVE_TIMELINE_CONFIG.timeline.durationMinutes = runDurationSeconds / 60;
+    }
+    const levelUpChoiceCount = Number(GAME_RULE_CONFIG.levelUpChoiceCount);
+    if (Number.isFinite(levelUpChoiceCount) && levelUpChoiceCount > 0) {
+        PROGRESSION_RULE_CONFIG.levelUpChoiceCount = Math.floor(levelUpChoiceCount);
+    }
+    window.__GAME_RULE_CONFIG__ = GAME_RULE_CONFIG;
+    window.__GAME_SPEC_APPLIED__ = {
+        id: GAME_RULE_CONFIG.id,
+        runDurationSeconds: GAME_RULE_CONFIG.runDurationSeconds,
+        finalBossTriggerSecond: GAME_RULE_CONFIG.finalBossTriggerSecond,
+        maxWeaponSlots: getMaxWeaponSlots(),
+        levelUpChoiceCount: PROGRESSION_RULE_CONFIG.levelUpChoiceCount,
+        appliedAtFrame: GameRuntime.getFrame(),
+    };
+    return true;
+}
+
+function syncProgressionRuleConstants() {
+    const perks = PROGRESSION_RULE_CONFIG.perks || {};
+    PERK_MAX_LEVEL = Math.max(1, Math.floor(Number(perks.maxLevel) || 100));
+    PERK_PROGRESS_SEGMENTS = Math.max(1, Math.floor(Number(perks.progressSegments) || PERK_MAX_LEVEL));
+    PERK_PROGRESS_STEP_PERCENT = Number.isFinite(Number(perks.progressStepPercent)) ? Number(perks.progressStepPercent) : 0.1;
+}
+
+function applyProgressionSpecConfig(progressionSpec = {}) {
+    if (!progressionSpec || typeof progressionSpec !== 'object') return false;
+    mergePlainConfig(PROGRESSION_RULE_CONFIG, progressionSpec);
+    if (!Array.isArray(PROGRESSION_RULE_CONFIG.expRequirement?.tiers)) {
+        PROGRESSION_RULE_CONFIG.expRequirement.tiers = [];
+    }
+    applyPassiveUpgradeSpec(progressionSpec.passiveUpgrades);
+    applyPerkUpgradeSpec(progressionSpec.perkUpgrades);
+    syncProgressionRuleConstants();
+    window.__PROGRESSION_RULE_CONFIG__ = PROGRESSION_RULE_CONFIG;
+    window.__PROGRESSION_SPEC_APPLIED__ = {
+        levelUpChoiceCount: PROGRESSION_RULE_CONFIG.levelUpChoiceCount,
+        rerollEveryLevels: PROGRESSION_RULE_CONFIG.rerollEveryLevels,
+        levelUpHealFlat: PROGRESSION_RULE_CONFIG.levelUpHealFlat,
+        inGamePassiveMaxLevel: PROGRESSION_RULE_CONFIG.inGamePassiveMaxLevel,
+        expTiers: PROGRESSION_RULE_CONFIG.expRequirement.tiers.length,
+        passiveUpgrades: Object.keys(PASSIVE_UPGRADES).length,
+        perkUpgrades: PERK_UPGRADES.length,
+        perkMaxLevel: PERK_MAX_LEVEL,
+        appliedAtFrame: GameRuntime.getFrame(),
+    };
+    return true;
+}
+
+function applyEntitySpecConfig(entitySpec = {}, enemySpec = {}) {
+    if (entitySpec && typeof entitySpec === 'object' && entitySpec.player) {
+        mergePlainConfig(ENTITY_RULE_CONFIG.player, entitySpec.player);
+    }
+    if (enemySpec && typeof enemySpec === 'object') {
+        mergePlainConfig(ENTITY_RULE_CONFIG.enemies, enemySpec);
+    }
+    window.__ENTITY_RULE_CONFIG__ = ENTITY_RULE_CONFIG;
+    window.__ENTITY_SPEC_APPLIED__ = {
+        player: Boolean(entitySpec?.player),
+        enemies: Object.keys(enemySpec || {}).length,
+        appliedAtFrame: GameRuntime.getFrame(),
+    };
+    return true;
+}
+
+function applyUiTextSpecConfig(uiTextSpec = {}) {
+    if (!uiTextSpec || typeof uiTextSpec !== 'object') return false;
+    mergePlainConfig(UI_TEXT_CONFIG, uiTextSpec);
+    window.__UI_TEXT_CONFIG__ = UI_TEXT_CONFIG;
+    window.__UI_TEXT_SPEC_APPLIED__ = {
+        title: UI_TEXT_CONFIG.title,
+        sections: Object.keys(uiTextSpec).length,
+        appliedAtFrame: GameRuntime.getFrame(),
+    };
+    return true;
+}
+
+function getProgressionExpRequirement(level) {
+    const expConfig = PROGRESSION_RULE_CONFIG.expRequirement || {};
+    const scale = expConfig.scaleCombatRule === false ? 1 : getCombatRuleMultipliers().level.expRequirement;
+    const scaled = value => Math.max(1, Math.round(value * scale));
+    const tiers = Array.isArray(expConfig.tiers) && expConfig.tiers.length > 0
+        ? expConfig.tiers
+        : [
+            { belowLevel: 5, base: 35, perLevel: 35, levelOffset: 0 },
+            { belowLevel: 20, base: 175, perLevel: 75, levelOffset: 4 },
+            { belowLevel: 40, base: 1300, perLevel: 300, levelOffset: 19 },
+            { base: 7300, perLevel: 800, levelOffset: 39 },
+        ];
+    for (const tier of tiers) {
+        const belowLevel = Number(tier.belowLevel);
+        if (Number.isFinite(belowLevel) && level >= belowLevel) continue;
+        const base = Number(tier.base) || 0;
+        const perLevel = Number(tier.perLevel) || 0;
+        const levelOffset = Number(tier.levelOffset) || 0;
+        return scaled(base + (level - levelOffset) * perLevel);
+    }
+    return scaled(Math.max(1, level * 100));
 }
 
 function applyRuntimeSpecConfig(specConfig) {
     if (!specConfig) return;
     window.__RUNTIME_SPEC_CONFIG__ = specConfig;
+    applyGameSpecConfig(specConfig.game);
+    applyStageSpecConfig(specConfig.stages);
+    applyWaveSpecConfig(specConfig.waves);
+    applyDropSpecConfig(specConfig.drops);
+    applyProgressionSpecConfig(specConfig.progression);
+    applyEntitySpecConfig(specConfig.entities, specConfig.enemies);
     applyWeaponJsonConfig(specConfig.weapons || {});
+    applyUiTextSpecConfig(specConfig.uiText || specConfig['ui-text'] || {});
 
     const balance = specConfig.balance || {};
-    const player = balance.player || {};
+    const player = balance.player || specConfig.entities?.player || {};
     if (typeof window.setGameSetting === 'function') {
-        window.setGameSetting('PLAYER.BASE_MAX_HP', player.hp ?? window.getGameSetting?.('PLAYER.BASE_MAX_HP', 100));
-        window.setGameSetting('PLAYER.BASE_SPEED', player.speed ?? window.getGameSetting?.('PLAYER.BASE_SPEED', 200));
+        window.setGameSetting('PLAYER.BASE_MAX_HP', player.hp ?? player.baseHp ?? window.getGameSetting?.('PLAYER.BASE_MAX_HP', 100));
+        window.setGameSetting('PLAYER.BASE_SPEED', player.speed ?? player.baseSpeed ?? window.getGameSetting?.('PLAYER.BASE_SPEED', 200));
         window.setGameSetting('PLAYER.PICKUP_RADIUS', player.magnetRadius ?? window.getGameSetting?.('PLAYER.PICKUP_RADIUS', 50));
         window.setGameSetting('PERFORMANCE.SPATIAL_GRID.CELL_SIZE', balance.spatialHash?.cellSize ?? window.getGameSetting?.('PERFORMANCE.SPATIAL_GRID.CELL_SIZE', 100));
-        window.setGameSetting('PROPS.DESTRUCTIBLE.HP', specConfig.enemies?.destructible_prop?.hp ?? window.getGameSetting?.('PROPS.DESTRUCTIBLE.HP', 30));
-        window.setGameSetting('PROPS.DESTRUCTIBLE.SIZE', specConfig.enemies?.destructible_prop?.size ?? window.getGameSetting?.('PROPS.DESTRUCTIBLE.SIZE', 32));
+        window.setGameSetting('PROPS.DESTRUCTIBLE.HP', ENTITY_RULE_CONFIG.enemies.destructible_prop?.hp ?? window.getGameSetting?.('PROPS.DESTRUCTIBLE.HP', 30));
+        window.setGameSetting('PROPS.DESTRUCTIBLE.SIZE', ENTITY_RULE_CONFIG.enemies.destructible_prop?.size ?? window.getGameSetting?.('PROPS.DESTRUCTIBLE.SIZE', 32));
         window.setGameSetting('PROPS.DESTRUCTIBLE.MAX_COUNT', balance.spawn?.maxProps ?? window.getGameSetting?.('PROPS.DESTRUCTIBLE.MAX_COUNT', 3));
         window.setGameSetting('PROPS.DESTRUCTIBLE.SPAWN_CHANCE_PER_FRAME', balance.spawn?.propSpawnChancePerFrame ?? window.getGameSetting?.('PROPS.DESTRUCTIBLE.SPAWN_CHANCE_PER_FRAME', 0.001));
         window.setGameSetting('PROPS.DESTRUCTIBLE.SPAWN_MARGIN', balance.spawn?.propSpawnMargin ?? window.getGameSetting?.('PROPS.DESTRUCTIBLE.SPAWN_MARGIN', 50));
     }
 
-    if (Array.isArray(specConfig.waves?.stages)) {
+    if (!Array.isArray(specConfig.stages?.stages) && Array.isArray(specConfig.waves?.stages)) {
         for (let i = 0; i < Math.min(STAGES.length, specConfig.waves.stages.length); i++) {
             Object.assign(STAGES[i], specConfig.waves.stages[i]);
         }
     }
 
     window.__SPEC_CONFIG_APPLIED__ = {
+        game: Boolean(specConfig.game),
         weapons: Object.keys(specConfig.weapons || {}).length,
         enemies: Object.keys(specConfig.enemies || {}).length,
+        entities: Boolean(specConfig.entities),
         balance: Boolean(specConfig.balance),
+        stages: Array.isArray(specConfig.stages?.stages) ? specConfig.stages.stages.length : 0,
         waves: Array.isArray(specConfig.waves?.stages) ? specConfig.waves.stages.length : 0,
+        drops: Boolean(specConfig.drops),
+        progression: Boolean(specConfig.progression),
+        uiText: Boolean(specConfig.uiText || specConfig['ui-text']),
         effects: Object.keys(specConfig.effects || {}).length,
         appliedAtFrame: GameRuntime.getFrame(),
     };
@@ -1724,6 +2611,39 @@ const PASSIVE_UPGRADES = {
         5: { level: 5, name: '不动如山Lv5', desc: '受到伤害 -30%', baseValue: 0.06 }
     }
 };
+
+function applyPassiveUpgradeSpec(passiveUpgrades = {}) {
+    if (!passiveUpgrades || typeof passiveUpgrades !== 'object' || Array.isArray(passiveUpgrades)) return false;
+    for (const key of Object.keys(PASSIVE_UPGRADES)) {
+        delete PASSIVE_UPGRADES[key];
+    }
+    for (const [skillKey, spec] of Object.entries(passiveUpgrades)) {
+        if (!spec || typeof spec !== 'object') continue;
+        const normalized = {
+            type: spec.type || 'passive',
+            name: spec.name || skillKey,
+        };
+        const levels = Array.isArray(spec.levels) ? spec.levels : [];
+        for (const levelSpec of levels) {
+            const level = Math.max(1, Math.floor(Number(levelSpec.level) || 0));
+            if (!level) continue;
+            normalized[level] = {
+                level,
+                name: levelSpec.name || `${normalized.name}Lv${level}`,
+                desc: levelSpec.desc || '',
+                baseValue: Number.isFinite(Number(levelSpec.baseValue)) ? Number(levelSpec.baseValue) : Number(spec.baseValue) || 0,
+            };
+        }
+        PASSIVE_UPGRADES[skillKey] = normalized;
+    }
+    window.__PASSIVE_UPGRADES__ = PASSIVE_UPGRADES;
+    window.__PASSIVE_UPGRADE_SPEC_APPLIED__ = {
+        count: Object.keys(PASSIVE_UPGRADES).length,
+        keys: Object.keys(PASSIVE_UPGRADES),
+        appliedAtFrame: GameRuntime.getFrame(),
+    };
+    return true;
+}
 
 // 百炼环首刀升级字典（保留兼容旧代码，新代码使用上方统一配置表）
 const DAO_UPGRADES = {
@@ -2850,6 +3770,82 @@ class Spear extends Weapon {
         ctx.restore();
     }
 
+    renderSpearAttachmentArt(ctx, player, stab, visualLength, visualWidth, angle, alpha, isUltimate, isMain = true) {
+        const assets = window.assetRuntime;
+        if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !FEATURE_FLAGS.ENABLE_ART_EFFECTS || !assets) return false;
+        const bodyEntry = assets.getWeaponBodyEntry?.('spear', this.level);
+        const bodyImage = assets.getWeaponBodyTexture?.('spear', this.level);
+        const fxEntry = assets.getWeaponFxEntry?.('spear', this.level) || assets.getWeaponAttackEntry?.('spear', this.level, 'fx');
+        const fxImage = assets.getWeaponFxTexture?.('spear', this.level) || assets.resolveImage?.(fxEntry?.src);
+        const handDistance = Math.max(player.size * 0.24, Math.min(visualLength * 0.12, player.size * 0.55));
+        const handX = player.x + stab.dirX * handDistance;
+        const handY = player.y + stab.dirY * handDistance;
+        const bodyBaseSize = Array.isArray(bodyEntry?.drawSize) ? bodyEntry.drawSize : [160, 36];
+        const bodyScale = Math.max(0.86, Math.min(isUltimate ? (isMain ? 1.36 : 1.12) : 1.28, visualLength / Math.max(1, bodyBaseSize[0])));
+        const bodyWidth = bodyBaseSize[0] * bodyScale;
+        const bodyHeight = bodyBaseSize[1] * Math.max(0.92, Math.min(1.18, bodyScale));
+        const bodyAlpha = alpha * (isUltimate && !isMain ? 0.78 : 1);
+        let drewFx = false;
+        let drewBody = false;
+
+        if (assets.canDraw?.(bodyImage) && bodyEntry && assets.drawWeaponBody) {
+            drewBody = assets.drawWeaponBody(ctx, bodyImage, handX, handY, angle, bodyEntry, {
+                width: bodyWidth,
+                height: bodyHeight,
+                alpha: bodyAlpha,
+                debug: isArtAdapterDebugEnabled(),
+            });
+        }
+
+        if (assets.canDraw?.(fxImage) && fxEntry) {
+            const fxBaseSize = Array.isArray(fxEntry.drawSize) ? fxEntry.drawSize : [visualLength, visualWidth];
+            const ultimateFxWidthScale = isMain ? 0.84 : 0.56;
+            const ultimateFxHeightScale = isMain ? 0.58 : 0.38;
+            const fxWidthScale = isUltimate ? ultimateFxWidthScale : 1;
+            const fxHeightScale = isUltimate ? ultimateFxHeightScale : 1;
+            const fxWidth = Math.max(visualLength * fxWidthScale, fxBaseSize[0] * bodyScale * fxWidthScale);
+            const fxHeight = Math.max(visualWidth * 0.72 * fxHeightScale, fxBaseSize[1] * Math.min(1.06, bodyScale) * fxHeightScale);
+            const fxAlpha = alpha * (isUltimate ? (isMain ? 0.3 : 0.16) : 0.56);
+            const fxAnchor = isUltimate
+                ? [fxEntry.anchor?.[0] ?? 0.12, fxEntry.anchor?.[1] ?? 0.5]
+                : (fxEntry.anchor || [0.12, 0.5]);
+            drewFx = drawRuntimeAsset(ctx, fxImage, fxEntry, handX, handY, fxWidth, fxHeight, {
+                angle,
+                alpha: fxAlpha,
+                anchor: fxAnchor,
+                blendMode: isUltimate ? 'source-over' : (fxEntry.blendMode || 'screen'),
+                debug: false,
+            });
+        }
+
+        if (drewBody && drewFx && assets.drawWeaponBody) {
+            assets.drawWeaponBody(ctx, bodyImage, handX, handY, angle, bodyEntry, {
+                width: bodyWidth,
+                height: bodyHeight,
+                alpha: bodyAlpha,
+                debug: false,
+            });
+        }
+
+        if (isArtAdapterDebugEnabled()) {
+            const effectiveLength = this.length * (1 + (player.modifiers.areaMulti || 0));
+            const effectiveWidth = this.width * (1 + (player.modifiers.areaMulti || 0));
+            ctx.save();
+            ctx.translate(player.x, player.y);
+            ctx.rotate(angle);
+            ctx.strokeStyle = 'rgba(255, 72, 72, 0.9)';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, -effectiveWidth / 2, effectiveLength, effectiveWidth);
+            ctx.fillStyle = 'rgba(77, 255, 128, 0.95)';
+            ctx.beginPath();
+            ctx.arc(handDistance, 0, 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        return drewBody || drewFx;
+    }
+
     drawHighTierSpearBody(ctx, x, y, visualLength, visualWidth, angle, alpha, isUltimate, isMain, anchorX, anchorY) {
         const assets = window.assetRuntime;
         if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !FEATURE_FLAGS.ENABLE_ART_EFFECTS || !assets?.getWeaponAttackTexture) return false;
@@ -2969,7 +3965,8 @@ class Spear extends Weapon {
             const lengthBase = effectiveLength + Math.max(22, effectiveWidth * 1.65);
             const levelVisualScale = isUltimate ? (stab.isMain ? 1.0 : 0.84) : (this.level >= 5 ? 0.98 : 1);
             const visualLength = (isHighTierArt ? lengthBase : effectiveLength * 1.18) * levelVisualScale;
-            const visualWidth = Math.max(86, effectiveWidth * 4.8) * (isUltimate ? (stab.isMain ? 0.96 : 0.82) : (this.level >= 5 ? 0.9 : 1));
+            const spearWidthMultiplier = isUltimate ? 2.55 : (this.level >= 5 ? 2.35 : 2.15);
+            const visualWidth = Math.max(42, effectiveWidth * spearWidthMultiplier) * (isUltimate ? (stab.isMain ? 1.02 : 0.9) : 1);
             const spearAngle = Math.atan2(dirY, dirX);
             const spearTextureAngleOffset = 0;
             const spearAnchorX = isHighTierArt ? 0.44 : 0.44;
@@ -2980,6 +3977,19 @@ class Spear extends Weapon {
             const handOffsetY = isHighTierArt ? player.size * 0.08 : player.size * 0.14;
             const renderX = x + dirX * spearLeadOffset + handOffsetX;
             const renderY = y + dirY * spearLeadOffset + handOffsetY;
+            if (this.renderSpearAttachmentArt(
+                ctx,
+                player,
+                stab,
+                visualLength,
+                visualWidth,
+                spearAngle + spearTextureAngleOffset,
+                alpha,
+                isUltimate,
+                !!stab.isMain
+            )) {
+                continue;
+            }
             if (isHighTierArt && this.drawHighTierSpearBody(
                 ctx,
                 renderX,
@@ -3845,6 +4855,51 @@ class QinggangSword extends Weapon {
         this.smoothSpeed = getWeaponJsonParam('qinggang', 'smoothSpeed', 2);        // 半径平滑变化速度
     }
 
+    getOrbitConfigs() {
+        if (this.dualOrbit) {
+            return [
+                {
+                    count: Math.ceil(this.count / 2),
+                    baseAngle: this.baseAngle,
+                    direction: -1,
+                    radius: this.currentRadius * 0.6
+                },
+                {
+                    count: Math.floor(this.count / 2),
+                    baseAngle: this.baseAngle + Math.PI / this.count,
+                    direction: 1,
+                    radius: this.currentRadius * 1.0
+                }
+            ];
+        }
+        return [{
+            count: this.count,
+            baseAngle: this.baseAngle,
+            direction: 1,
+            radius: this.currentRadius
+        }];
+    }
+
+    getBladeVisualMetrics(player, orbitRadius, maxOrbitRadius) {
+        const areaMul = 1 + (player.modifiers.areaMulti || 0);
+        const effectiveLength = this.swordLength * areaMul;
+        const visualScale = [0, 0.92, 1.0, 1.08, 1.18, 1.22, 1.24][Math.max(1, Math.min(6, this.level))] || 1;
+        const orbitVisualScale = this.level >= 6 && orbitRadius < maxOrbitRadius ? 0.72 : 1;
+        const swordEntry = window.assetRuntime?.getWeaponAttackEntry?.('qinggang', this.level, 'primary');
+        const swordSafeFrame = Array.isArray(swordEntry?.safeFrame) ? swordEntry.safeFrame : null;
+        const swordAspect = swordSafeFrame && swordSafeFrame[3]
+            ? Math.max(0.28, Math.min(0.58, swordSafeFrame[2] / swordSafeFrame[3]))
+            : 0.38;
+        const height = Math.max(96, effectiveLength * 2.35) * visualScale * orbitVisualScale;
+        const width = Math.max(36, height * swordAspect);
+        return {
+            width,
+            height,
+            hitLength: height * 0.86,
+            hitWidth: Math.max(width * 0.72, 20 * areaMul)
+        };
+    }
+
     update(deltaTime, player, enemies, projectiles, specialAreas) {
         // 检测玩家是否在移动
         const isMoving = player.moveUp || player.moveDown || player.moveLeft || player.moveRight;
@@ -3868,51 +4923,35 @@ class QinggangSword extends Weapon {
         this.baseAngle += actualRotationSpeed * deltaTime;
 
         const now = Date.now();
-        const collisionRadius = 20 * areaMul;
         const gm = window.gameManager;
         const genericShadowEnabled = !!gm.genericWeaponShadow;
 
         // 处理飞剑轨道：单轨道或双轨道
-        let orbitConfigs = [];
-        if (this.dualOrbit) {
-            // Lv6双轨道：内圈顺时针，外圈逆时针，不同半径
-            orbitConfigs.push({
-                count: Math.ceil(this.count / 2),
-                baseAngle: this.baseAngle,
-                direction: -1,
-                radius: this.currentRadius * 0.6
-            });
-            orbitConfigs.push({
-                count: Math.floor(this.count / 2),
-                baseAngle: this.baseAngle + Math.PI / this.count,
-                direction: 1,
-                radius: this.currentRadius * 1.0
-            });
-        } else {
-            // 单轨道：统一方向
-            orbitConfigs.push({
-                count: this.count,
-                baseAngle: this.baseAngle,
-                direction: 1,
-                radius: this.currentRadius
-            });
-        }
+        const orbitConfigs = this.getOrbitConfigs();
+        const maxOrbitRadius = Math.max(...orbitConfigs.map(orbit => orbit.radius));
 
         // 遍历所有轨道
         for (const orbit of orbitConfigs) {
+            const bladeMetrics = this.getBladeVisualMetrics(player, orbit.radius, maxOrbitRadius);
+            const queryRadius = bladeMetrics.hitLength / 2 + bladeMetrics.hitWidth / 2;
             // 遍历每一把飞剑，动态等分角度
             for (let i = 0; i < orbit.count; i++) {
                 const currentAngle = orbit.baseAngle + (Math.PI * 2 / orbit.count) * i;
                 const actualAngle = currentAngle * orbit.direction;
                 const actualX = player.x + Math.cos(actualAngle) * orbit.radius;
                 const actualY = player.y + Math.sin(actualAngle) * orbit.radius;
+                const bladeDirX = Math.cos(actualAngle);
+                const bladeDirY = Math.sin(actualAngle);
 
                 // 空间网格优化：只查询飞剑附近格子的敌人
-                const nearbyEnemies = gm.queryEnemiesInRange(actualX, actualY, collisionRadius + 40);
-                const genericShadowHits = genericShadowEnabled ? collectCircleShadowHits(
+                const nearbyEnemies = gm.queryEnemiesInRange(actualX, actualY, queryRadius + 40);
+                const genericShadowHits = genericShadowEnabled ? collectCapsuleShadowHits(
                     actualX,
                     actualY,
-                    collisionRadius,
+                    bladeDirX,
+                    bladeDirY,
+                    bladeMetrics.hitLength,
+                    bladeMetrics.hitWidth,
                     nearbyEnemies
                 ) : [];
                 const genericHitIdSet = genericShadowEnabled ? new Set(genericShadowHits) : null;
@@ -3921,8 +4960,15 @@ class QinggangSword extends Weapon {
                 // 碰撞检测 - 只遍历附近敌人
                 for (let j = nearbyEnemies.length - 1; j >= 0; j--) {
                     const enemy = nearbyEnemies[j];
-                    const dist = Math.hypot(enemy.x - actualX, enemy.y - actualY);
-                    const legacyShouldHit = dist < collisionRadius + enemy.size / 2;
+                    const legacyShouldHit = isCapsuleHit(
+                        actualX,
+                        actualY,
+                        bladeDirX,
+                        bladeDirY,
+                        bladeMetrics.hitLength,
+                        bladeMetrics.hitWidth,
+                        enemy
+                    );
                     if (legacyShouldHit) {
                         if (genericShadowEnabled) {
                             legacyHits.push(getDebugEntityId(enemy));
@@ -4025,8 +5071,16 @@ class QinggangSword extends Weapon {
                     const actualAngle = currentAngle * orbit.direction;
                     const actualX = player.x + Math.cos(actualAngle) * orbit.radius;
                     const actualY = player.y + Math.sin(actualAngle) * orbit.radius;
-                    const dist = Math.hypot(proj.x - actualX, proj.y - actualY);
-                    if (dist < collisionRadius + proj.size / 2) {
+                    const bladeMetrics = this.getBladeVisualMetrics(player, orbit.radius, maxOrbitRadius);
+                    if (isCapsuleHit(
+                        actualX,
+                        actualY,
+                        Math.cos(actualAngle),
+                        Math.sin(actualAngle),
+                        bladeMetrics.hitLength,
+                        bladeMetrics.hitWidth,
+                        proj
+                    )) {
                         shouldDestroy = true;
                         break;
                     }
@@ -4049,28 +5103,7 @@ class QinggangSword extends Weapon {
     }
 
     render(ctx, player) {
-        let orbitConfigs = [];
-        if (this.dualOrbit) {
-            orbitConfigs.push({
-                count: Math.ceil(this.count / 2),
-                baseAngle: this.baseAngle,
-                direction: -1,
-                radius: this.currentRadius * 0.6
-            });
-            orbitConfigs.push({
-                count: Math.floor(this.count / 2),
-                baseAngle: this.baseAngle + Math.PI / this.count,
-                direction: 1,
-                radius: this.currentRadius * 1.0
-            });
-        } else {
-            orbitConfigs.push({
-                count: this.count,
-                baseAngle: this.baseAngle,
-                direction: 1,
-                radius: this.currentRadius
-            });
-        }
+        const orbitConfigs = this.getOrbitConfigs();
 
         // 渲染每一把飞剑
         const areaMul = 1 + (player.modifiers.areaMulti || 0);
@@ -4169,22 +5202,23 @@ class QinggangSword extends Weapon {
                 const actualAngle = currentAngle * orbit.direction;
                 const actualX = player.x + Math.cos(actualAngle) * orbit.radius;
                 const actualY = player.y + Math.sin(actualAngle) * orbit.radius;
-                const visualScale = [0, 0.92, 1.0, 1.08, 1.18, 1.22, 1.24][Math.max(1, Math.min(6, this.level))] || 1;
-                const orbitVisualScale = this.level >= 6 && orbit.radius < maxOrbitRadius ? 0.72 : 1;
-                const swordHeight = effectiveLength * 2.05 * visualScale * orbitVisualScale;
-                const swordWidth = Math.max(effectiveHalfWidth * 7.2, swordHeight * 0.44);
-                const usedArtSword = drawArtEffectTexture(
+                const bladeMetrics = this.getBladeVisualMetrics(player, orbit.radius, maxOrbitRadius);
+                const usedArtSword = drawArtWeaponAttackTextureExact(
                     ctx,
-                    'qinggang_orbit',
+                    'qinggang',
+                    this.level,
+                    'primary',
                     actualX,
                     actualY,
-                    swordWidth,
-                    swordHeight,
-                    actualAngle + Math.PI / 2,
-                    this.level >= 6 ? 0.98 : 0.93,
-                    0.5,
-                    0.5,
-                    this.level
+                    bladeMetrics.width,
+                    bladeMetrics.height,
+                    {
+                        angle: actualAngle + Math.PI / 2,
+                        alpha: 1,
+                        anchorX: 0.5,
+                        anchorY: 0.5,
+                        blendMode: 'source-over',
+                    }
                 );
                 if (usedArtSword) continue;
 
@@ -4883,6 +5917,7 @@ class Shield extends Weapon {
     constructor(baseDamage) {
         super(baseDamage, getWeaponJsonAttackInterval('shield', 3.5)); // 每3.5秒触发一次脉冲爆发
         this.type = 'shield';
+        this.renderLayer = 'belowEntities';
         this.active = false;
         this.phase = 'none'; // none / charge / explode / release
         this.chargeTimer = 0;
@@ -4973,14 +6008,9 @@ class Shield extends Weapon {
                     specialAreas.push(new FireRing(this.x, this.y, effectiveMaxRadius, burnDps));
                 }
                 this.hitRecords.clear();
-                if (this.level >= 6) {
-                    this.phase = 'release';
-                    this.releaseVisualTimer = 0;
-                    this.currentRadius = effectiveMaxRadius;
-                } else {
-                    this.active = false;
-                    this.phase = 'none';
-                }
+                this.phase = 'release';
+                this.releaseVisualTimer = 0;
+                this.currentRadius = effectiveMaxRadius;
             }
         } else if (this.phase === 'release') {
             this.releaseVisualTimer += deltaTime;
@@ -5156,9 +6186,9 @@ class Shield extends Weapon {
         this.x = player.x;
         this.y = player.y;
 
-        // 计算视觉参数：alpha基于阶段，蓄力偏亮，爆发偏亮，末端淡出
-        const normalizedRadius = this.currentRadius / this.maxRadius;
-        const alpha = 0.8 * (1 - normalizedRadius * 0.6) + 0.2;
+        // Shield art is already a transparent game-ready texture. Draw it directly
+        // instead of turning it into a semi-transparent procedural range overlay.
+        const alpha = 1;
 
         // 阶段颜色：蓄力偏蓝，爆发偏亮青
         let colorHex = '#00FFFF';
@@ -5167,19 +6197,19 @@ class Shield extends Weapon {
         } else {
             colorHex = '#00FFFF'; // 爆发亮青色
         }
-        const shieldArtSlot = this.phase === 'charge' ? 'charge' : 'release';
-        const shieldArtRotation = this.phase === 'charge' ? -GameRuntime.frame * 0.01 : GameRuntime.frame * 0.02;
-        const shieldArtSize = this.currentRadius * 2;
+        const shieldArtSlot = this.getShieldArtSlot();
+        const shieldArtRotation = this.getShieldArtRotation();
+        const shieldArtSize = this.getShieldArtSize(player);
         if (this.level >= 6 && this.renderLevel6Art(ctx, player, alpha)) {
             return;
         }
-        if (drawArtWeaponAttackTexture(ctx, 'shield', this.level, shieldArtSlot, this.x, this.y, shieldArtSize, shieldArtSize, shieldArtRotation, alpha, 0.5, 0.5)) {
-            return;
-        }
-        if (drawArtWeaponAttackTexture(ctx, 'shield', this.level, 'primary', this.x, this.y, shieldArtSize, shieldArtSize, shieldArtRotation, alpha, 0.5, 0.5)) {
-            return;
-        }
-        if (drawArtEffectTexture(ctx, 'shield_pulse', this.x, this.y, this.currentRadius * 2.25, this.currentRadius * 2.25, GameRuntime.frame * 0.02, alpha, 0.5, 0.5)) {
+        if (drawArtWeaponAttackTextureExact(ctx, 'shield', this.level, shieldArtSlot, this.x, this.y, shieldArtSize, shieldArtSize, {
+            angle: shieldArtRotation,
+            alpha,
+            anchorX: 0.5,
+            anchorY: 0.5,
+            blendMode: 'source-over',
+        })) {
             return;
         }
 
@@ -5209,6 +6239,25 @@ class Shield extends Weapon {
 
         // 重置阴影
         ctx.restore();
+    }
+
+    getShieldArtSlot() {
+        return this.phase === 'charge' ? 'charge' : 'release';
+    }
+
+    getShieldArtRotation() {
+        return 0;
+    }
+
+    getShieldArtSize(player) {
+        const areaScale = 1 + (player.modifiers.areaMulti || 0);
+        if (this.phase === 'charge') {
+            const progress = Math.min(1, this.chargeTimer / Math.max(0.001, this.chargeDuration));
+            const start = Math.max(72, this.chargeStartRadius * 2);
+            const end = Math.max(112, this.chargeEndRadius * 2);
+            return (start + (end - start) * progress) * areaScale;
+        }
+        return this.currentRadius * 2 * areaScale;
     }
 
     renderLevel6Art(ctx, player, alpha) {
@@ -5299,7 +6348,9 @@ class Shield extends Weapon {
 
 class Player {
     constructor(canvasWidth, canvasHeight, perks, perkLevels) {
-        this.size = 30;
+        const playerSpec = getEntitySpec('player');
+        this.size = getEntityNumber('player', 'size', 30);
+        this.collisionRadius = getEntityNumber('player', 'collisionRadius', this.size / 2);
         this.x = canvasWidth / 2;
         this.y = canvasHeight / 2;
         this.isInvincible = false; // 无敌帧标记，用于龙胆枪冲刺
@@ -5310,8 +6361,8 @@ class Player {
         this.initialPerks = perks;
 
         // 基础属性定值
-        this.baseSpeed = 200;
-        this.baseMaxHp = 100;
+        this.baseSpeed = getEntityNumber('player', 'baseSpeed', 200);
+        this.baseMaxHp = getEntityNumber('player', 'baseHp', 100);
         this.baseDamage = 10;
         this.baseFireRate = 0.5;
 
@@ -5370,11 +6421,11 @@ class Player {
             ARMOR: (perkLevels && perkLevels.armor !== undefined) ? perkLevels.armor : 0
         };
         // 吸附半径 - 经验宝珠/残响自动吸附范围
-        this.magnetRadius = 75;
+        this.magnetRadius = getEntityNumber('player', 'magnetRadius', 75);
         // 武器列表 - 默认初始武器
         this.weapons = [];
         // 每局初始刷新次数：开局自带3次
-        this.rerolls = 3;
+        this.rerolls = Math.max(0, Math.floor(Number(playerSpec.initialRerolls ?? 3) || 3));
 
         // 根据双轨技能等级重新计算所有乘区（一次性计算，避免重复加成）
         this.updateModifiers();
@@ -5614,22 +6665,7 @@ class Player {
     }
 
     getExpRequirement(level) {
-        const scale = getCombatRuleMultipliers().level.expRequirement;
-        const scaled = value => Math.max(1, Math.round(value * scale));
-        if (level < 5) {
-            // 1-4级：70, 105, 140, 175 (1级需杀14只怪，保留压迫感)
-            return scaled(level * 35 + 35);
-        }
-        if (level < 20) {
-            // 5-19级：250, 325, 400... 1300 (乘区起步，平滑接轨)
-            return scaled(175 + (level - 4) * 75);
-        }
-        if (level < 40) {
-            // 20-39级：1600, 1900, 2200... 7300 (双乘区爆发，拉大阈值防溢出)
-            return scaled(1300 + (level - 19) * 300);
-        }
-        // 40级以上：8100, 8900... (大后期兜底软上限)
-        return scaled(7300 + (level - 39) * 800);
+        return getProgressionExpRequirement(level);
     }
 
     addExp(amount) {
@@ -5700,16 +6736,15 @@ class Player {
             const frameIndex = Math.floor(GameRuntime.frame / frameSpeed);
             const sprite = assets.getPlayerSprite?.('guanyu', state, frameIndex);
             if (assets.canDraw?.(sprite)) {
-                const renderSize = this.size * 2.75;
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.shadowBlur = 16;
-                ctx.shadowColor = 'rgba(255, 211, 106, 0.72)';
-                ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
-                ctx.shadowBlur = 0;
-                ctx.shadowColor = 'transparent';
-                ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
-                ctx.restore();
+                const entry = assets.getPlayerEntry?.('guanyu', state) || {};
+                const renderSize = entry.worldSize || this.size * 2.75;
+                drawRuntimeAsset(ctx, sprite, entry, this.x, this.y, renderSize, renderSize, {
+                    anchor: entry.feetAnchor || entry.anchor || [0.5, 0.72],
+                    shadowBlur: 16,
+                    shadowColor: 'rgba(255, 211, 106, 0.72)',
+                    debug: isArtAdapterDebugEnabled(),
+                    hitbox: { radius: this.size / 2 },
+                });
                 ctx.globalAlpha = previousAlpha;
                 return;
             }
@@ -5731,6 +6766,8 @@ let enemyNextId = 0;
 
 class Enemy {
     constructor(x, y, baseHealth = 10, speedMod = 1, type = 'normal') {
+        const specKey = type === 'normal' ? 'soldier' : type;
+        const enemySpec = getEntitySpec(specKey, getEntitySpec('soldier'));
         this.id = enemyNextId++; // 每个怪物获得唯一id
 
         // 微小静态偏移：每个怪物天生错开一点，防止完全重叠穿模
@@ -5740,20 +6777,22 @@ class Enemy {
         this.offsetX = Math.cos(angle) * offset;
         this.offsetY = Math.sin(angle) * offset;
 
-        this.size = 20;
+        this.size = getEntityNumber(specKey, 'size', 20);
         this.x = x + this.offsetX;
         this.y = y + this.offsetY;
         this.type = type;
-        this.speed = 80 * speedMod;
+        const baseSpeed = getEntityNumber(specKey, 'speed', 80);
+        this.speed = baseSpeed * speedMod;
         this.hp = baseHealth;
         this.maxHp = baseHealth;
         this.color = '#4682b4';
         this.expValue = Math.ceil(baseHealth / 2);
         this.isElite = false;
         this.isBoss = false;
-        this.resonanceDrop = 1;
+        this.contactDamage = getEntityNumber(specKey, 'damage', 10);
+        this.resonanceDrop = getEntityNumber(specKey, 'resonanceDrop', 1);
         this.stunTimer = 0;
-        this.knockbackResist = 0;
+        this.knockbackResist = Number(enemySpec?.params?.knockbackResist) || 0;
         this.closeAttackVisualTimer = 0;
         this.closeAttackVisualDuration = 0.38;
         this.closeAttackVisualCooldown = 0;
@@ -6171,6 +7210,8 @@ class Enemy {
             const moveSway = Math.sin((GameRuntime.frame + this.id * 9) * 0.08) * 0.018;
             ctx.rotate(moveSway);
         }
+        const entry = assets.getEnemyEntry?.(enemyId, artState) || {};
+        const assetAnchor = entry.feetAnchor || entry.anchor || [0.5, 0.78];
         // Add dark outline for better contrast against grass background.
         if (!isStaticProp) {
             ctx.save();
@@ -6179,7 +7220,10 @@ class Enemy {
             ctx.shadowBlur = highRenderLoad ? Math.max(5, size * 0.08) : Math.max(8, size * 0.16);
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = Math.max(3, size * 0.055);
-            ctx.drawImage(sprite, -size / 2, -size / 2, size, size);
+            drawRuntimeAsset(ctx, sprite, entry, 0, 0, size, size, {
+                anchor: assetAnchor,
+                debug: false,
+            });
             ctx.restore();
         }
         if (!isStaticProp && this.getThreatVisualTier() !== 'normal') {
@@ -6187,12 +7231,18 @@ class Enemy {
             ctx.globalCompositeOperation = 'source-over';
             ctx.shadowColor = this.isElite ? 'rgba(255, 58, 24, 0.85)' : 'rgba(255, 16, 16, 0.95)';
             ctx.shadowBlur = highRenderLoad ? 5 : Math.max(9, size * 0.16);
-            ctx.drawImage(sprite, -size / 2, -size / 2, size, size);
+            drawRuntimeAsset(ctx, sprite, entry, 0, 0, size, size, {
+                anchor: assetAnchor,
+                debug: false,
+            });
             ctx.restore();
         }
-        ctx.filter = isStaticProp ? 'none' : 'brightness(1.12) saturate(1.18) contrast(1.05)';
-        ctx.drawImage(sprite, -size / 2, -size / 2, size, size);
-        ctx.filter = 'none';
+        drawRuntimeAsset(ctx, sprite, entry, 0, 0, size, size, {
+            anchor: assetAnchor,
+            filter: isStaticProp ? 'none' : 'brightness(1.12) saturate(1.18) contrast(1.05)',
+            debug: isArtAdapterDebugEnabled(),
+            hitbox: { radius: this.size / 2 },
+        });
         ctx.restore();
         this.renderEnemyDangerDot(ctx, size);
         if (attackState) {
@@ -6290,13 +7340,15 @@ class Enemy {
 
 class EliteEnemy extends Enemy {
     constructor(x, y, baseHealth = 10, speedMod = 1) {
-        super(x, y, baseHealth * 3, speedMod * 1.1);
-        this.size = 28; // 体积更大
+        const config = getEntitySpec('elite');
+        const params = config.params || {};
+        super(x, y, baseHealth * (Number(params.baseHealthMultiplier) || 3), speedMod, 'elite');
+        this.size = getEntityNumber('elite', 'size', 28); // 体积更大
         this.color = '#ffa500'; // 橙色精英
         this.isElite = true;
-        this.expValue = Math.ceil(baseHealth * 3 / 2);
-        this.resonanceDrop = 3; // 掉落3倍残响
-        this.knockbackResist = 0.5; // 精英减免50%击退
+        this.expValue = Math.ceil(baseHealth * (Number(params.baseHealthMultiplier) || 3) / 2);
+        this.resonanceDrop = getEntityNumber('elite', 'resonanceDrop', 3); // 掉落3倍残响
+        this.knockbackResist = Number(params.knockbackResist) || 0.5; // 精英减免50%击退
         if (FEATURE_FLAGS.ENABLE_ELITE_MUTATIONS) {
             this.size = Math.round(this.size * getNumericGameSetting('ENEMIES.ELITE.SIZE_MULTIPLIER', 1.5));
             this.speed *= getNumericGameSetting('ENEMIES.ELITE.SPEED_MULTIPLIER', 0.9);
@@ -6310,27 +7362,32 @@ class EliteEnemy extends Enemy {
 // 虎卫 - 迷你Boss的贴身护卫，铁壁缩圈阵法
 class TigerGuardEnemy extends Enemy {
     constructor(spawnX, spawnY, boss, angle, orbitRadius, baseHealth, centerX, centerY) {
-        super(spawnX, spawnY, baseHealth * 4 * 1.3, boss.speed);
+        const config = getEntitySpec('tiger_guard');
+        const params = config.params || {};
+        super(spawnX, spawnY, baseHealth * (Number(params.baseHealthMultiplier) || 5.2), 1, 'tiger_guard');
+        this.speed = boss.speed;
 
         this.type = 'tiger_guard';
         this.boss = boss;
         this.isTigerGuard = true;
         this.orbitRadius = orbitRadius;
         this.angle = angle;
-        this.orbitSpeed = 0.35;
+        this.orbitSpeed = Number(params.orbitSpeed) || 0.35;
+        this.closingSpeed = Number(params.closingSpeed) || 60;
+        this.brokenFormationSpeed = Number(params.brokenFormationSpeed) || 40;
         this.isClosingIn = true; // 进场收网状态
 
         // 核心修改：记住它们出生时的目标圆心坐标
         this.orbitCenterX = centerX;
         this.orbitCenterY = centerY;
 
-        this.size = 35; // 扩大体积形成铁墙
-        this.shieldSize = 40; // 巨盾覆盖全身
+        this.size = getEntityNumber('tiger_guard', 'size', 35); // 扩大体积形成铁墙
+        this.shieldSize = Number(params.shieldSize) || 40; // 巨盾覆盖全身
         this.color = '#4f4f4f';
         this.shieldColor = '#5c4033'; // 巨盾颜色
-        this.knockbackResist = 1.0;
-        this.expValue = 35;
-        this.resonanceDrop = 2;
+        this.knockbackResist = Number(params.knockbackResist) || 1.0;
+        this.expValue = Number(config.exp) || 35;
+        this.resonanceDrop = getEntityNumber('tiger_guard', 'resonanceDrop', 2);
     }
 
     update(deltaTime) {
@@ -6340,8 +7397,8 @@ class TigerGuardEnemy extends Enemy {
             const dy = gameManager.player.y - this.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist > 0) {
-                this.x += (dx / dist) * 40 * deltaTime;
-                this.y += (dy / dist) * 40 * deltaTime;
+                this.x += (dx / dist) * this.brokenFormationSpeed * deltaTime;
+                this.y += (dy / dist) * this.brokenFormationSpeed * deltaTime;
             }
             return this.hp > 0;
         }
@@ -6362,8 +7419,8 @@ class TigerGuardEnemy extends Enemy {
                 this.y = targetY;
             } else {
                 // 极具压迫感的速度向内缩圈
-                this.x += (dx / dist) * 60 * deltaTime;
-                this.y += (dy / dist) * 60 * deltaTime;
+                this.x += (dx / dist) * this.closingSpeed * deltaTime;
+                this.y += (dy / dist) * this.closingSpeed * deltaTime;
             }
         } else {
             // 阶段二：锁阵后，变为随 Boss 移动的跟屁虫
@@ -6427,17 +7484,20 @@ class TigerGuardEnemy extends Enemy {
 
 class WoodenOxEnemy extends Enemy {
     constructor(x, y, baseHealth) {
-        super(x, y, baseHealth * 5, 2.2); // 极厚血量，极快移速
+        const config = getEntitySpec('wooden_ox');
+        const params = config.params || {};
+        super(x, y, baseHealth * (Number(params.baseHealthMultiplier) || 5), 1, 'wooden_ox'); // 极厚血量，极快移速
         this.type = 'wooden_ox';
-        this.size = 25;
+        this.size = getEntityNumber('wooden_ox', 'size', 25);
         this.color = '#daa520'; // 金色
-        this.knockbackResist = 1.0; // Boss级：完全免疫击退和硬直，除了盾反不受任何影响
-        this.escapeTimer = 15; // 15秒存活时间，超时自动消失
+        this.knockbackResist = Number(params.knockbackResist) || 1.0; // Boss级：完全免疫击退和硬直，除了盾反不受任何影响
+        this.escapeTimer = Number(params.escapeTimer) || 15; // 15秒存活时间，超时自动消失
         this.isMiniBoss = true; // 稀有怪，享受特殊掉落
+        this.resonanceDrop = getEntityNumber('wooden_ox', 'resonanceDrop', 5);
 
         // 随机游走：随机初始方向，每1.5-2秒微调一次方向
         this.dirAngle = GameRuntime.random() * Math.PI * 2;
-        this.directionChangeTimer = 1.5 + GameRuntime.random() * 1;
+        this.directionChangeTimer = (Number(params.directionChangeMin) || 1.5) + GameRuntime.random() * (Number(params.directionChangeRandom) || 1);
     }
 
     update(deltaTime, canvasWidth, canvasHeight) {
@@ -6452,7 +7512,8 @@ class WoodenOxEnemy extends Enemy {
             this.directionChangeTimer -= deltaTime;
             if (this.directionChangeTimer <= 0) {
                 this.dirAngle = GameRuntime.random() * Math.PI * 2;
-                this.directionChangeTimer = 0.9 + GameRuntime.random() * 0.8;
+                const params = getEntitySpec('wooden_ox').params || {};
+                this.directionChangeTimer = (Number(params.directionChangeMin) || 0.9) + GameRuntime.random() * (Number(params.directionChangeRandom) || 0.8);
             }
 
             this.x += Math.cos(this.dirAngle) * this.speed * 1.35 * deltaTime;
@@ -6514,17 +7575,20 @@ class WoodenOxEnemy extends Enemy {
 // 魏军弓弩手 - 远程射击小怪
 class ArcherEnemy extends Enemy {
     constructor(x, y, baseHealth) {
+        const config = getEntitySpec('archer');
+        const params = config.params || {};
         // 移速 40px/s → 归一化：Enemy.speed = 80 * speedMod → 40/80 = 0.5
-        super(x, y, baseHealth * 0.6, 0.5);
+        super(x, y, baseHealth * (Number(params.baseHealthMultiplier) || 0.6), 1, 'archer');
         this.type = 'archer';
-        this.size = 18;
+        this.size = getEntityNumber('archer', 'size', 18);
         this.color = '#4a7c59'; // 深绿色
-        this.knockbackResist = 0.3;
+        this.knockbackResist = Number(params.knockbackResist) || 0.3;
 
         // 射程改为 400
-        this.preferredRange = 400;
+        this.preferredRange = Number(params.preferredRange) || 400;
         this.shootTimer = 0;
-        this.shootInterval = 3; // 每3秒射一箭
+        this.shootInterval = Number(params.shootInterval) || 3; // 每3秒射一箭
+        this.projectileSize = Number(params.projectileSize) || 10;
     }
 
     update(deltaTime, canvasWidth, canvasHeight) {
@@ -6576,8 +7640,8 @@ class ArcherEnemy extends Enemy {
         const dirX = dx / dist;
         const dirY = dy / dist;
         // 直线飞行，方向不变，不追踪玩家，使用基础 Projectile 类
-        const projectile = new Projectile(this.x, this.y, dirX, dirY, 2);
-        projectile.size = 10;
+        const projectile = new Projectile(this.x, this.y, dirX, dirY, getEntityNumber('archer', 'damage', 2));
+        projectile.size = this.projectileSize;
         projectile.color = '#8b0000'; // 深红色弓箭
         // 标记：这是敌人射向玩家的箭，只会伤害玩家
         projectile.isEnemyProjectile = true;
@@ -6590,11 +7654,12 @@ class ArcherEnemy extends Enemy {
 // 继承 Enemy 基类，复用全部碰撞检测伤害逻辑
 class DestructibleProp extends Enemy {
     constructor(x, y) {
-        super(x, y, getNumericGameSetting('PROPS.DESTRUCTIBLE.HP', 30), 0); // 移速倍数0 → 移速锁定为0
+        const hp = getNumericGameSetting('PROPS.DESTRUCTIBLE.HP', getEntityNumber('destructible_prop', 'hp', 30));
+        super(x, y, hp, 0, 'destructible_prop'); // 移速倍数0 → 移速锁定为0
         this.type = 'prop';
-        this.size = getNumericGameSetting('PROPS.DESTRUCTIBLE.SIZE', 32);
+        this.size = getNumericGameSetting('PROPS.DESTRUCTIBLE.SIZE', getEntityNumber('destructible_prop', 'size', 32));
         this.color = '#8b4513'; // 棕色木箱
-        this.knockbackResist = 1.0; // 完全免疫击退，无法被推动
+        this.knockbackResist = getEntityNumber('destructible_prop', 'params.knockbackResist', 1); // 完全免疫击退，无法被推动
         this.isProp = true; // 标记为可破坏物，用于掉落拦截
     }
 
@@ -6641,17 +7706,23 @@ class Boss extends Enemy {
         }
         const bossHp = stageData.bossHp * getCombatRuleMultipliers().game.bossHp;
         super(x, y, bossHp, stageData.bossSpeed / 80);
-        this.size = stageData.name === '黄河渡口' ? 80 : 60;
+        const bossSpec = getEntitySpec('stage_boss');
+        const bossParams = bossSpec.params || {};
+        this.size = stageData.name === '黄河渡口'
+            ? (Number(bossParams.finalStageSize) || 80)
+            : (Number(bossParams.normalSize) || getEntityNumber('stage_boss', 'size', 60));
         this.color = '#ff4500'; // 大 Boss 改为橘红色
         this.stageData = stageData;
         this.stageIndex = stageIndex < 0 ? 0 : stageIndex;
         this.ability = stageData.bossAbility;
         this.isBoss = true;
         this.abilityTimer = 0;
-        this.abilityCooldown = FEATURE_FLAGS.ENABLE_AI_BEHAVIOR_TUNING ? 4 : 3;
+        this.abilityCooldown = FEATURE_FLAGS.ENABLE_AI_BEHAVIOR_TUNING ? 4 : (Number(bossParams.abilityCooldown) || 3);
         this.halfHealthTriggered = false;
         this.invulnerableOnce = false;
-        this.knockbackResist = 1.0; // Boss完全免疫击退
+        this.knockbackResist = Number(bossParams.knockbackResist) || 1.0; // Boss完全免疫击退
+        this.contactDamage = getEntityNumber('stage_boss', 'damage', 20);
+        this.resonanceDrop = getEntityNumber('stage_boss', 'resonanceDrop', 15);
         this.affixes = [];
         this.affixTimers = {};
         this.chargeTimer = 0;
@@ -6965,18 +8036,21 @@ class Boss extends Enemy {
             : Math.floor((GameRuntime.frame + this.id * 5) / 24);
         const sprite = assets.getBossSprite?.(bossId, artState, frameIndex);
         if (!assets.canDraw?.(sprite)) return false;
-        const renderSize = assets.getBossWorldSize?.(bossId, 'idle') || this.size * 1.55;
+        const entry = assets.getBossEntry?.(bossId, artState) || {};
+        const renderSize = entry.worldSize || assets.getBossWorldSize?.(bossId, 'idle') || this.size * 1.55;
         this.lastArtBossVisualSize = renderSize;
         this.renderThreatVisibilityCue(ctx, renderSize, { shadowAlpha: 0.68 });
         ctx.save();
         const pulse = isCasting ? 1 + Math.sin(GameRuntime.frame * 0.32) * 0.035 : 1;
         const drawSize = renderSize * pulse;
-        ctx.shadowColor = isCasting ? 'rgba(255, 70, 18, 0.95)' : 'rgba(255, 22, 22, 0.82)';
-        ctx.shadowBlur = isCasting ? Math.max(18, drawSize * 0.16) : Math.max(12, drawSize * 0.10);
-        ctx.shadowOffsetY = Math.max(4, drawSize * 0.035);
-        ctx.filter = 'brightness(1.08) saturate(1.12) contrast(1.04)';
-        ctx.drawImage(sprite, this.x - drawSize / 2, this.y - drawSize / 2, drawSize, drawSize);
-        ctx.filter = 'none';
+        drawRuntimeAsset(ctx, sprite, entry, this.x, this.y, drawSize, drawSize, {
+            anchor: entry.feetAnchor || entry.anchor || [0.5, 0.78],
+            filter: 'brightness(1.08) saturate(1.12) contrast(1.04)',
+            shadowBlur: isCasting ? Math.max(18, drawSize * 0.16) : Math.max(12, drawSize * 0.10),
+            shadowColor: isCasting ? 'rgba(255, 70, 18, 0.95)' : 'rgba(255, 22, 22, 0.82)',
+            debug: isArtAdapterDebugEnabled(),
+            hitbox: { radius: this.size / 2 },
+        });
         ctx.restore();
         this.renderEnemyDangerDot(ctx, renderSize);
         return true;
@@ -7278,40 +8352,81 @@ class Pickup {
             const pickupId = this.getArtPickupId();
             const icon = pickupId ? assets.getPickupIcon(pickupId) : null;
             if (assets.canDraw(icon)) {
-                const iconSize = displaySize;
+                const entry = assets.getPickupEntry?.(pickupId) || {};
+                const drawSize = Array.isArray(entry.drawSize) ? entry.drawSize : [displaySize, displaySize];
+                const baseIconSize = Math.max(drawSize[0] || displaySize, drawSize[1] || displaySize);
+                const framePulse = entry.pulse === false ? 1 : 1 + Math.sin(GameRuntime.frame * 0.075 + this.x * 0.015) * 0.08;
+                const bobY = entry.bob === false ? 0 : Math.sin(GameRuntime.frame * 0.055 + this.y * 0.011) * 2.2;
+                const iconSize = baseIconSize * framePulse;
+                const drawX = this.x;
+                const drawY = this.y + bobY;
+                const glowColor = entry.glowColor || displayColor;
+                const outlineColor = entry.outlineColor || 'rgba(255, 244, 196, 0.82)';
                 const useDiamondFrame = pickupId === 'EXP' || pickupId === 'EXP_LARGE' || pickupId === 'BOSS_EXP' || pickupId === 'RESONANCE';
                 ctx.save();
-                ctx.shadowBlur = Math.max(8, iconSize * 0.28);
-                ctx.shadowColor = displayColor;
-                ctx.globalAlpha = 0.42;
-                ctx.fillStyle = displayColor;
+                if (entry.shadow !== false) {
+                    ctx.globalAlpha = 0.28;
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.62)';
+                    ctx.beginPath();
+                    ctx.ellipse(drawX, this.y + iconSize * 0.42, iconSize * 0.46, iconSize * 0.16, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                if ((this.isMagnetized || this.speed > 0) && entry.magnetTrail !== false) {
+                    const trailSpeed = Math.hypot(this.vx || 0, this.vy || 0) || this.speed;
+                    if (trailSpeed > 0) {
+                        const dirX = (this.vx || 0) / trailSpeed || 0;
+                        const dirY = (this.vy || 0) / trailSpeed || 0;
+                        const trail = ctx.createLinearGradient(drawX - dirX * 48, drawY - dirY * 48, drawX, drawY);
+                        trail.addColorStop(0, 'rgba(255, 255, 255, 0)');
+                        trail.addColorStop(1, glowColor);
+                        ctx.globalAlpha = 0.22;
+                        ctx.strokeStyle = trail;
+                        ctx.lineWidth = Math.max(3, iconSize * 0.16);
+                        ctx.beginPath();
+                        ctx.moveTo(drawX - dirX * 54, drawY - dirY * 54);
+                        ctx.lineTo(drawX, drawY);
+                        ctx.stroke();
+                    }
+                }
+
+                ctx.shadowBlur = Math.max(8, iconSize * 0.30);
+                ctx.shadowColor = glowColor;
+                ctx.globalAlpha = 0.44;
+                ctx.fillStyle = glowColor;
                 ctx.beginPath();
                 if (useDiamondFrame) {
                     const glowHalf = iconSize * 0.74;
-                    ctx.moveTo(this.x, this.y - glowHalf);
-                    ctx.lineTo(this.x + glowHalf, this.y);
-                    ctx.lineTo(this.x, this.y + glowHalf);
-                    ctx.lineTo(this.x - glowHalf, this.y);
+                    ctx.moveTo(drawX, drawY - glowHalf);
+                    ctx.lineTo(drawX + glowHalf, drawY);
+                    ctx.lineTo(drawX, drawY + glowHalf);
+                    ctx.lineTo(drawX - glowHalf, drawY);
                     ctx.closePath();
                 } else {
-                    ctx.arc(this.x, this.y, iconSize * 0.62, 0, Math.PI * 2);
+                    ctx.arc(drawX, drawY, iconSize * 0.62, 0, Math.PI * 2);
                 }
                 ctx.fill();
                 ctx.globalAlpha = 1;
                 ctx.shadowBlur = 0;
-                ctx.drawImage(icon, this.x - iconSize / 2, this.y - iconSize / 2, iconSize, iconSize);
-                ctx.strokeStyle = 'rgba(255, 244, 196, 0.82)';
+                if (!drawRuntimeAsset(ctx, icon, entry, drawX, drawY, iconSize, iconSize, {
+                    anchor: entry.anchor || [0.5, 0.5],
+                    debug: isArtAdapterDebugEnabled(),
+                    hitbox: { radius: this.basePickupRadius },
+                })) {
+                    ctx.drawImage(icon, drawX - iconSize / 2, drawY - iconSize / 2, iconSize, iconSize);
+                }
+                ctx.strokeStyle = outlineColor;
                 ctx.lineWidth = Math.max(1.5, iconSize * 0.055);
                 ctx.beginPath();
                 if (useDiamondFrame) {
                     const half = iconSize * 0.56;
-                    ctx.moveTo(this.x, this.y - half);
-                    ctx.lineTo(this.x + half, this.y);
-                    ctx.lineTo(this.x, this.y + half);
-                    ctx.lineTo(this.x - half, this.y);
+                    ctx.moveTo(drawX, drawY - half);
+                    ctx.lineTo(drawX + half, drawY);
+                    ctx.lineTo(drawX, drawY + half);
+                    ctx.lineTo(drawX - half, drawY);
                     ctx.closePath();
                 } else {
-                    ctx.arc(this.x, this.y, iconSize * 0.52, 0, Math.PI * 2);
+                    ctx.arc(drawX, drawY, iconSize * 0.52, 0, Math.PI * 2);
                 }
                 ctx.stroke();
                 ctx.restore();
@@ -7398,6 +8513,16 @@ class LegacyNoopSystem {
     update(_game, _deltaTime) {}
 }
 
+class LegacyMapSystem {
+    constructor() {
+        this.name = 'MapSystem';
+    }
+
+    update(game, deltaTime) {
+        game.updateMapSystem(deltaTime);
+    }
+}
+
 class LegacySpawnSystem {
     constructor() {
         this.name = 'SpawnSystem';
@@ -7405,6 +8530,16 @@ class LegacySpawnSystem {
 
     update(game, deltaTime) {
         game.updateSpawnSystem(deltaTime);
+    }
+}
+
+class LegacyBossSystem {
+    constructor() {
+        this.name = 'BossSystem';
+    }
+
+    update(game, deltaTime) {
+        game.updateBossSystem?.(deltaTime);
     }
 }
 
@@ -7452,6 +8587,16 @@ class LegacyCollisionSystem {
     }
 }
 
+class LegacyDropSystem {
+    constructor() {
+        this.name = 'DropSystem';
+    }
+
+    update(game, deltaTime) {
+        game.updateDropSystem?.(deltaTime);
+    }
+}
+
 class LegacyPickupSystem {
     constructor() {
         this.name = 'PickupSystem';
@@ -7469,8 +8614,17 @@ class LegacyWeaponSystem {
 
     update(game, deltaTime) {
         game.updateWeaponSystem(deltaTime);
-        game.updateLevelProgressionSystem();
         game.genericWeaponShadow?.update(game);
+    }
+}
+
+class LegacyProgressionSystem {
+    constructor() {
+        this.name = 'ProgressionSystem';
+    }
+
+    update(game, deltaTime) {
+        game.updateProgressionSystem(deltaTime);
     }
 }
 
@@ -7486,13 +8640,17 @@ class LegacyCanvasRenderSystem {
 
 const LEGACY_SYSTEM_EXECUTION_ORDER = [
     'InputSystem',
+    'MapSystem',
     'SpawnSystem',
+    'BossSystem',
     'MovementSystem',
     'DamageSystem',
     'AnimationSystem',
     'CollisionSystem',
+    'DropSystem',
     'PickupSystem',
     'WeaponSystem',
+    'ProgressionSystem',
     'LegacyCanvasRenderSystem'
 ];
 
@@ -7500,13 +8658,17 @@ class LegacySystemPipeline {
     constructor() {
         const systems = [
             new LegacyInputSystem(),
+            new LegacyMapSystem(),
             new LegacySpawnSystem(),
+            new LegacyBossSystem(),
             new LegacyMovementSystem(),
             new LegacyDamageSystem(),
             new LegacyAnimationSystem(),
             new LegacyCollisionSystem(),
+            new LegacyDropSystem(),
             new LegacyPickupSystem(),
             new LegacyWeaponSystem(),
+            new LegacyProgressionSystem(),
             new LegacyCanvasRenderSystem()
         ];
         this.systems = systems.sort((a, b) => {
@@ -7703,12 +8865,97 @@ class LegacyPixiOverlayRenderer {
     }
 }
 
+class GameInputActions {
+    constructor(keys, bindings = null) {
+        this.keys = keys;
+        this.previousKeys = {};
+        this.bindings = bindings || {
+            moveUp: ['w', 'arrowup'],
+            moveDown: ['s', 'arrowdown'],
+            moveLeft: ['a', 'arrowleft'],
+            moveRight: ['d', 'arrowright'],
+            pause: ['escape', 'p'],
+            auto: ['tab'],
+            reset: ['r'],
+            confirm: ['enter', ' '],
+            cancel: ['escape'],
+        };
+        window.__INPUT_BINDINGS__ = this.bindings;
+    }
+
+    setKey(key, pressed) {
+        this.keys[String(key || '').toLowerCase()] = pressed;
+    }
+
+    update() {
+        this.previousKeys = { ...this.keys };
+    }
+
+    isDown(action) {
+        return (this.bindings[action] || []).some(key => Boolean(this.keys[key]));
+    }
+
+    wasPressed(action) {
+        return (this.bindings[action] || []).some(key => Boolean(this.keys[key]) && !this.previousKeys[key]);
+    }
+
+    consume(action) {
+        const keys = this.bindings[action] || [];
+        const pressed = keys.some(key => Boolean(this.keys[key]));
+        if (pressed) {
+            for (const key of keys) this.keys[key] = false;
+        }
+        return pressed;
+    }
+
+    consumeKey(key) {
+        const normalized = String(key || '').toLowerCase();
+        const pressed = Boolean(this.keys[normalized]);
+        if (pressed) this.keys[normalized] = false;
+        return pressed;
+    }
+
+    clearActions(actions = []) {
+        for (const action of actions) {
+            for (const key of this.bindings[action] || []) {
+                this.keys[key] = false;
+                this.previousKeys[key] = false;
+            }
+        }
+    }
+
+    getActionState() {
+        return Object.fromEntries(Object.keys(this.bindings).map(action => [action, this.isDown(action)]));
+    }
+
+    getMoveVector() {
+        let x = 0;
+        let y = 0;
+        if (this.isDown('moveUp')) y -= 1;
+        if (this.isDown('moveDown')) y += 1;
+        if (this.isDown('moveLeft')) x -= 1;
+        if (this.isDown('moveRight')) x += 1;
+        if (x !== 0 || y !== 0) {
+            const length = Math.hypot(x, y);
+            x /= length;
+            y /= length;
+        }
+        return { x, y };
+    }
+}
+
 class GameManager {
     constructor() {
         this.canvas = document.getElementById('gameCanvas');
         this.ctx = this.canvas.getContext('2d');
         this.viewport = document.getElementById('gameViewport');
         this.legacySystemPipeline = FEATURE_FLAGS.ENABLE_SYSTEM_SPLIT ? new LegacySystemPipeline() : null;
+        this.systemPipelineStatus = FEATURE_FLAGS.ENABLE_SYSTEM_SPLIT ? 'legacy-inline' : 'disabled';
+        window.__SYSTEM_PIPELINE__ = {
+            enabled: Boolean(FEATURE_FLAGS.ENABLE_SYSTEM_SPLIT),
+            status: this.systemPipelineStatus,
+            source: this.legacySystemPipeline ? 'game.js' : '',
+        };
         this.genericWeaponShadow = FEATURE_FLAGS.ENABLE_GENERIC_WEAPON ? new GenericWeaponShadowMonitor() : null;
         this.pixiRenderer = FEATURE_FLAGS.ENABLE_PIXI_RENDERER ? new LegacyPixiOverlayRenderer() : null;
         this.assets = FEATURE_FLAGS.ENABLE_ART_ASSETS ? window.assetRuntime : null;
@@ -7755,16 +9002,32 @@ class GameManager {
 
         // 按键状态
         this.keys = {};
+        this.input = new GameInputActions(this.keys);
         this.bindEvents();
         this.uiBridge?.mount(this);
 
-        // 游戏状态 - 正常启动：显示主菜单
-        this.gameState = GAME_STATE.MENU;
+        this.openingCutsceneTimer = 0;
+        this.openingCutsceneDuration = OPENING_TIMELINE.duration;
+        this.openingArt = this.createOpeningArtImages();
+        this.replayingOpeningCutscene = false;
+        this.runEntryTimer = 0;
+        this.runEntryDuration = RUN_ENTRY_TIMELINE.duration;
+        this.runEntry = null;
+
+        // 游戏状态 - 首次启动先进开场叙事，之后显示主菜单
+        this.gameState = this.shouldPlayOpeningCutscene()
+            ? GAME_STATE.OPENING_CUTSCENE
+            : GAME_STATE.MENU;
+        document.body.dataset.gameState = this.getStateName(this.gameState);
+        this.stateHistory = [];
+        window.__GAME_STATE_HISTORY__ = this.stateHistory;
         this.lastTime = 0;
         this.gameTime = 0;
         this.currentResonance = 0;
         this.spawnedMinutes = new Set(); // 记录已触发特殊刷新的分钟节点
         this.swarmedMinutes = new Set(); // 记录已触发潮汐波的分钟节点
+        this.pendingSwarm = null;
+        this.pendingTigerGuardSpawn = null;
         this.isVictory = false;
         this.hitstopTimer = 0; // 顿帧定时器：打击感卡肉效果
         this.activeMusicTrack = '';
@@ -7777,6 +9040,40 @@ class GameManager {
         // 暴露全局
         window.gameManager = this;
         this.applyCombatRuleSettings(readCombatRuleSettings());
+        this.loadModularSystemPipeline();
+    }
+
+    async loadModularSystemPipeline() {
+        if (!FEATURE_FLAGS.ENABLE_SYSTEM_SPLIT) return;
+        try {
+            const { createLegacySystemPipeline } = await import('./src/systems/createLegacySystemPipeline.ts');
+            const modularPipeline = createLegacySystemPipeline();
+            const modularWorld = this.getSystemWorldPort();
+            this.legacySystemPipeline = {
+                source: 'src/systems/createLegacySystemPipeline.ts',
+                update: (_game, deltaTime) => modularPipeline.update(modularWorld, deltaTime),
+            };
+            this.systemPipelineStatus = 'module';
+            window.__SYSTEM_PIPELINE__ = {
+                enabled: true,
+                status: this.systemPipelineStatus,
+                source: this.legacySystemPipeline.source,
+                worldPort: modularWorld === this ? 'GameManager' : 'LegacyWorldAdapter',
+            };
+        } catch (error) {
+            console.warn('[SystemPipeline] Falling back to inline legacy pipeline.', error);
+            this.systemPipelineStatus = 'legacy-inline-fallback';
+            window.__SYSTEM_PIPELINE__ = {
+                enabled: true,
+                status: this.systemPipelineStatus,
+                source: 'game.js',
+                error: error?.message || String(error),
+            };
+        }
+    }
+
+    getSystemWorldPort() {
+        return this;
     }
 
     applyCombatRuleSettings(settings = readCombatRuleSettings()) {
@@ -7788,6 +9085,150 @@ class GameManager {
             this.player.refreshWeapons();
         }
         this.uiBridge?.update(this);
+    }
+
+    getStateName(state) {
+        return GAME_STATE_NAME[state] || String(state);
+    }
+
+    canChangeState(from, to, payload = {}) {
+        if (from === to) return false;
+        if ((from === GAME_STATE.GAME_OVER || from === GAME_STATE.VICTORY) && to === GAME_STATE.LEVEL_UP) return false;
+        return Object.values(GAME_STATE).includes(to);
+    }
+
+    onExitState(_state, _nextState, _payload = {}) {
+        // Hook point for future system extraction. Keep side effects centralized in changeState.
+    }
+
+    onEnterState(_state, _previousState, _payload = {}) {
+        // Hook point for future UI/audio/cutscene cleanup without scattered gameState writes.
+    }
+
+    notifyStateChanged(change) {
+        GameRuntime.recordEvent({
+            type: 'statechange',
+            from: change.previousStateName,
+            to: change.nextStateName,
+            reason: change.payload.reason || '',
+        });
+        this.stateHistory.push(change);
+        if (this.stateHistory.length > 50) this.stateHistory.shift();
+        window.__GAME_STATE_CHANGE__ = change;
+        window.__GAME_STATE_HISTORY__ = this.stateHistory;
+        document.body.dataset.gameState = change.nextStateName;
+        window.dispatchEvent(new CustomEvent('game-state-change', { detail: change }));
+        this.uiBridge?.update(this);
+    }
+
+    changeState(nextState, payload = {}) {
+        const previousState = this.gameState;
+        if (!this.canChangeState(previousState, nextState, payload)) return false;
+        this.onExitState(previousState, nextState, payload);
+        this.gameState = nextState;
+        this.onEnterState(nextState, previousState, payload);
+        this.notifyStateChanged({
+            previousState,
+            nextState,
+            previousStateName: this.getStateName(previousState),
+            nextStateName: this.getStateName(nextState),
+            payload,
+            gameTime: this.gameTime || 0,
+            frame: GameRuntime.getFrame(),
+            changedAt: Date.now(),
+        });
+        return true;
+    }
+
+    pauseGame() {
+        return this.gameState === GAME_STATE.PLAYING
+            ? this.changeState(GAME_STATE.PAUSED, { reason: 'pause' })
+            : false;
+    }
+
+    resumeGame() {
+        return this.gameState === GAME_STATE.PAUSED
+            ? this.changeState(GAME_STATE.PLAYING, { reason: 'resume' })
+            : false;
+    }
+
+    togglePause() {
+        if (this.gameState === GAME_STATE.PLAYING) return this.pauseGame();
+        if (this.gameState === GAME_STATE.PAUSED) return this.resumeGame();
+        return false;
+    }
+
+    openPerkUpgrade() {
+        return this.changeState(GAME_STATE.PERK_UPGRADE, { reason: 'openPerkUpgrade' });
+    }
+
+    shouldPlayOpeningCutscene() {
+        if (FEATURE_FLAG_PARAMS.get('skipOpening') === '1') return false;
+        if (FEATURE_FLAG_PARAMS.get('opening') === '1') return true;
+        try {
+            return localStorage.getItem(OPENING_CUTSCENE_STORAGE_KEY) !== '1';
+        } catch (_error) {
+            return false;
+        }
+    }
+
+    markOpeningCutsceneSeen() {
+        try {
+            localStorage.setItem(OPENING_CUTSCENE_STORAGE_KEY, '1');
+        } catch (_error) {
+            // Non-critical: private browsing/storage denial should not block the game.
+        }
+    }
+
+    finishOpeningCutscene(reason = 'openingComplete') {
+        if (FEATURE_FLAG_PARAMS.get('opening') !== '1' && !this.replayingOpeningCutscene) {
+            this.markOpeningCutsceneSeen();
+        }
+        this.replayingOpeningCutscene = false;
+        this.openingCutsceneTimer = 0;
+        this.changeState(GAME_STATE.MENU, { reason });
+    }
+
+    replayOpeningCutscene() {
+        this.replayingOpeningCutscene = true;
+        this.openingCutsceneTimer = 0;
+        this.changeState(GAME_STATE.OPENING_CUTSCENE, { reason: 'replayOpening' });
+    }
+
+    createOpeningArtImages() {
+        const images = {};
+        for (const [key, src] of Object.entries(OPENING_ART_PATHS)) {
+            const image = new Image();
+            image.src = src;
+            images[key] = image;
+        }
+        return images;
+    }
+
+    canDrawOpeningImage(image) {
+        return Boolean(image?.complete && (image.naturalWidth || image.width) && (image.naturalHeight || image.height));
+    }
+
+    drawOpeningImageCover(ctx, image, x, y, width, height) {
+        if (!this.canDrawOpeningImage(image)) return false;
+        const sourceWidth = image.naturalWidth || image.width;
+        const sourceHeight = image.naturalHeight || image.height;
+        const scale = Math.max(width / sourceWidth, height / sourceHeight);
+        const drawWidth = sourceWidth * scale;
+        const drawHeight = sourceHeight * scale;
+        ctx.drawImage(image, x + (width - drawWidth) / 2, y + (height - drawHeight) / 2, drawWidth, drawHeight);
+        return true;
+    }
+
+    drawOpeningImageContain(ctx, image, centerX, centerY, maxWidth, maxHeight) {
+        if (!this.canDrawOpeningImage(image)) return false;
+        const sourceWidth = image.naturalWidth || image.width;
+        const sourceHeight = image.naturalHeight || image.height;
+        const scale = Math.min(maxWidth / sourceWidth, maxHeight / sourceHeight);
+        const drawWidth = sourceWidth * scale;
+        const drawHeight = sourceHeight * scale;
+        ctx.drawImage(image, centerX - drawWidth / 2, centerY - drawHeight / 2, drawWidth, drawHeight);
+        return true;
     }
 
     loadPersistentData() {
@@ -8351,12 +9792,12 @@ class GameManager {
     bindEvents() {
         window.addEventListener('keydown', (e) => {
             const key = e.key.toLowerCase();
-            this.keys[key] = true;
+            this.input.setKey(key, true);
             GameRuntime.recordEvent({ type: 'keydown', key });
         });
         window.addEventListener('keyup', (e) => {
             const key = e.key.toLowerCase();
-            this.keys[key] = false;
+            this.input.setKey(key, false);
             GameRuntime.recordEvent({ type: 'keyup', key });
         });
 
@@ -8385,7 +9826,9 @@ class GameManager {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        if (this.gameState === GAME_STATE.MENU) {
+        if (this.gameState === GAME_STATE.OPENING_CUTSCENE) {
+            this.finishOpeningCutscene('openingClickSkip');
+        } else if (this.gameState === GAME_STATE.MENU) {
             this.handleMenuClick(x, y);
         } else if (this.gameState === GAME_STATE.PERK_UPGRADE) {
             this.handlePerkClick(x, y);
@@ -8410,7 +9853,7 @@ class GameManager {
             this.startNewGame();
         } else if (y > buttonStartY + 90 && y < buttonStartY + 160) {
             // 进入局外升级
-            this.gameState = GAME_STATE.PERK_UPGRADE;
+            this.openPerkUpgrade();
         } else if (y > buttonStartY + 180 && y < buttonStartY + 250) {
             // 退出（刷新）
             location.reload();
@@ -8427,11 +9870,7 @@ class GameManager {
         const pauseX = this.canvas.width - buttonW - padding;
         const pauseY = padding;
         if (x >= pauseX && x <= pauseX + buttonW && y >= pauseY && y <= pauseY + buttonH) {
-            if (this.gameState === GAME_STATE.PLAYING) {
-                this.gameState = GAME_STATE.PAUSED;
-            } else if (this.gameState === GAME_STATE.PAUSED) {
-                this.gameState = GAME_STATE.PLAYING;
-            }
+            this.togglePause();
             return;
         }
 
@@ -8439,7 +9878,7 @@ class GameManager {
         const restartX = this.canvas.width - 2 * buttonW - 2 * padding;
         const restartY = padding;
         if (x >= restartX && x <= restartX + buttonW && y >= restartY && y <= restartY + buttonH) {
-            this.gameState = GAME_STATE.MENU;
+            this.returnToMenu();
             return;
         }
     }
@@ -8535,8 +9974,7 @@ class GameManager {
         }
     }
 
-    startNewGame() {
-        this.gameState = GAME_STATE.PLAYING;
+    initializeRun(options = {}) {
         GameRuntime.resetRunStats();
         this.resetMapDimensions();
         this.player = new Player(this.getWorldWidth(), this.getWorldHeight(), this.perks, this.perkLevels);
@@ -8561,6 +9999,8 @@ class GameManager {
         this.finalBossBattleTriggered = false;
         this.spawnedMinutes = new Set(); // 重置时间轴触发记录
         this.swarmedMinutes = new Set(); // 重置潮汐波触发记录
+        this.pendingSwarm = null;
+        this.pendingTigerGuardSpawn = null;
         this.isVictory = false;
 
         this.shootTimer = 0;
@@ -8571,7 +10011,64 @@ class GameManager {
         this.damageFlashTimer = 0;
         // 受伤弹开怪物冷却
         this.pushbackCooldown = 0;
+
+        if (options.spawnInitialProps && FEATURE_FLAGS.ENABLE_DESTRUCTIBLE_PROPS) {
+            this.spawnDestructibleProps(WAVE_TIMELINE_CONFIG.timeline.initialDestructibleProps);
+        }
         this.uiBridge?.update(this);
+    }
+
+    beginRunEntry(reason = 'runEntry') {
+        if (!this.player) return this.changeState(GAME_STATE.PLAYING, { reason: `${reason}:fallback` });
+        if (FEATURE_FLAG_PARAMS.get('skipRunEntry') === '1') {
+            this.runEntry = null;
+            this.runEntryTimer = 0;
+            this.input?.clearActions?.(['moveUp', 'moveDown', 'moveLeft', 'moveRight']);
+            this.snapCameraToPlayer();
+            return this.changeState(GAME_STATE.PLAYING, { reason: `${reason}:skipRunEntry` });
+        }
+        const endX = this.player.x;
+        const endY = this.player.y;
+        const walkDistance = Math.max(76, this.player.size * 2.8);
+        const startX = Math.max(this.player.size / 2, endX - walkDistance);
+        const startY = endY;
+        this.runEntryTimer = 0;
+        this.runEntryDuration = RUN_ENTRY_TIMELINE.duration;
+        this.runEntry = {
+            startX,
+            startY,
+            endX,
+            endY,
+            portalX: startX,
+            portalY: startY,
+            directionX: 1,
+            directionY: 0,
+        };
+        this.player.x = startX;
+        this.player.y = startY;
+        this.player.facingDirX = 1;
+        this.player.facingDirY = 0;
+        this.snapCameraToPlayer();
+        return this.changeState(GAME_STATE.RUN_ENTRY, { reason });
+    }
+
+    completeRunEntry() {
+        if (this.runEntry && this.player) {
+            this.player.x = this.runEntry.endX;
+            this.player.y = this.runEntry.endY;
+            this.player.facingDirX = this.runEntry.directionX;
+            this.player.facingDirY = this.runEntry.directionY;
+        }
+        this.runEntry = null;
+        this.runEntryTimer = 0;
+        this.input?.clearActions?.(['moveUp', 'moveDown', 'moveLeft', 'moveRight']);
+        this.snapCameraToPlayer();
+        this.changeState(GAME_STATE.PLAYING, { reason: 'runEntryComplete' });
+    }
+
+    startNewGame() {
+        this.initializeRun({ spawnInitialProps: true });
+        this.beginRunEntry('startNewGame');
     }
 
     // AABB碰撞检测
@@ -8839,117 +10336,404 @@ class GameManager {
         this.enemies.push(enemy);
     }
 
-    // 奇数分钟：生成小 Boss（大型精英怪）
-    spawnMiniBoss(minute) {
-        // 新公式：完美穿插大Boss血量曲线，平滑加速
-        const baseHp = 400 + minute * 200 + Math.pow(minute, 2) * 40;
+    getMiniBossTypeForMinute(minute) {
+        if (MINI_BOSS_SCHEDULE_P0[minute]) return MINI_BOSS_SCHEDULE_P0[minute];
+        if (minute === 7 || minute === 9) {
+            return MINI_BOSS_P0_TYPES[Math.floor(GameRuntime.random() * MINI_BOSS_P0_TYPES.length)];
+        }
+        return 'charger_captain';
+    }
 
-        // 动态等级补正（保持不变）
-        const hpMultiplier = 1 + (this.player.level * 0.15);
+    getMiniBossIntensityForMinute(minute) {
+        return minute >= 9 ? 1.25 : 1;
+    }
+
+    createCaptainProjectile(enemy, angle, config, damageMultiplier = 1) {
+        const dirX = Math.cos(angle);
+        const dirY = Math.sin(angle);
+        const projectile = new Projectile(enemy.x, enemy.y, dirX, dirY, (Number(config.projectileDamage) || 12) * damageMultiplier);
+        projectile.size = Number(config.projectileSize) || 10;
+        projectile.speed = Number(config.projectileSpeed) || 420;
+        projectile.color = config.warningColor || '#5ad7ff';
+        projectile.isEnemyProjectile = true;
+        projectile.sourceMiniBossType = enemy.miniBossType;
+        this.projectiles.push(projectile);
+    }
+
+    moveMiniBossToward(enemy, targetX, targetY, deltaTime, speedScale = 1) {
+        const dx = targetX - enemy.x;
+        const dy = targetY - enemy.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist <= 0) return;
+        const terrainSpeedMultiplier = this.getTerrainSpeedMultiplierForEntity?.(enemy) || 1;
+        const deltaX = (dx / dist) * enemy.speed * speedScale * terrainSpeedMultiplier * deltaTime;
+        const deltaY = (dy / dist) * enemy.speed * speedScale * terrainSpeedMultiplier * deltaTime;
+        if (this.moveEnemyWithTerrain) {
+            this.moveEnemyWithTerrain(enemy, deltaX, deltaY);
+        } else {
+            enemy.x += deltaX;
+            enemy.y += deltaY;
+        }
+    }
+
+    enterMiniBossWindup(enemy, config) {
+        enemy.state = 'windup';
+        enemy.stateTimer = 0;
+        const dx = this.player.x - enemy.x;
+        const dy = this.player.y - enemy.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        enemy.lockedTargetX = this.player.x;
+        enemy.lockedTargetY = this.player.y;
+        enemy.lockedDirX = dx / dist;
+        enemy.lockedDirY = dy / dist;
+        enemy.lockedAngle = Math.atan2(enemy.lockedDirY, enemy.lockedDirX);
+        enemy.warningColor = config.warningColor;
+    }
+
+    updateChargerCaptain(enemy, config, deltaTime) {
+        if (enemy.state === 'chase') {
+            this.moveMiniBossToward(enemy, this.player.x, this.player.y, deltaTime);
+            enemy.skillTimer += deltaTime;
+            if (enemy.skillTimer >= config.skillCooldown) {
+                enemy.skillTimer = 0;
+                this.enterMiniBossWindup(enemy, config);
+            }
+            return true;
+        }
+
+        if (enemy.state === 'windup') {
+            if (enemy.stateTimer >= config.windupSeconds) {
+                enemy.state = 'cast';
+                enemy.stateTimer = 0;
+                enemy.isCharging = true;
+            }
+            return true;
+        }
+
+        if (enemy.state === 'cast') {
+            const speed = enemy.speed * (Number(config.chargeSpeedMultiplier) || 4);
+            const deltaX = enemy.lockedDirX * speed * deltaTime;
+            const deltaY = enemy.lockedDirY * speed * deltaTime;
+            if (this.moveEnemyWithTerrain) {
+                this.moveEnemyWithTerrain(enemy, deltaX, deltaY);
+            } else {
+                enemy.x += deltaX;
+                enemy.y += deltaY;
+            }
+            if (enemy.stateTimer >= config.chargeDuration) {
+                enemy.state = 'recovery';
+                enemy.stateTimer = 0;
+                enemy.isCharging = false;
+            }
+            return true;
+        }
+
+        if (enemy.state === 'recovery' && enemy.stateTimer >= config.recoverySeconds) {
+            enemy.state = 'chase';
+            enemy.stateTimer = 0;
+        }
+        return true;
+    }
+
+    updateArcherCaptain(enemy, config, deltaTime) {
+        if (enemy.state === 'windup') {
+            if (enemy.stateTimer >= config.windupSeconds) {
+                const halfHp = enemy.hp <= enemy.maxHp * 0.5;
+                const count = halfHp ? Number(config.halfHpVolleyCount) || 3 : 1;
+                const spread = count > 1 ? 0.18 : 0;
+                for (let i = 0; i < count; i++) {
+                    const offset = (i - (count - 1) / 2) * spread;
+                    this.createCaptainProjectile(enemy, enemy.lockedAngle + offset, config, enemy.miniBossIntensity || 1);
+                }
+                enemy.state = 'recovery';
+                enemy.stateTimer = 0;
+            }
+            return true;
+        }
+
+        if (enemy.state === 'recovery') {
+            if (enemy.stateTimer >= config.recoverySeconds) {
+                enemy.state = 'chase';
+                enemy.stateTimer = 0;
+            }
+            return true;
+        }
+
+        const dx = this.player.x - enemy.x;
+        const dy = this.player.y - enemy.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        if (dist < config.retreatRange) {
+            this.moveMiniBossToward(enemy, enemy.x - dx, enemy.y - dy, deltaTime);
+        } else if (dist > config.preferredRange) {
+            this.moveMiniBossToward(enemy, this.player.x, this.player.y, deltaTime);
+        }
+
+        enemy.skillTimer += deltaTime;
+        if (enemy.skillTimer >= config.skillCooldown) {
+            enemy.skillTimer = 0;
+            this.enterMiniBossWindup(enemy, config);
+        }
+        return true;
+    }
+
+    hasLivingTigerGuardsFor(boss) {
+        return this.enemies.some(enemy => enemy.isTigerGuard && enemy.boss === boss && enemy.hp > 0);
+    }
+
+    updateShieldCaptain(enemy, config, deltaTime) {
+        if (enemy.state === 'windup') {
+            if (enemy.stateTimer >= config.windupSeconds) {
+                const minute = Math.max(1, Math.floor(this.gameTime / 60));
+                const count = Math.max(3, Math.round((Number(config.guardCountBase) || 8) + minute * (Number(config.guardCountPerMinute) || 1)));
+                this.spawnTigerGuards(enemy, minute, { force: true, count, orbitRadius: WAVE_TIMELINE_CONFIG.tigerGuards.orbitRadiusBase });
+                enemy.state = 'recovery';
+                enemy.stateTimer = 0;
+            }
+            return true;
+        }
+
+        if (enemy.state === 'recovery') {
+            if (enemy.stateTimer >= config.recoverySeconds) {
+                enemy.state = 'chase';
+                enemy.stateTimer = 0;
+            }
+            return true;
+        }
+
+        this.moveMiniBossToward(enemy, this.player.x, this.player.y, deltaTime);
+        enemy.skillTimer += deltaTime;
+        if (enemy.skillTimer >= config.skillCooldown && !this.hasLivingTigerGuardsFor(enemy)) {
+            enemy.skillTimer = 0;
+            this.enterMiniBossWindup(enemy, config);
+        }
+        return true;
+    }
+
+    updateMiniBossBehavior(enemy, deltaTime, canvasWidth, canvasHeight) {
+        enemy.updateCloseAttackVisual?.(deltaTime);
+        if (enemy.stunTimer > 0) {
+            enemy.stunTimer -= deltaTime;
+            return true;
+        }
+        const config = MINI_BOSS_CONFIG[enemy.miniBossType];
+        if (!config) return Enemy.prototype.update.call(enemy, deltaTime, canvasWidth, canvasHeight);
+        enemy.state = enemy.state || 'chase';
+        enemy.stateTimer = (enemy.stateTimer || 0) + deltaTime;
+        if (enemy.miniBossType === 'charger_captain') return this.updateChargerCaptain(enemy, config, deltaTime);
+        if (enemy.miniBossType === 'archer_captain') return this.updateArcherCaptain(enemy, config, deltaTime);
+        if (enemy.miniBossType === 'shield_captain') return this.updateShieldCaptain(enemy, config, deltaTime);
+        return true;
+    }
+
+    drawMiniBossTelegraph(ctx, enemy, config) {
+        if (!enemy || !config) return;
+        ctx.save();
+        if (enemy.miniBossType === 'charger_captain') {
+            if (enemy.state === 'windup') {
+                const len = 560;
+                const width = Math.max(20, enemy.size * 0.46);
+                ctx.globalAlpha = 0.72;
+                ctx.strokeStyle = config.warningColor;
+                ctx.lineWidth = width;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.moveTo(enemy.x, enemy.y);
+                ctx.lineTo(enemy.x + enemy.lockedDirX * len, enemy.y + enemy.lockedDirY * len);
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+                ctx.strokeStyle = 'rgba(255, 245, 214, 0.92)';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(enemy.x, enemy.y);
+                ctx.lineTo(enemy.x + enemy.lockedDirX * len, enemy.y + enemy.lockedDirY * len);
+                ctx.stroke();
+            } else if (enemy.state === 'cast') {
+                ctx.globalAlpha = 0.28;
+                ctx.fillStyle = config.warningColor;
+                ctx.beginPath();
+                ctx.ellipse(enemy.x - enemy.lockedDirX * enemy.size, enemy.y - enemy.lockedDirY * enemy.size, enemy.size * 0.85, enemy.size * 0.32, enemy.lockedAngle, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        } else if (enemy.miniBossType === 'archer_captain' && enemy.state === 'windup') {
+            ctx.globalAlpha = 0.78;
+            ctx.strokeStyle = config.warningColor;
+            ctx.lineWidth = 4;
+            ctx.setLineDash([18, 10]);
+            ctx.beginPath();
+            ctx.moveTo(enemy.x, enemy.y);
+            ctx.lineTo(enemy.x + enemy.lockedDirX * 520, enemy.y + enemy.lockedDirY * 520);
+            ctx.stroke();
+        } else if (enemy.miniBossType === 'shield_captain' && enemy.state === 'windup') {
+            const radius = WAVE_TIMELINE_CONFIG.tigerGuards.orbitRadiusBase;
+            ctx.globalAlpha = 0.48;
+            ctx.strokeStyle = config.warningColor;
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.arc(this.player.x, this.player.y, radius, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+        ctx.restore();
+    }
+
+    renderMiniBoss(enemy, ctx) {
+        const config = MINI_BOSS_CONFIG[enemy.miniBossType] || {};
+        const assetRuntime = this.assets;
+        const drawHealthBar = (barW, barY) => {
+            if (enemy.hp >= enemy.maxHp) return;
+            const barH = 6;
+            const barX = enemy.x - barW / 2;
+            ctx.fillStyle = '#2a0707';
+            ctx.fillRect(barX, barY, barW, barH);
+            const hpPercent = Math.max(0, Math.min(1, enemy.hp / enemy.maxHp));
+            ctx.fillStyle = config.warningColor || '#d7b35a';
+            ctx.fillRect(barX + 1, barY + 1, (barW - 2) * hpPercent, barH - 2);
+        };
+
+        this.drawMiniBossTelegraph(ctx, enemy, config);
+        if (FEATURE_FLAGS.ENABLE_ART_ASSETS && assetRuntime?.getMiniBossSprite) {
+            const frameIndex = Math.floor(Date.now() / 280) % 2;
+            const sprite = assetRuntime.getMiniBossSprite(enemy.artId, frameIndex);
+            if (assetRuntime.canDraw?.(sprite)) {
+                const entry = assetRuntime.getMiniBossEntry?.(enemy.artId) || {};
+                const worldSize = entry.worldSize || assetRuntime.getMiniBossWorldSize?.(enemy.artId) || enemy.size * 2.35;
+                const bob = Math.sin(Date.now() / 230) * 1.6;
+                ctx.save();
+                drawRuntimeAsset(ctx, sprite, entry, enemy.x, enemy.y + bob, worldSize, worldSize, {
+                    anchor: entry.feetAnchor || entry.anchor || [0.5, 0.78],
+                    shadowBlur: 12,
+                    shadowColor: config.warningColor ? `${config.warningColor}66` : 'rgba(255, 194, 88, 0.34)',
+                    debug: isArtAdapterDebugEnabled(),
+                    hitbox: { radius: enemy.size / 2 },
+                });
+                ctx.restore();
+                drawHealthBar(worldSize * 0.78, enemy.y - worldSize * 0.46 - 8);
+                return;
+            }
+        }
+
+        ctx.save();
+        ctx.fillStyle = enemy.color;
+        ctx.beginPath();
+        ctx.arc(enemy.x, enemy.y, enemy.size / 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+        drawHealthBar(enemy.size, enemy.y - enemy.size / 2 - 8);
+    }
+
+    // 奇数分钟：生成 Elite Captain（战术精英首领）
+    spawnMiniBoss(minute) {
+        const baseConfig = WAVE_TIMELINE_CONFIG.miniBoss;
+        const typeId = this.getMiniBossTypeForMinute(minute);
+        const typeConfig = MINI_BOSS_CONFIG[typeId] || MINI_BOSS_CONFIG.charger_captain;
+        const intensity = this.getMiniBossIntensityForMinute(minute);
+        const baseHp = baseConfig.baseHp + minute * baseConfig.hpPerMinute + Math.pow(minute, 2) * baseConfig.hpPerMinuteSquared;
+        const hpMultiplier = 1 + (this.player.level * baseConfig.playerLevelHpMultiplier);
         const hardMultipliers = getCombatRuleMultipliers().game;
-        const hp = Math.floor(baseHp * hpMultiplier * hardMultipliers.enemyHp);
+        const hp = Math.floor(baseHp * hpMultiplier * hardMultipliers.enemyHp * typeConfig.hpMultiplier * intensity);
+        const spawnOffset = Number(baseConfig.spawnOffset) || 200;
+        const speedMod = baseConfig.speedMultiplier * typeConfig.speedMultiplier * hardMultipliers.enemySpeed;
+        const manager = this;
 
         const miniBoss = new EliteEnemy(
-            this.getViewportCenterX() + (GameRuntime.random() > 0.5 ? 200 : -200),
-            this.getViewportCenterY() + (GameRuntime.random() > 0.5 ? 200 : -200),
+            this.getViewportCenterX() + (GameRuntime.random() > 0.5 ? spawnOffset : -spawnOffset),
+            this.getViewportCenterY() + (GameRuntime.random() > 0.5 ? spawnOffset : -spawnOffset),
             hp,
-            1.2 * hardMultipliers.enemySpeed
+            speedMod
         );
-        miniBoss.size = 50; // 调整为 50，体型更接近大 Boss
-        const miniBossArtIds = ['kongxiu', 'hanfu', 'bianxi', 'wangzhi', 'qinqi'];
-        const miniBossArtId = miniBossArtIds[this.currentStage] || miniBossArtIds[(Math.max(1, minute) - 1) % miniBossArtIds.length];
-        const assetRuntime = this.assets;
-        miniBoss.artId = miniBossArtId;
-        miniBoss.color = '#9b332f';
+        miniBoss.hp = hp;
+        miniBoss.maxHp = hp;
+        miniBoss.size = typeConfig.size;
+        miniBoss.color = typeConfig.color;
         miniBoss.isMiniBoss = true;
-        miniBoss.resonanceDrop = 10;
-
-        // 小 Boss 使用关卡守将同源美术；资源不可用时保留轻量 canvas fallback。
+        miniBoss.miniBossType = typeId;
+        miniBoss.name = typeConfig.name;
+        miniBoss.role = typeConfig.role;
+        miniBoss.artId = typeConfig.artId || typeId;
+        miniBoss.resonanceDrop = typeConfig.resonanceDrop ?? baseConfig.resonanceDrop;
+        miniBoss.knockbackResist = 1.0;
+        miniBoss.contactDamageMultiplier = Number(typeConfig.contactDamageMultiplier) || 1;
+        miniBoss.miniBossIntensity = intensity;
+        miniBoss.state = 'chase';
+        miniBoss.stateTimer = 0;
+        miniBoss.skillTimer = Math.max(0, typeConfig.skillCooldown - (typeConfig.initialSkillDelay || typeConfig.skillCooldown));
+        miniBoss.update = function(deltaTime, canvasWidth, canvasHeight) {
+            return manager.updateMiniBossBehavior(this, deltaTime, canvasWidth, canvasHeight);
+        };
         miniBoss.render = function(ctx) {
-            const drawHealthBar = (barW, barY) => {
-                if (this.hp >= this.maxHp) return;
-                const barH = 6;
-                const barX = this.x - barW / 2;
-
-                ctx.fillStyle = '#2a0707';
-                ctx.fillRect(barX, barY, barW, barH);
-                const hpPercent = Math.max(0, Math.min(1, this.hp / this.maxHp));
-                ctx.fillStyle = '#d7b35a';
-                ctx.fillRect(barX + 1, barY + 1, (barW - 2) * hpPercent, barH - 2);
-            };
-
-            if (FEATURE_FLAGS.ENABLE_ART_ASSETS && assetRuntime?.getMiniBossSprite) {
-                const frameIndex = Math.floor(Date.now() / 280) % 2;
-                const sprite = assetRuntime.getMiniBossSprite(this.artId, frameIndex);
-                if (assetRuntime.canDraw?.(sprite)) {
-                    const worldSize = assetRuntime.getMiniBossWorldSize?.(this.artId) || 76;
-                    const bob = Math.sin(Date.now() / 230) * 2;
-                    ctx.save();
-                    ctx.shadowColor = 'rgba(255, 194, 88, 0.34)';
-                    ctx.shadowBlur = 12;
-                    ctx.drawImage(sprite, this.x - worldSize / 2, this.y - worldSize / 2 + bob, worldSize, worldSize);
-                    ctx.restore();
-                    drawHealthBar(worldSize * 0.78, this.y - worldSize * 0.46 - 8);
-                    return;
-                }
-            }
-
-            ctx.fillStyle = this.color;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
-            ctx.fill();
-
-            // 浮动血条
-            drawHealthBar(this.size, this.y - this.size / 2 - 8);
+            return manager.renderMiniBoss(this, ctx);
         };
 
         this.enemies.push(miniBoss);
-        // 3分钟及以后添加虎卫护卫，10分钟不添加
-        this.spawnTigerGuards(miniBoss, minute);
-        console.log(`[Timeline] ${minute} min: Mini Boss Spawned! HP: ${hp}`);
+        this.floatingTexts.push(new FloatingText(miniBoss.x, miniBoss.y - miniBoss.size - 30, `Elite Captain: ${typeConfig.name}`, typeConfig.warningColor, 20));
+        this.floatingTexts.push(new FloatingText(miniBoss.x, miniBoss.y - miniBoss.size - 8, typeConfig.hint, '#f3e7c4', 14));
+        console.log(`[Timeline] ${minute} min: ${typeConfig.name} spawned. HP: ${hp}`);
     }
 
-    // 虎卫·重装盾兵 - Boss专属护卫生成器
-    // 规则：minute >= 3 才生成，minute >= 10 不生成
     // 虎卫·重装盾兵 - 死亡结界收网生成器
-    // 虎卫·重装盾兵 - 死亡结界收网生成器
-    spawnTigerGuards(boss, minute) {
-        // 仅在第 3、6、9 分钟触发死亡缩圈！
-        if (minute !== 3 && minute !== 6 && minute !== 9) return;
+    spawnTigerGuards(boss, minute, options = {}) {
+        const config = WAVE_TIMELINE_CONFIG.tigerGuards;
+        const triggerMinutes = config.triggerMinutes || [];
+        if (!options.force && !triggerMinutes.includes(minute)) return;
+        const firstTriggerMinute = Math.min(...triggerMinutes);
 
         // 1. 设定锁阵后的角斗场半径
-        const orbitRadius = 180 + (minute - 3) * 15;
+        const orbitRadius = Number(options.orbitRadius) || (config.orbitRadiusBase + (minute - firstTriggerMinute) * config.orbitRadiusPerMinuteAfterFirst);
 
         // 2. 按圆的周长计算怪物数量，保证肩并肩排成铁壁！(每个怪占位38像素)
         const circumference = 2 * Math.PI * orbitRadius;
-        const count = Math.floor(circumference / 38);
+        const count = Math.max(1, Math.floor(Number(options.count) || (circumference / config.bodySpacing)));
 
         // 3. 适当下调单体血量防止绝对死锁
-        const hpMultiplier = 1 + (this.player.level * 0.15);
-        const guardBaseHp = Math.floor((5 + minute * 2 + this.currentStage * 2) * hpMultiplier);
+        const hpMultiplier = 1 + (this.player.level * config.playerLevelHpMultiplier);
+        const guardBaseHp = Math.floor((config.baseHp + minute * config.hpPerMinute + this.currentStage * config.hpPerStage) * hpMultiplier);
 
         const angleStep = (Math.PI * 2) / count;
 
         // 4. 计算远超屏幕外围的撒网半径
-        const spawnRadius = Math.max(this.canvas.width, this.canvas.height) + 200;
+        const spawnRadius = Math.max(this.canvas.width, this.canvas.height) + config.spawnRadiusPadding;
 
         // 5. 核心修改：锁定当前的绝对位置为收网圆心（以玩家此刻的位置为圆心）
         const centerX = this.player.x;
         const centerY = this.player.y;
 
-        for (let i = 0; i < count; i++) {
-            const angle = i * angleStep;
+        this.pendingTigerGuardSpawn = {
+            boss,
+            minute,
+            count,
+            nextIndex: 0,
+            angleStep,
+            orbitRadius,
+            guardBaseHp,
+            spawnRadius,
+            centerX,
+            centerY,
+            maxPerFrame: Math.max(1, Math.floor(Number(config.maxSpawnPerFrame) || 6)),
+        };
+        this.spawnNextTigerGuardBatch();
+    }
+
+    spawnNextTigerGuardBatch() {
+        const pending = this.pendingTigerGuardSpawn;
+        if (!pending) return;
+        let spawned = 0;
+        while (pending.nextIndex < pending.count && spawned < pending.maxPerFrame) {
+            const angle = pending.nextIndex * pending.angleStep;
 
             // 计算屏幕外极其遥远的出生点
-            const spawnX = centerX + Math.cos(angle) * spawnRadius;
-            const spawnY = centerY + Math.sin(angle) * spawnRadius;
+            const spawnX = pending.centerX + Math.cos(angle) * pending.spawnRadius;
+            const spawnY = pending.centerY + Math.sin(angle) * pending.spawnRadius;
 
             // 必须把 centerX, centerY 传进去
-            const guard = new TigerGuardEnemy(spawnX, spawnY, boss, angle, orbitRadius, guardBaseHp, centerX, centerY);
+            const guard = new TigerGuardEnemy(spawnX, spawnY, pending.boss, angle, pending.orbitRadius, pending.guardBaseHp, pending.centerX, pending.centerY);
             this.enemies.push(guard);
+            pending.nextIndex++;
+            spawned++;
         }
 
-        console.log(`[TigerGuard] ${minute}min 触发结界收网！生成 ${count} 只重装盾卫！`);
+        if (pending.nextIndex >= pending.count) {
+            console.log(`[TigerGuard] ${pending.minute}min 触发结界收网！生成 ${pending.count} 只重装盾卫！`);
+            this.pendingTigerGuardSpawn = null;
+        }
     }
 
     // 偶数分钟：生成守将大 Boss
@@ -8972,8 +10756,8 @@ class GameManager {
         boss.maxHp = dynamicHp; // 强行覆盖基础配置
         boss.hp = dynamicHp;    // 强行覆盖基础配置
 
-        // 如果是第 10 分钟（索引 4，黄河渡口），打上最终 Boss 标记，并召唤前四个幻影
-        if (bossIndex === 4) {
+        // 最终关 Boss 打上最终标记，并召唤前四个幻影
+        if (this.isFinalStageIndex(bossIndex)) {
             boss.isFinalBoss = true;
             boss.isDormantFinalBoss = options.finalArena === true;
             // 扫清杂兵腾出舞台 - 只有最终Boss才清场
@@ -8988,31 +10772,32 @@ class GameManager {
 
         this.enemies.push(boss);
         if (!boss.isDormantFinalBoss) playGameSound('bossAppear');
-        console.log(`[Timeline] ${bossIndex * 2 + 2} min: ${stageData.boss} Spawned! (Level scaled HP: ${dynamicHp})`);
+        const minute = Math.round((Number(stageData.bossSecond) || ((bossIndex + 1) * 120)) / 60);
+        console.log(`[Timeline] ${minute} min: ${stageData.boss} Spawned! (Level scaled HP: ${dynamicHp})`);
 
-        // 第三波(3min)已经由miniBoss处理，第六波(6min)及以后的关卡Boss也召唤虎卫护卫
-        const minute = bossIndex * 2 + 2;
         if (!boss.isDormantFinalBoss) this.spawnTigerGuards(boss, minute);
         return boss;
     }
 
     spawnQinqiPhantoms(boss) {
         if (!boss) return;
-        for (let i = 0; i < 4; i++) {
+        const config = WAVE_TIMELINE_CONFIG.finalBoss;
+        const phantomCount = Math.max(0, Math.min(STAGES.length - 1, Number(config.phantomCount) || 0));
+        for (let i = 0; i < phantomCount; i++) {
             const phantom = new Boss(STAGES[i], i, { enableAffixes: false });
-            const angle = (Math.PI * 2 * i) / 4;
-            const dist = 150;
+            const angle = (Math.PI * 2 * i) / Math.max(1, phantomCount);
+            const dist = config.phantomDistance;
             phantom.x = boss.x + Math.cos(angle) * dist;
             phantom.y = boss.y + Math.sin(angle) * dist;
 
-            phantom.maxHp = Math.floor(boss.maxHp * 0.4);
+            phantom.maxHp = Math.floor(boss.maxHp * config.phantomHpMultiplier);
             phantom.hp = phantom.maxHp;
-            phantom.size = 30;
+            phantom.size = config.phantomSize;
             phantom.color = 'rgba(128, 0, 128, 0.7)';
             phantom.isQinqiPhantom = true;
             phantom.ability = 'none';
             if (FEATURE_FLAGS.ENABLE_QINQI_PHANTOMS) {
-                phantom.color = ['#59f2a9', '#b56cff', '#5fb2ff', '#ff6b48'][i];
+                phantom.color = config.phantomColors[i % config.phantomColors.length];
             }
 
             // 降级防跳关
@@ -9029,9 +10814,9 @@ class GameManager {
 
     // 触发终局过场动画
     triggerFinalCutscene() {
-        this.gameState = GAME_STATE.CUTSCENE;
+        this.changeState(GAME_STATE.CUTSCENE, { reason: 'finalCutscene' });
         this.cutsceneTimer = 0;
-        this.cutsceneDuration = 5.0; // 动画持续5秒
+        this.cutsceneDuration = WAVE_TIMELINE_CONFIG.timeline.cutsceneDuration;
 
         // 史实文案设定
         this.cutsceneTitle = '第五关 · 黄河渡口';
@@ -9049,11 +10834,13 @@ class GameManager {
     }
 
     enterFinalBossArena() {
-        this.gameState = GAME_STATE.PLAYING;
+        this.changeState(GAME_STATE.PLAYING, { reason: 'enterFinalBossArena' });
+        const finalStageIndex = STAGES.length - 1;
+        const finalBossMinute = Math.round((Number(STAGES[finalStageIndex]?.bossSecond) || 600) / 60);
         this.finalBossArenaActive = true;
         this.finalBossBattleTriggered = false;
-        this.currentStage = 4;
-        this.spawnedMinutes.add(10);
+        this.currentStage = finalStageIndex;
+        this.spawnedMinutes.add(finalBossMinute);
         this.configureFinalBossArenaSize();
         this.gridCols = Math.ceil(this.getWorldWidth() / this.gridCellSize);
         this.gridRows = Math.ceil(this.getWorldHeight() / this.gridCellSize);
@@ -9078,7 +10865,7 @@ class GameManager {
             this.player.environmentSlowMultiplier = 1;
         }
         this.snapCameraToPlayer();
-        const boss = this.spawnTimelineBoss(4, { finalArena: true });
+        const boss = this.spawnTimelineBoss(finalStageIndex, { finalArena: true });
         this.finalBossSpawned = true;
         this.finalBossBattleTriggered = false;
         if (boss) {
@@ -9107,7 +10894,9 @@ class GameManager {
         boss.stunTimer = 0;
         this.finalBossBattleTriggered = true;
         this.spawnQinqiPhantoms(boss);
-        this.spawnTigerGuards(boss, 10);
+        const finalStage = STAGES[STAGES.length - 1];
+        const finalBossMinute = Math.round((Number(finalStage?.bossSecond) || WAVE_TIMELINE_CONFIG.timeline.durationMinutes * 60) / 60);
+        this.spawnTigerGuards(boss, finalBossMinute);
         playGameSound('bossAppear');
         this.floatingTexts.push(new FloatingText(boss.x, boss.y - boss.size - 28, '秦琪迎战', '#ffd36a', 24));
     }
@@ -9157,39 +10946,363 @@ class GameManager {
         ctx.fillText('按 ENTER 跳过', cx, h - 50);
 
         // 判定动画结束或玩家跳过
-        if (this.cutsceneTimer >= this.cutsceneDuration || this.keys['enter']) {
-            this.keys['enter'] = false;
-            this.gameState = GAME_STATE.PLAYING;
+        if (this.cutsceneTimer >= this.cutsceneDuration || this.input.consume('confirm')) {
             this.enterFinalBossArena(); // 切入最终 Boss 小地图，靠近后正式开战
         }
 
         ctx.textAlign = 'left'; // 重置画布状态
     }
 
+    renderOpeningCutscene(deltaTime) {
+        const ctx = this.ctx;
+        const w = this.canvas.width;
+        const h = this.canvas.height;
+        const cx = w / 2;
+        const cy = h / 2;
+        const dt = Number(deltaTime) || 0;
+        const timeline = OPENING_TIMELINE;
+
+        this.openingCutsceneTimer += dt;
+        const t = this.openingCutsceneTimer;
+        const emberProgress = easeOutCubic(timelineProgress(t, timeline.ember));
+        const finalPoemTime = timeline.poemStart + (OPENING_CUTSCENE_LINES.length - 1) * timeline.poemStep + timeline.poemFade;
+        const outroProgress = easeInOutCubic(timelineProgress(t, [finalPoemTime + timeline.holdAfterPoem, 0.45]));
+        const sceneAlpha = 1 - outroProgress;
+
+        ctx.save();
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.shadowBlur = 0;
+        ctx.filter = 'none';
+
+        this.renderDomBackdrop();
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';
+        ctx.fillRect(0, 0, w, h);
+        const hasEmber = this.canDrawOpeningImage(this.openingArt?.ember);
+        ctx.globalAlpha = sceneAlpha;
+
+        ctx.globalCompositeOperation = 'lighter';
+        for (let i = 0; i < 54; i++) {
+            const seed = i * 97.31;
+            const x = (Math.sin(seed) * 0.5 + 0.5) * w;
+            const drift = Math.sin(t * 0.42 + i) * 18 * emberProgress;
+            const y = h * (0.86 - emberProgress * 0.42) + ((i * 53) % Math.max(1, Math.round(h * 0.66))) - t * (9 + (i % 5) * 4) * emberProgress;
+            const py = ((y % (h + 80)) + h + 80) % (h + 80) - 40;
+            const radius = 0.8 + (i % 7) * 0.26 + emberProgress * 1.1;
+            ctx.globalAlpha = sceneAlpha * clamp01(0.10 + emberProgress * 0.34 - py / h * 0.16);
+            ctx.fillStyle = i % 3 === 0 ? '#ffd36a' : i % 3 === 1 ? '#ff7a24' : '#fff1b8';
+            ctx.beginPath();
+            ctx.arc(x + drift, py, radius, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        const sparkX = cx + Math.sin(t * 0.9) * 8;
+        const sparkY = h * 0.46 + emberProgress * h * 0.17;
+        if (hasEmber) {
+            ctx.save();
+            ctx.globalCompositeOperation = 'lighter';
+            ctx.globalAlpha = sceneAlpha * clamp01((t - 0.2) / 1.2);
+            const emberSize = Math.min(w, h) * (0.28 + emberProgress * 0.08 + Math.sin(t * 5.2) * 0.01);
+            this.drawOpeningImageContain(ctx, this.openingArt.ember, sparkX, sparkY + emberSize * 0.08, emberSize, emberSize);
+            ctx.restore();
+        } else {
+            const sparkRadius = 3 + emberProgress * 12 + Math.sin(t * 8) * 1.5;
+            ctx.globalAlpha = sceneAlpha * clamp01(0.75 + Math.sin(t * 7) * 0.18);
+            ctx.shadowBlur = 28 + emberProgress * 34;
+            ctx.shadowColor = 'rgba(255, 172, 48, 0.95)';
+            ctx.fillStyle = '#ffd36a';
+            ctx.beginPath();
+            ctx.arc(sparkX, sparkY, sparkRadius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+
+        ctx.globalCompositeOperation = 'source-over';
+        const storyAlpha = timelineProgress(t, [timeline.story[0], timeline.story[1]])
+            * clamp01((timeline.story[2] - t) / timeline.story[3]);
+        ctx.globalAlpha = sceneAlpha * storyAlpha;
+        ctx.fillStyle = '#caa76a';
+        ctx.font = '20px "KaiTi", "STKaiti", serif';
+        ctx.textAlign = 'center';
+        this.fillTextFit(ctx, OPENING_CUTSCENE_STORY, cx, Math.max(70, h * 0.16), w - 64, {
+            align: 'center',
+            minSize: 13,
+            maxLines: 2,
+            lineHeight: 24,
+        });
+
+        const poemAlphaBase = sceneAlpha;
+        const scrollW = Math.min(w - 54, Math.max(420, w * 0.58));
+        const scrollH = Math.min(270, Math.max(210, h * 0.31));
+        const scrollX = cx - scrollW / 2;
+        const scrollY = cy - scrollH / 2 - Math.min(12, h * 0.015);
+        const scrollAlpha = clamp01((t - timeline.poemStart + 0.45) / 1.2) * poemAlphaBase;
+        if (scrollAlpha > 0.01) {
+            ctx.save();
+            ctx.globalAlpha = scrollAlpha * 0.58;
+            const scrollGradient = ctx.createLinearGradient(scrollX, scrollY, scrollX, scrollY + scrollH);
+            scrollGradient.addColorStop(0, 'rgba(48, 21, 10, 0.16)');
+            scrollGradient.addColorStop(0.5, 'rgba(255, 198, 95, 0.10)');
+            scrollGradient.addColorStop(1, 'rgba(20, 8, 4, 0.28)');
+            ctx.fillStyle = scrollGradient;
+            ctx.fillRect(scrollX, scrollY, scrollW, scrollH);
+            ctx.strokeStyle = 'rgba(255, 206, 112, 0.34)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(scrollX + 7, scrollY + 7, scrollW - 14, scrollH - 14);
+            ctx.fillStyle = 'rgba(145, 25, 18, 0.32)';
+            ctx.fillRect(scrollX + scrollW - 82, scrollY + scrollH - 72, 42, 42);
+            ctx.strokeStyle = 'rgba(255, 210, 120, 0.24)';
+            ctx.strokeRect(scrollX + scrollW - 78, scrollY + scrollH - 68, 34, 34);
+            ctx.fillStyle = 'rgba(255, 218, 112, 0.82)';
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = 'rgba(255, 150, 32, 0.35)';
+            ctx.font = 'bold 25px "KaiTi", "STKaiti", serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('义', scrollX + scrollW - 61, scrollY + scrollH - 51);
+            ctx.textBaseline = 'alphabetic';
+            ctx.shadowBlur = 0;
+            ctx.restore();
+        }
+
+        ctx.font = `bold ${Math.max(22, Math.min(30, w / 20))}px "KaiTi", "STKaiti", serif`;
+        for (let i = 0; i < OPENING_CUTSCENE_LINES.length; i++) {
+            const lineAlpha = timelineProgress(t, [timeline.poemStart + i * timeline.poemStep, timeline.poemFade]) * poemAlphaBase;
+            const y = scrollY + 66 + i * 42;
+            ctx.globalAlpha = lineAlpha;
+            ctx.fillStyle = i < 2 ? '#f4dcaa' : '#ffd06c';
+            ctx.shadowBlur = 10 * lineAlpha;
+            ctx.shadowColor = 'rgba(255, 138, 32, 0.46)';
+            this.fillTextFit(ctx, OPENING_CUTSCENE_LINES[i], cx, y, w - 56, {
+                align: 'center',
+                minSize: 18,
+            });
+        }
+
+        ctx.globalAlpha = sceneAlpha * timelineProgress(t, timeline.skipHint) * (0.55 + Math.sin(t * 3.4) * 0.12);
+        ctx.fillStyle = '#a99662';
+        ctx.font = '16px Arial, sans-serif';
+        ctx.fillText('按 ENTER 或点击跳过', cx, h - 44);
+        ctx.restore();
+
+        if (t >= this.openingCutsceneDuration || this.input.consume('confirm')) {
+            this.finishOpeningCutscene(t >= this.openingCutsceneDuration ? 'openingComplete' : 'openingKeySkip');
+        }
+    }
+
+    getRunEntryPortalEntry() {
+        return this.assets?.manifest?.map?.kit?.landmarks?.stage_portal
+            || this.assets?.manifest?.map?.kit?.hazards?.boss_portal
+            || null;
+    }
+
+    drawRunEntryGroundSeal(ctx, x, y, progress) {
+        const elapsed = progress * RUN_ENTRY_TIMELINE.duration;
+        const open = easeOutCubic(timelineProgress(elapsed, RUN_ENTRY_TIMELINE.seal));
+        const close = 1 - easeInOutCubic(timelineProgress(elapsed, RUN_ENTRY_TIMELINE.close));
+        const alpha = clamp01(open * close);
+        if (alpha <= 0) return;
+
+        ctx.save();
+        ctx.translate(x, y + 24);
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalAlpha = alpha * 0.62;
+        ctx.strokeStyle = 'rgba(255, 196, 78, 0.78)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 54, 18, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.globalAlpha = alpha * 0.36;
+        ctx.setLineDash([8, 7]);
+        ctx.rotate(GameRuntime.frame * 0.006);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 72, 25, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.globalAlpha = alpha * 0.28;
+        for (let i = 0; i < 10; i++) {
+            const angle = (i / 10) * Math.PI * 2;
+            ctx.beginPath();
+            ctx.moveTo(Math.cos(angle) * 28, Math.sin(angle) * 10);
+            ctx.lineTo(Math.cos(angle) * 68, Math.sin(angle) * 24);
+            ctx.stroke();
+        }
+        ctx.restore();
+    }
+
+    drawRunEntryPortal(ctx, entry, x, y, progress) {
+        const elapsed = progress * RUN_ENTRY_TIMELINE.duration;
+        const pulse = Math.sin(GameRuntime.frame * 0.18) * 0.045;
+        const open = easeOutCubic(timelineProgress(elapsed, RUN_ENTRY_TIMELINE.portalOpen));
+        const close = 1 - easeInOutCubic(timelineProgress(elapsed, RUN_ENTRY_TIMELINE.close));
+        const alpha = clamp01(open * close);
+        if (alpha <= 0.01) return;
+        const scale = Math.max(0.05, alpha);
+        const size = 168 * (0.86 + scale * 0.28 + pulse);
+        const image = entry?.src ? this.assets?.resolveImage?.(entry.src) : null;
+        const hasImage = Boolean(entry && this.assets?.canDraw?.(image));
+
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalAlpha = alpha * (hasImage ? 0.34 : 0.78);
+        const radiusX = size * 0.36;
+        const radiusY = size * 0.5;
+        const gradient = ctx.createRadialGradient(0, 0, 8, 0, 0, radiusY);
+        gradient.addColorStop(0, 'rgba(255, 238, 176, 0.62)');
+        gradient.addColorStop(0.42, 'rgba(255, 102, 28, 0.36)');
+        gradient.addColorStop(1, 'rgba(255, 40, 0, 0)');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, radiusX, radiusY, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        if (hasImage) {
+            drawRuntimeAsset(ctx, image, entry, x, y + 10, size, size, {
+                alpha: alpha * 0.96,
+                anchor: entry.anchor || [0.5, 0.76],
+                shadowBlur: 18,
+                shadowColor: 'rgba(255, 126, 35, 0.55)',
+                blendMode: 'source-over',
+                debug: false,
+            });
+        }
+
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalAlpha = alpha * (hasImage ? 0.42 : 0.82);
+        ctx.rotate(GameRuntime.frame * 0.025);
+        ctx.lineWidth = Math.max(2, size * 0.025);
+        ctx.strokeStyle = 'rgba(255, 218, 118, 0.82)';
+        ctx.beginPath();
+        ctx.ellipse(0, 0, radiusX * 0.92, radiusY * 0.92, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    renderRunEntry(deltaTime) {
+        const ctx = this.ctx;
+        const dt = Number(deltaTime) || 0;
+        if (!this.player || !this.runEntry) {
+            this.completeRunEntry();
+            return;
+        }
+
+        this.runEntryTimer += dt;
+        const progress = Math.max(0, Math.min(1, this.runEntryTimer / Math.max(0.001, this.runEntryDuration)));
+        const elapsed = progress * this.runEntryDuration;
+        const emergeProgress = easeInOutCubic(timelineProgress(elapsed, RUN_ENTRY_TIMELINE.emerge));
+        const walkProgress = emergeProgress;
+        this.player.x = this.runEntry.startX + (this.runEntry.endX - this.runEntry.startX) * walkProgress;
+        this.player.y = this.runEntry.startY + (this.runEntry.endY - this.runEntry.startY) * walkProgress;
+        this.player.facingDirX = this.runEntry.directionX;
+        this.player.facingDirY = this.runEntry.directionY;
+
+        const stageColors = ['#1a1a1a', '#1a1515', '#151a15', '#2a1010', '#0a0a1a'];
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
+        ctx.globalCompositeOperation = 'source-over';
+        this.renderScrollingBackground(ctx, stageColors[this.currentStage] || '#1a1a1a');
+
+        if (FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA) {
+            ctx.save();
+            const shake = progress > 0.18 && progress < 0.48 ? (1 - Math.abs(progress - 0.33) / 0.15) * 2.4 : 0;
+            ctx.translate(
+                -this.camera.x + Math.sin(GameRuntime.frame * 1.7) * shake,
+                -this.camera.y + Math.cos(GameRuntime.frame * 1.35) * shake
+            );
+        }
+
+        this.renderMapTerrain(ctx);
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.shadowBlur = 0;
+        this.drawRunEntryGroundSeal(ctx, this.runEntry.portalX, this.runEntry.portalY, progress);
+        this.drawRunEntryPortal(ctx, this.getRunEntryPortalEntry(), this.runEntry.portalX, this.runEntry.portalY, progress);
+
+        ctx.save();
+        ctx.globalCompositeOperation = 'lighter';
+        for (let i = 0; i < 22; i++) {
+            const angle = (i / 22) * Math.PI * 2 + GameRuntime.frame * 0.04;
+            const radius = 22 + (i % 6) * 6 + Math.sin(GameRuntime.frame * 0.08 + i) * 4;
+            ctx.globalAlpha = Math.max(0, (1 - progress * 0.55) * (0.22 + (i % 4) * 0.04));
+            ctx.fillStyle = i % 2 ? '#ffd36a' : '#ff7a24';
+            ctx.beginPath();
+            ctx.arc(
+                this.runEntry.portalX + Math.cos(angle) * radius,
+                this.runEntry.portalY + Math.sin(angle) * radius * 0.72,
+                2 + (i % 3),
+                0,
+                Math.PI * 2
+            );
+            ctx.fill();
+        }
+        ctx.restore();
+
+        const solidAlpha = clamp01((emergeProgress - 0.28) / 0.72);
+        const silhouetteAlpha = clamp01(1 - solidAlpha) * clamp01(emergeProgress * 1.3);
+        if (silhouetteAlpha > 0.02) {
+            ctx.save();
+            ctx.globalAlpha = silhouetteAlpha * 0.82;
+            ctx.fillStyle = 'rgba(7, 4, 2, 0.88)';
+            ctx.shadowBlur = 18;
+            ctx.shadowColor = 'rgba(255, 168, 48, 0.56)';
+            ctx.beginPath();
+            ctx.ellipse(this.player.x, this.player.y + this.player.size * 0.18, this.player.size * 0.46, this.player.size * 0.72, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+        ctx.globalAlpha = clamp01(0.12 + solidAlpha * 0.95);
+        this.player.render(ctx);
+        ctx.globalAlpha = 1;
+
+        if (FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA) {
+            ctx.restore();
+        }
+
+        ctx.save();
+        const fadeAlpha = progress < 0.16 ? 1 - progress / 0.16 : progress > 0.86 ? (progress - 0.86) / 0.14 : 0;
+        if (fadeAlpha > 0) {
+            ctx.globalAlpha = Math.min(0.86, fadeAlpha);
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        }
+        ctx.restore();
+
+        if (this.runEntryTimer >= this.runEntryDuration) {
+            this.completeRunEntry();
+        }
+    }
+
     // 魏军·长戈兵 + 虎豹骑·游骑 混合高压潮汐波：交错方阵，死亡冲锋
     // 初始化潮汐波，分批生成
     spawnSpearmanSwarm(wave) {
+        const config = WAVE_TIMELINE_CONFIG.swarm;
         const w = this.canvas.width;
         const h = this.canvas.height;
 
         // 潮汐厚度：最多 6 层
-        const layers = Math.min(3 + Math.floor(wave / 2), 6);
-        const countPerLayer = 20 + Math.floor(GameRuntime.random() * 10);
+        const layers = Math.min(config.baseLayers + Math.floor(wave / config.layerPerMinutes), config.maxLayers);
+        const countPerLayer = config.countPerLayerBase + Math.floor(GameRuntime.random() * config.countPerLayerRandom);
 
         // 保存参数分批生成
         this.pendingSwarm = {
             wave: wave,
             layers: layers,
             countPerLayer: countPerLayer,
-            spacingX: 30,
-            spacingY: 40,
+            spacingX: config.spacingX,
+            spacingY: config.spacingY,
             edge: Math.floor(GameRuntime.random() * 4),
-            isCavalryMain: GameRuntime.random() > 0.5,
-            totalWidth: (countPerLayer - 1) * 30,
+            isCavalryMain: GameRuntime.random() < config.cavalryMainChance,
+            totalWidth: (countPerLayer - 1) * config.spacingX,
             currentLayer: 0,
+            currentIndex: 0,
             remainingLayers: layers,
             spearmanCount: 0,
             cavalryCount: 0,
+            config,
             w: w,
             h: h,
             viewLeft: this.getViewportLeft(),
@@ -9202,16 +11315,19 @@ class GameManager {
         const ps = this.pendingSwarm;
         if (!ps || ps.currentLayer >= ps.layers) return;
 
-        const l = ps.currentLayer;
-        // 奇数层交错偏移半个身位，打破死板的网格感
-        const staggerOffset = (l % 2 !== 0) ? (ps.spacingX / 2) : 0;
-
-        for (let i = 0; i < ps.countPerLayer; i++) {
+        const config = ps.config || WAVE_TIMELINE_CONFIG.swarm;
+        const maxPerFrame = Math.max(1, Math.floor(Number(config.maxSpawnPerFrame) || 8));
+        let spawnedThisFrame = 0;
+        while (ps.currentLayer < ps.layers && spawnedThisFrame < maxPerFrame) {
+            const l = ps.currentLayer;
+            const i = ps.currentIndex || 0;
+            // 奇数层交错偏移半个身位，打破死板的网格感
+            const staggerOffset = (l % 2 !== 0) ? (ps.spacingX / 2) : 0;
             let x, y;
 
             // 正交偏移：加入交错偏移量
             const orthoOffset = -ps.totalWidth / 2 + i * ps.spacingX + staggerOffset;
-            const depthOffset = 50 + l * ps.spacingY;
+            const depthOffset = config.depthOffsetBase + l * ps.spacingY;
 
             if (ps.edge === 0) { // 上
                 x = this.player.x + orthoOffset;
@@ -9227,36 +11343,41 @@ class GameManager {
                 y = this.player.y + orthoOffset;
             }
 
-            x += (GameRuntime.random() * 10 - 5);
-            y += (GameRuntime.random() * 10 - 5);
+            x += (GameRuntime.random() * config.jitter * 2 - config.jitter);
+            y += (GameRuntime.random() * config.jitter * 2 - config.jitter);
 
-            const isCavalry = GameRuntime.random() < (ps.isCavalryMain ? 0.8 : 0.2);
+            const isCavalry = GameRuntime.random() < (ps.isCavalryMain ? config.cavalryChanceWhenMain : config.cavalryChanceWhenSupport);
 
             let baseHp, speedMod, type;
             if (isCavalry) {
-                baseHp = (3 + ps.wave * 1);
-                speedMod = 2.5 + GameRuntime.random() * 0.5;
+                baseHp = (config.cavalryBaseHp + ps.wave * config.cavalryHpPerWave);
+                speedMod = config.cavalrySpeedBase + GameRuntime.random() * config.cavalrySpeedRandom;
                 type = 'cavalry';
                 ps.cavalryCount++;
             } else {
-                baseHp = (5 + ps.wave * 2);
-                speedMod = 2.0 + GameRuntime.random() * 0.2;
+                baseHp = (config.spearmanBaseHp + ps.wave * config.spearmanHpPerWave);
+                speedMod = config.spearmanSpeedBase + GameRuntime.random() * config.spearmanSpeedRandom;
                 type = 'spearman';
                 ps.spearmanCount++;
             }
 
-            const hpMultiplier = 1 + (this.player.level * 0.15);
+            const hpMultiplier = 1 + (this.player.level * config.playerLevelHpMultiplier);
             const finalHp = Math.floor(baseHp * hpMultiplier);
 
             const mob = new Enemy(x, y, finalHp, speedMod, type);
-            mob.size = 16;
-            mob.expValue = isCavalry ? 1 : 2;
+            mob.size = config.mobSize;
+            mob.expValue = isCavalry ? config.cavalryExp : config.spearmanExp;
 
             this.enemies.push(mob);
-        }
 
-        ps.currentLayer++;
-        ps.remainingLayers--;
+            spawnedThisFrame++;
+            ps.currentIndex = i + 1;
+            if (ps.currentIndex >= ps.countPerLayer) {
+                ps.currentIndex = 0;
+                ps.currentLayer++;
+                ps.remainingLayers--;
+            }
+        }
 
         if (ps.remainingLayers <= 0) {
             console.log(`[Swarm] ${ps.wave} min: ${ps.layers}层交错方阵, 每层${ps.countPerLayer}只. (${ps.spearmanCount}长戈兵 / ${ps.cavalryCount}虎豹骑) 冲锋!`);
@@ -9268,6 +11389,9 @@ class GameManager {
         GameRuntime.recordKill(enemy);
         const x = enemy.x;
         const y = enemy.y;
+        const dropRules = DROP_RULE_CONFIG;
+        const rareTracks = dropRules.rareTracks || {};
+        const dropSettings = readCombatRuleSettings();
 
         // ========== 稀有补给品独立掉落轨道 - 优先级最高 ==========
         // 掉落坐标统一偏移 (x+20, y+20) 避免与基础掉落重叠
@@ -9276,62 +11400,39 @@ class GameManager {
 
         // T0级：机关木牛 (WoodenOxEnemy) 独立高概率摸奖
         if (enemy instanceof WoodenOxEnemy) {
-            const roll = GameRuntime.random();
-            if (roll < 0.05) {
-                // 5% → 吸铁石
-                this.pickups.push(new Pickup(dropX, dropY, PICKUP_TYPES.MAGNET));
-            } else if (roll < 0.15) {
-                // 10% → 烤鸡腿
-                this.pickups.push(new Pickup(dropX, dropY, PICKUP_TYPES.CHICKEN));
-            } else if (roll < 0.65) {
-                // 50% → 白馒头
-                this.pickups.push(new Pickup(dropX, dropY, PICKUP_TYPES.BUN));
-            }
-            // 35% 轮空，不掉落
+            const woodenOxDrop = rollDropTrack(rareTracks.woodenOx, dropSettings);
+            if (woodenOxDrop) this.pickups.push(new Pickup(dropX, dropY, woodenOxDrop));
         }
         // T1级：守将与节点 Boss (isBoss, isMiniBoss, isLevelBoss)
         else if (enemy.isBoss || enemy.isMiniBoss || enemy.isLevelBoss) {
-            const triggerRoll = GameRuntime.random();
-            if (triggerRoll < 0.30) {
-                // 30% 总概率触发稀有掉落
-                const itemRoll = GameRuntime.random();
-                if (itemRoll < 0.10) {
-                    // 10% 权重 → 吸铁石 (整体 3%)
-                    this.pickups.push(new Pickup(dropX, dropY, PICKUP_TYPES.MAGNET));
-                } else if (itemRoll < 0.40) {
-                    // 30% 权重 → 烤鸡腿 (整体 9%)
-                    this.pickups.push(new Pickup(dropX, dropY, PICKUP_TYPES.CHICKEN));
-                } else {
-                    // 60% 权重 → 白馒头 (整体 18%)
-                    this.pickups.push(new Pickup(dropX, dropY, PICKUP_TYPES.BUN));
-                }
+            const bossRare = rareTracks.boss || {};
+            const bossRareChance = Number(bossRare.chance) || 0;
+            if (GameRuntime.random() < bossRareChance) {
+                const bossDrop = rollDropTrack(bossRare.items, dropSettings);
+                if (bossDrop) this.pickups.push(new Pickup(dropX, dropY, bossDrop));
             }
         }
         // T2级：精英怪 (isElite 且非 Boss)
         else if (enemy.isElite && !enemy.isBoss && !enemy.isMiniBoss && !enemy.isLevelBoss) {
-            const roll = GameRuntime.random();
-            if (roll < 0.01) {
-                // 1% → 吸铁石
-                this.pickups.push(new Pickup(dropX, dropY, PICKUP_TYPES.MAGNET));
-            } else if (roll < 0.05) {
-                // 4% → 白馒头 (禁止掉落大鸡腿)
-                this.pickups.push(new Pickup(dropX, dropY, PICKUP_TYPES.BUN));
-            }
+            const eliteDrop = rollDropTrack(rareTracks.elite, dropSettings);
+            if (eliteDrop) this.pickups.push(new Pickup(dropX, dropY, eliteDrop));
         }
 
         // ========== Boss/miniBoss/LevelBoss 特殊掉落 ==========
         if (enemy.isBoss || enemy.isMiniBoss || enemy.isLevelBoss) {
+            const bossSpecial = dropRules.bossSpecial || {};
+            const bossExpConfig = bossSpecial.bossExp || {};
             // 木牛只掉残响，不给Boss经验珠
-            if (!(enemy instanceof WoodenOxEnemy)) {
+            if (!(enemy instanceof WoodenOxEnemy) && bossExpConfig.enabled !== false) {
                 // 生成1个大的BOSS_EXP经验宝珠
                 const bossExpPickup = new Pickup(x, y, PICKUP_TYPES.BOSS_EXP);
-                bossExpPickup.size = 30;
+                bossExpPickup.size = Number(bossExpConfig.size) || 30;
                 this.pickups.push(bossExpPickup);
             }
 
             // 环形散落大量残响
-            const resonanceCount = enemy.resonanceDrop || 15;
-            const radius = 40;
+            const resonanceCount = Math.max(0, Math.floor(Number(enemy.resonanceDrop || bossSpecial.resonanceFallbackCount || 15)));
+            const radius = Number(bossSpecial.resonanceRadius) || 40;
             for (let i = 0; i < resonanceCount; i++) {
                 const angle = (Math.PI * 2 * i) / resonanceCount;
                 const dropX = x + Math.cos(angle) * radius;
@@ -9343,14 +11444,10 @@ class GameManager {
         }
 
         // 敌人死亡掉落：经由 Drops 设计师预设调整权重
-        const normalDrop = weightedCombatDrop([
-            { type: PICKUP_TYPES.EXP, kind: 'exp', weight: 80 },
-            { type: PICKUP_TYPES.RESONANCE, kind: 'resonance', weight: 15 },
-            { type: null, kind: 'none', weight: 5 },
-        ]);
+        const normalDrop = rollDropTrack(dropRules.normal, dropSettings);
         if (normalDrop === PICKUP_TYPES.EXP) {
             // ========== 数据化经验珠：硬上限 + 聚合存储 ==========
-            const MAX_EXP_PICKUPS = 300; // 同屏硬上限
+            const MAX_EXP_PICKUPS = Math.max(1, Math.floor(Number(dropRules.expMerge?.maxPickups) || 300)); // 同屏硬上限
             let currentExpCount = 0;
             let firstExp = null;
             for (const pickup of this.pickups) {
@@ -9380,9 +11477,10 @@ class GameManager {
             this.pickups.push(new Pickup(x, y, PICKUP_TYPES.RESONANCE));
         }
         // 精英怪额外掉残响
-        if (enemy.isElite && !enemy.isMiniBoss) {
+        if (dropRules.eliteBonus?.enabled !== false && enemy.isElite && !enemy.isMiniBoss) {
+            const spacing = Number(dropRules.eliteBonus?.spacing) || 15;
             for (let i = 0; i < enemy.resonanceDrop; i++) {
-                this.pickups.push(new Pickup(x + (i - 1) * 15, y, PICKUP_TYPES.RESONANCE));
+                this.pickups.push(new Pickup(x + (i - 1) * spacing, y, PICKUP_TYPES.RESONANCE));
             }
         }
     }
@@ -9508,43 +11606,45 @@ class GameManager {
 
         // ========== 2. 未拥有武器：提供 Lv.1 获取选项 ==========
         // 遍历所有武器类型，玩家没有的进池
-        for (const [weaponType, config] of Object.entries(WEAPON_UPGRADES)) {
-            const hasWeapon = this.player.weapons.some(w => w.type === weaponType);
-            if (!hasWeapon) {
-                const firstLevel = 1;
-                const firstCfg = config[firstLevel];
-                availablePool.push({
-                    type: 'weapon_unlock',
-                    weight: 1,
-                    weaponType: weaponType,
-                    weaponLevel: firstLevel,
-                    config: config,
-                    title: `${config.name} Lv.${firstLevel}`,
-                    desc: `【${firstCfg.name}】${firstCfg.desc.replace(/。$/, '')}`,
-                    effect: () => {
-                        // 创建武器实例
-                        const weaponCls = {
-                            'saber': Saber,
-                            'spear': Spear,
-                            'crossbow': Crossbow,
-                            'qinggang': QinggangSword,
-                            'shield': Shield,
-                            'taiping': TaipingBook
-                        }[weaponType];
+        if (this.player.weapons.length < getMaxWeaponSlots()) {
+            for (const [weaponType, config] of Object.entries(WEAPON_UPGRADES)) {
+                const hasWeapon = this.player.weapons.some(w => w.type === weaponType);
+                if (!hasWeapon) {
+                    const firstLevel = 1;
+                    const firstCfg = config[firstLevel];
+                    availablePool.push({
+                        type: 'weapon_unlock',
+                        weight: 1,
+                        weaponType: weaponType,
+                        weaponLevel: firstLevel,
+                        config: config,
+                        title: `${config.name} Lv.${firstLevel}`,
+                        desc: `【${firstCfg.name}】${firstCfg.desc.replace(/。$/, '')}`,
+                        effect: () => {
+                            // 创建武器实例
+                            const weaponCls = {
+                                'saber': Saber,
+                                'spear': Spear,
+                                'crossbow': Crossbow,
+                                'qinggang': QinggangSword,
+                                'shield': Shield,
+                                'taiping': TaipingBook
+                            }[weaponType];
 
-                        // 彻底剥离脏乘区，只使用纯净基础伤害，所有计算交给攻击瞬间
-                        const weapon = new weaponCls(config.baseDamage);
-                        // 应用一级效果
-                        if (firstCfg.action) {
-                            firstCfg.action(weapon);
+                            // 彻底剥离脏乘区，只使用纯净基础伤害，所有计算交给攻击瞬间
+                            const weapon = new weaponCls(config.baseDamage);
+                            // 应用一级效果
+                            if (firstCfg.action) {
+                                firstCfg.action(weapon);
+                            }
+                            weapon.level = firstLevel;
+                            applyGenericWeaponScalarMigration(weapon);
+                            weapon.onStatsUpdated(this.player.modifiers);
+                            this.player.weapons.push(weapon);
+                            console.log(`Unlocked New Weapon: ${config.name} lv1, BaseDmg: ${config.baseDamage}`);
                         }
-                        weapon.level = firstLevel;
-                        applyGenericWeaponScalarMigration(weapon);
-                        weapon.onStatsUpdated(this.player.modifiers);
-                        this.player.weapons.push(weapon);
-                        console.log(`Unlocked New Weapon: ${config.name} lv1, BaseDmg: ${config.baseDamage}`);
-                    }
-                });
+                    });
+                }
             }
         }
 
@@ -9552,9 +11652,11 @@ class GameManager {
         for (const [skillKey, config] of Object.entries(PASSIVE_UPGRADES)) {
             const currentLevel = this.player.inGameSkills[skillKey];
             // 局内和局外完全隔离：只判断局内等级，局外加成是永久底座不占用局内升级配额
-            if (currentLevel < 5) {
+            const passiveMaxLevel = Math.max(1, Math.floor(Number(PROGRESSION_RULE_CONFIG.inGamePassiveMaxLevel) || 5));
+            if (currentLevel < passiveMaxLevel) {
                 const nextLevel = currentLevel + 1;
                 const nextCfg = config[nextLevel];
+                if (!nextCfg) continue;
                 availablePool.push({
                     type: 'passive',
                     weight: 2,
@@ -9572,7 +11674,8 @@ class GameManager {
 
         // 加权随机抽取三个不重复选项
         const selected = [];
-        while (selected.length < 3 && availablePool.length > 0) {
+        const choiceCount = Math.max(1, Math.floor(Number(PROGRESSION_RULE_CONFIG.levelUpChoiceCount) || 3));
+        while (selected.length < choiceCount && availablePool.length > 0) {
             const totalWeight = availablePool.reduce((sum, opt) => sum + opt.weight, 0);
             let randomNum = GameRuntime.random() * totalWeight;
             for (let i = 0; i < availablePool.length; i++) {
@@ -9612,28 +11715,30 @@ class GameManager {
     onPlayerLevelUp() {
         playGameSound('levelUp');
         // 每升满3级奖励一次免费刷新
-        if (this.player.level % 3 === 0) {
+        const rerollEveryLevels = Math.max(0, Math.floor(Number(PROGRESSION_RULE_CONFIG.rerollEveryLevels) || 0));
+        if (rerollEveryLevels > 0 && this.player.level % rerollEveryLevels === 0) {
             this.player.rerolls += 1;
         }
 
         // 新增：触发升级核爆清屏
         this.triggerLevelUpNova();
 
-        this.gameState = GAME_STATE.LEVEL_UP;
         this.levelUpOptions = this.generateLevelUpOptions();
+        this.changeState(GAME_STATE.LEVEL_UP, { reason: 'levelUp' });
     }
 
     // 新增：基于怪物最大生命值的范围真伤策略
     triggerLevelUpNova() {
         const px = this.player.x;
         const py = this.player.y;
-        const radius = 250; // 只伤害玩家周围250px范围内
+        const novaConfig = PROGRESSION_RULE_CONFIG.levelUpNova || {};
+        const radius = Number(novaConfig.radius) || 250;
 
         // 压入视觉特效（由于升级会弹窗暂停，玩家选完技能恢复游戏时，刚好能看到冲击波炸开）
         this.lightningEffects.push(new LevelUpNovaEffect(px, py));
 
         // 增加强烈屏幕震动
-        this.shakeTimer = 0.5;
+        this.shakeTimer = Number(novaConfig.screenShake) || 0.5;
 
         for (let i = this.enemies.length - 1; i >= 0; i--) {
             const enemy = this.enemies[i];
@@ -9646,13 +11751,13 @@ class GameManager {
 
                 // 核心策略：百分比真实伤害
                 if (enemy.isLevelBoss || enemy.isBoss || enemy.isFinalBoss) {
-                    damage = enemy.maxHp * 0.05; // 大Boss：5%
+                    damage = enemy.maxHp * (Number(novaConfig.bossDamageRatio) || 0.05);
                 } else if (enemy.isMiniBoss) {
-                    damage = enemy.maxHp * 0.15; // 小Boss：15%
+                    damage = enemy.maxHp * (Number(novaConfig.miniBossDamageRatio) || 0.15);
                 } else if (enemy.isElite || enemy.type === 'tiger_guard') {
-                    damage = enemy.maxHp * 0.50; // 精英/虎卫军：50%
+                    damage = enemy.maxHp * (Number(novaConfig.eliteDamageRatio) || 0.5);
                 } else {
-                    damage = enemy.maxHp * 2.0;  // 普通小怪：溢出秒杀
+                    damage = enemy.maxHp * (Number(novaConfig.normalDamageRatio) || 2);
                 }
 
                 enemy.hp -= damage;
@@ -9664,7 +11769,7 @@ class GameManager {
                     // 没死的高级怪，给予强力物理震退（强制打断合围阵型）
                     const dist = Math.sqrt(distSq);
                     if (dist > 0) {
-                        const pushForce = 120 * (1 - enemy.knockbackResist);
+                        const pushForce = (Number(novaConfig.knockbackForce) || 120) * (1 - enemy.knockbackResist);
                         enemy.x += (dx / dist) * pushForce;
                         enemy.y += (dy / dist) * pushForce;
                     }
@@ -9676,9 +11781,10 @@ class GameManager {
     selectLevelUpOption(index) {
         this.levelUpOptions[index].effect();
         // 每次升级恢复 10 点血量，不超过上限
-        this.player.hp = Math.min(this.player.hp + 10, this.player.maxHp);
-        this.gameState = GAME_STATE.PLAYING;
+        const healFlat = Number(PROGRESSION_RULE_CONFIG.levelUpHealFlat) || 0;
+        this.player.hp = Math.min(this.player.hp + healFlat, this.player.maxHp);
         this.levelUpOptions = [];
+        this.changeState(GAME_STATE.PLAYING, { reason: 'levelUpChoice' });
     }
 
     buyPerk(index) {
@@ -9701,18 +11807,20 @@ class GameManager {
         // currentLevel 范围：0 到 99
         if (currentLevel >= PERK_MAX_LEVEL) return 0; // 满级
 
-        const major = Math.floor(currentLevel / 10); // 大阶 (0-9)
-        const minor = currentLevel % 10;             // 小阶 (0-9)
+        const costConfig = PROGRESSION_RULE_CONFIG.perks?.cost || {};
+        const majorSize = Math.max(1, Math.floor(Number(costConfig.majorSize) || 10));
+        const major = Math.floor(currentLevel / majorSize); // 大阶
+        const minor = currentLevel % majorSize;             // 小阶
 
         // 1. 计算当前大阶的底薪 (跨阶跃迁的基础花费，保障绝不跌坡)
         // major=1 时是 300，major=9 时是 17100
-        const baseCost = (major * major * 200) + (major * 100);
+        const baseCost = (major * major * (Number(costConfig.majorQuadratic) || 200)) + (major * (Number(costConfig.majorLinear) || 100));
 
         // 2. 计算阶内非线性基础值 (2, 6, 12, 20... 110)
-        const stepValue = (minor + 1) * (minor + 2);
+        const stepValue = (minor + (Number(costConfig.minorOffset) || 1)) * (minor + (Number(costConfig.minorNextOffset) || 2));
 
         // 3. 计算该大阶的放大倍率 (1, 4, 7... 28)
-        const multiplier = 1 + (major * 3);
+        const multiplier = (Number(costConfig.multiplierBase) || 1) + (major * (Number(costConfig.multiplierPerMajor) || 3));
 
         // 最终花费：底薪 + 阶内成长
         return baseCost + (stepValue * multiplier);
@@ -9721,19 +11829,7 @@ class GameManager {
     handleInput(deltaTime) {
         if (this.gameState !== GAME_STATE.PLAYING) return;
 
-        let dx = 0;
-        let dy = 0;
-
-        if (this.keys['w'] || this.keys['arrowup']) dy -= 1;
-        if (this.keys['s'] || this.keys['arrowdown']) dy += 1;
-        if (this.keys['a'] || this.keys['arrowleft']) dx -= 1;
-        if (this.keys['d'] || this.keys['arrowright']) dx += 1;
-
-        if (dx !== 0 && dy !== 0) {
-            const len = Math.sqrt(dx * dx + dy * dy);
-            dx /= len;
-            dy /= len;
-        }
+        const { x: dx, y: dy } = this.input.getMoveVector();
 
         if (dx !== 0 || dy !== 0) {
             const movementDeltaTime = deltaTime * (this.player.environmentSlowMultiplier || 1);
@@ -9741,42 +11837,67 @@ class GameManager {
         }
     }
 
-    updateSpawnSystem(deltaTime) {
+    updateInput(deltaTime) {
+        this.handleInput(deltaTime);
+    }
+
+    updateMapSystem(deltaTime) {
         this.gameTime += deltaTime;
         this.updateFinalBossArenaTrigger();
+        this.ensureMapTerrainForCurrentStage();
+    }
+
+    updateMap(deltaTime) {
+        this.updateMapSystem(deltaTime);
+    }
+
+    getStageBossIndexForMinute(minute) {
+        const second = Math.round(Number(minute) * 60);
+        return STAGES.findIndex(stage => Number(stage.bossSecond) === second);
+    }
+
+    isFinalStageIndex(stageIndex) {
+        return stageIndex === STAGES.length - 1;
+    }
+
+    updateSpawnSystem(deltaTime) {
         const currentMinute = Math.floor(this.gameTime / 60);
+        const timeline = WAVE_TIMELINE_CONFIG.timeline;
 
         // ========== 核心：10分钟绝对时间轴 ==========
         // 确保每达到完整的 1 分钟，且在 10 分钟以内，只触发一次特殊刷新
-        if (currentMinute > 0 && currentMinute <= 10 && !this.spawnedMinutes.has(currentMinute)) {
+        if (currentMinute >= timeline.specialMinuteStart && currentMinute <= timeline.specialMinuteEnd && !this.spawnedMinutes.has(currentMinute)) {
             this.spawnedMinutes.add(currentMinute);
 
             // 每整分钟同步刷新木箱
             if (FEATURE_FLAGS.ENABLE_DESTRUCTIBLE_PROPS) {
-                this.spawnDestructibleProps(getNumericGameSetting('PROPS.DESTRUCTIBLE.MINUTE_COUNT', 1));
+                const minutePropCount = getNumericGameSetting('PROPS.DESTRUCTIBLE.MINUTE_COUNT', timeline.destructiblePropsPerMinute);
+                this.spawnDestructibleProps(minutePropCount);
             }
 
-            if (currentMinute % 2 !== 0) {
-                // 1, 3, 5, 7, 9 分钟：刷新精英小 Boss（高压掉落）
-                this.spawnMiniBoss(currentMinute);
-            } else {
-                // 2, 4, 6, 8, 10 分钟：刷新对应关卡大 Boss
-                const bossIndex = (currentMinute / 2) - 1;
+            const bossIndex = this.getStageBossIndexForMinute(currentMinute);
+            if (bossIndex >= 0) {
                 this.currentStage = bossIndex; // 同步当前关卡环境
 
-                // ================= 修改：第10分钟终局过场拦截 =================
-                if (bossIndex === 4) {
+                // ================= 修改：终局过场拦截 =================
+                if (this.isFinalStageIndex(bossIndex)) {
                     this.triggerFinalCutscene();
                 } else {
                     this.spawnTimelineBoss(bossIndex);
                 }
                 // ==========================================================
+            } else if (timeline.miniBossOddMinutes && currentMinute % 2 !== 0) {
+                // 1, 3, 5, 7, 9 分钟：刷新精英小 Boss（高压掉落）
+                this.spawnMiniBoss(currentMinute);
             }
         }
 
         // ========== 魏军·长戈兵 高压潮汐波 ==========
         // 每整分钟触发一次，从屏幕边缘四面八方冲锋进来
-        if (currentMinute > 0 && currentMinute <= 9 && !this.swarmedMinutes.has(currentMinute)) {
+        const swarmConfig = WAVE_TIMELINE_CONFIG.swarm;
+        const swarmStartMinute = Number(swarmConfig.startMinute ?? timeline.swarmStartMinute);
+        const swarmEndMinute = Number(swarmConfig.endMinute ?? timeline.swarmEndMinute);
+        if (currentMinute >= swarmStartMinute && currentMinute <= swarmEndMinute && !this.swarmedMinutes.has(currentMinute)) {
             this.swarmedMinutes.add(currentMinute);
             this.spawnSpearmanSwarm(currentMinute);
         }
@@ -9784,6 +11905,9 @@ class GameManager {
         // 继续生成待处理的潮汐波层（分批分摊卡顿）
         if (this.pendingSwarm && this.pendingSwarm.remainingLayers > 0) {
             this.spawnNextSwarmLayer();
+        }
+        if (this.pendingTigerGuardSpawn) {
+            this.spawnNextTigerGuardBatch();
         }
 
         const stageData = STAGES[this.currentStage];
@@ -9825,6 +11949,10 @@ class GameManager {
         }
     }
 
+    updateSpawn(deltaTime) {
+        this.updateSpawnSystem(deltaTime);
+    }
+
     updateMovementSystem(deltaTime) {
         // 更新所有敌人
         for (let i = this.enemies.length - 1; i >= 0; i--) {
@@ -9838,6 +11966,10 @@ class GameManager {
         // 重建空间网格：将所有敌人按坐标分配到网格，用于优化碰撞检测
         this.updateCamera();
         this.rebuildSpatialGrid();
+    }
+
+    updateMovement(deltaTime) {
+        this.updateMovementSystem(deltaTime);
     }
 
     updateDamageSystem(deltaTime) {
@@ -9883,6 +12015,11 @@ class GameManager {
                 this.specialAreas.splice(i, 1);
             }
         }
+    }
+
+    updateDamage(deltaTime) {
+        this.updateDamageSystem(deltaTime);
+        return this.updateProjectileSystem(deltaTime);
     }
 
     applyTerrainHazardsToPlayer(deltaTime) {
@@ -10064,6 +12201,10 @@ class GameManager {
         }
     }
 
+    updateAnimations(deltaTime) {
+        this.updateAnimationSystem(deltaTime);
+    }
+
     updateCollisionSystem(deltaTime) {
         // 递减受伤弹开冷却
         if (this.pushbackCooldown > 0) {
@@ -10151,8 +12292,9 @@ class GameManager {
                         }
                     }
                     const contactDamageMultiplier = (enemy.contactDamageMultiplier || 1) * getCombatRuleMultipliers().game.contactDamage;
-                    const baseDamage = (enemy.isBoss ? 20 : 10) * contactDamageMultiplier;
-                    const continuousDamage = (enemy.isBoss ? 20 : 10) * contactDamageMultiplier;
+                    const entityDamage = Number(enemy.contactDamage) || (enemy.isBoss ? getEntityNumber('stage_boss', 'damage', 20) : getEntityNumber('soldier', 'damage', 10));
+                    const baseDamage = entityDamage * contactDamageMultiplier;
+                    const continuousDamage = entityDamage * contactDamageMultiplier;
                     if (this.pushbackCooldown <= 0) {
                         // 弹开就绪：单次爆发固定扣除，普通怪10点 / Boss20点，计算伤害减免
                         this.applyPlayerDamage(baseDamage * (1 - damageReduction));
@@ -10192,6 +12334,13 @@ class GameManager {
         return true;
     }
 
+    updateCollision(deltaTime) {
+        const shouldContinue = this.updateCollisionSystem(deltaTime);
+        if (shouldContinue === false) return false;
+        this.updatePlayerRecoverySystem(deltaTime);
+        return shouldContinue;
+    }
+
     updatePlayerRecoverySystem(deltaTime) {
         // ========== 自动回血 (青囊秘卷) ==========
         if (this.player.hp > 0 && this.player.hp < this.player.maxHp) {
@@ -10217,9 +12366,46 @@ class GameManager {
         }
     }
 
+    updatePickups(deltaTime) {
+        this.updatePickupSystem(deltaTime);
+    }
+
     updateWeaponSystem(deltaTime) {
         // 自动射击
         this.autoShoot(deltaTime);
+    }
+
+    updateWeapons(deltaTime) {
+        this.updateWeaponSystem(deltaTime);
+        this.genericWeaponShadow?.update(this);
+    }
+
+    updateBossSystem(_deltaTime) {}
+
+    updateBosses(deltaTime) {
+        this.updateBossSystem(deltaTime);
+    }
+
+    updateDropSystem(_deltaTime) {}
+
+    updateDrops(deltaTime) {
+        this.updateDropSystem(deltaTime);
+    }
+
+    updateProgressionSystem(_deltaTime) {
+        this.updateLevelProgressionSystem();
+    }
+
+    updateProgression(deltaTime) {
+        this.updateProgressionSystem(deltaTime);
+    }
+
+    hasPendingLevelProgression() {
+        return Boolean(this.player && this.player.exp >= this.player.expToNextLevel);
+    }
+
+    processPendingLevelProgression() {
+        this.updateLevelProgressionSystem();
     }
 
     updateLevelProgressionSystem() {
@@ -10232,11 +12418,15 @@ class GameManager {
         }
     }
 
+    renderLegacyCanvas(deltaTime) {
+        this.render(deltaTime);
+    }
+
     update(deltaTime) {
         if (this.gameState !== GAME_STATE.PLAYING) return;
 
+        this.updateMapSystem(deltaTime);
         this.updateSpawnSystem(deltaTime);
-        this.ensureMapTerrainForCurrentStage();
         this.updateMovementSystem(deltaTime);
         this.updateDamageSystem(deltaTime);
         if (!this.updateProjectileSystem(deltaTime)) return;
@@ -10245,7 +12435,7 @@ class GameManager {
         this.updatePlayerRecoverySystem(deltaTime);
         this.updatePickupSystem(deltaTime);
         this.updateWeaponSystem(deltaTime);
-        this.updateLevelProgressionSystem();
+        this.updateProgressionSystem(deltaTime);
         this.genericWeaponShadow?.update(this);
     }
 
@@ -10263,50 +12453,13 @@ class GameManager {
         // 累计残响
         this.totalResonance += this.currentResonance;
         this.savePersistentData();
-        this.gameState = GAME_STATE.GAME_OVER;
+        this.changeState(GAME_STATE.GAME_OVER, { reason: 'gameOver' });
     }
 
     // 干净重开游戏（R键）
     restartGame() {
-        this.gameState = GAME_STATE.PLAYING;
-        GameRuntime.resetRunStats();
-        this.resetMapDimensions();
-        this.player = new Player(this.getWorldWidth(), this.getWorldHeight(), this.perks, this.perkLevels);
-        this.snapCameraToPlayer();
-        this.activeWeapons = this.player.weapons; // 全局武器管理数组
-        this.enemies = [];
-        this.projectiles = [];
-        this.pickups = [];
-        this.fireAreas = [];
-        this.fireTornados = [];
-        this.lightningEffects = [];
-        this.specialAreas = [];
-
-        this.gameTime = 0;
-        this.currentStage = 0;
-        this.refreshMapTerrainForStage(this.getCurrentMapTerrainPhase());
-        this.spawnTimer = 0;
-        this.currentResonance = 0;
-        this.finalBossSpawned = false;
-        this.finalBossArenaActive = false;
-        this.finalBossBattleTriggered = false;
-        this.spawnedMinutes = new Set(); // 重置时间轴触发记录
-        this.swarmedMinutes = new Set(); // 重置潮汐波触发记录
-        this.isVictory = false;
-
-        this.shootTimer = 0;
-        this.shootInterval = this.player.fireRate;
-
-        // 屏幕震动和红屏受伤闪烁计时器
-        this.shakeTimer = 0;
-        this.damageFlashTimer = 0;
-        // 受伤弹开怪物冷却
-        this.pushbackCooldown = 0;
-
-        // 开局固定刷新木箱
-        if (FEATURE_FLAGS.ENABLE_DESTRUCTIBLE_PROPS) {
-            this.spawnDestructibleProps(getNumericGameSetting('PROPS.DESTRUCTIBLE.INITIAL_COUNT', 2));
-        }
+        this.initializeRun({ spawnInitialProps: true });
+        this.beginRunEntry('restartGame');
     }
 
     // ========== 生成可破坏物（木箱） ==========
@@ -10323,34 +12476,93 @@ class GameManager {
         playGameSound('victory');
         this.totalResonance += this.currentResonance;
         this.savePersistentData();
-        this.gameState = GAME_STATE.VICTORY;
+        this.changeState(GAME_STATE.VICTORY, { reason: 'victory' });
     }
 
     returnToMenu() {
-        this.gameState = GAME_STATE.MENU;
+        this.changeState(GAME_STATE.MENU, { reason: 'returnToMenu' });
     }
 
     // ==================== 渲染 ====================
 
     renderDomBackdrop() {
         const ctx = this.ctx;
+        const w = this.canvas.width;
+        const h = this.canvas.height;
         const gradient = ctx.createLinearGradient(0, 0, 0, this.canvas.height);
         gradient.addColorStop(0, '#11191c');
         gradient.addColorStop(1, '#071012');
         ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        ctx.fillRect(0, 0, w, h);
         ctx.save();
         ctx.globalAlpha = 0.18;
         ctx.fillStyle = '#2f6f3c';
         const step = 96;
         const drift = GameRuntime.frame % step;
-        for (let x = -step + drift; x < this.canvas.width + step; x += step) {
-            ctx.fillRect(x, 0, 1, this.canvas.height);
+        for (let x = -step + drift; x < w + step; x += step) {
+            ctx.fillRect(x, 0, 1, h);
         }
-        for (let y = -step + drift; y < this.canvas.height + step; y += step) {
-            ctx.fillRect(0, y, this.canvas.width, 1);
+        for (let y = -step + drift; y < h + step; y += step) {
+            ctx.fillRect(0, y, w, 1);
         }
         ctx.restore();
+
+        const fireProgress = 0.78 + Math.sin(GameRuntime.frame * 0.025) * 0.08;
+        const fireImage = this.openingArt?.fireFg;
+        if (this.canDrawOpeningImage(fireImage)) {
+            ctx.save();
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.globalAlpha = 0.66 * fireProgress;
+            const fireHeight = Math.min(h * 0.64, Math.max(230, w * 0.29));
+            this.drawOpeningImageCover(ctx, fireImage, 0, h - fireHeight * 0.82, w, fireHeight);
+            ctx.restore();
+        } else {
+            ctx.save();
+            ctx.globalCompositeOperation = 'lighter';
+            const fireBaseY = h * 0.96;
+            for (let i = 0; i < 28; i++) {
+                const x = (i / 27) * w;
+                const flameH = (34 + Math.sin(i * 1.7 + GameRuntime.frame * 0.045) * 12 + (i % 5) * 10) * fireProgress;
+                const flameW = Math.max(22, w / 30);
+                const grad = ctx.createRadialGradient(x, fireBaseY, 2, x, fireBaseY - flameH * 0.48, flameH);
+                grad.addColorStop(0, 'rgba(255, 220, 104, 0.34)');
+                grad.addColorStop(0.34, 'rgba(255, 116, 32, 0.20)');
+                grad.addColorStop(1, 'rgba(140, 12, 0, 0)');
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.ellipse(x, fireBaseY - flameH * 0.36, flameW, flameH, 0, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+
+        ctx.save();
+        ctx.globalCompositeOperation = 'lighter';
+        const bottomGlow = ctx.createRadialGradient(w * 0.5, h * 0.86, 20, w * 0.5, h * 0.94, Math.max(w * 0.52, h * 0.8));
+        bottomGlow.addColorStop(0, 'rgba(255, 150, 36, 0.22)');
+        bottomGlow.addColorStop(0.38, 'rgba(160, 44, 14, 0.12)');
+        bottomGlow.addColorStop(1, 'rgba(80, 12, 0, 0)');
+        ctx.globalAlpha = 0.9;
+        ctx.fillStyle = bottomGlow;
+        ctx.fillRect(0, 0, w, h);
+        ctx.restore();
+
+        ctx.save();
+        ctx.globalCompositeOperation = 'lighter';
+        for (let i = 0; i < 42; i++) {
+            const seed = i * 91.73;
+            const x = (Math.sin(seed) * 0.5 + 0.5) * w;
+            const driftX = Math.sin(GameRuntime.frame * 0.012 + i) * 16;
+            const y = h * 0.92 + ((i * 47) % Math.max(1, Math.round(h * 0.72))) - GameRuntime.frame * (0.35 + (i % 5) * 0.11);
+            const py = ((y % (h + 80)) + h + 80) % (h + 80) - 40;
+            ctx.globalAlpha = clamp01(0.22 - py / h * 0.08);
+            ctx.fillStyle = i % 3 === 0 ? '#ffd36a' : i % 3 === 1 ? '#ff7a24' : '#fff1b8';
+            ctx.beginPath();
+            ctx.arc(x + driftX, py, 0.9 + (i % 4) * 0.38, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.restore();
+
         if (FEATURE_FLAGS.ENABLE_ART_DEBUG_PREVIEW && this.assets) {
             this.renderArtWeaponPreview(ctx, this.canvas.width / 2, Math.max(128, this.canvas.height / 2 - 120));
         }
@@ -10362,18 +12574,17 @@ class GameManager {
         const centerY = this.canvas.height / 2;
 
         // 背景
-        ctx.fillStyle = '#1a1a1a';
-        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.renderDomBackdrop();
         drawArtUiTexture(ctx, 'menu_panel', centerX - 280, Math.max(44, centerY - 300), 560, 640, 0.92);
 
         // 标题
         ctx.fillStyle = '#b8860b';
-        ctx.font = 'bold 60px Arial';
+        ctx.font = 'bold 60px "KaiTi", "STKaiti", serif';
         ctx.textAlign = 'center';
         ctx.fillText('千里走单骑', centerX, centerY - 180);
 
         ctx.fillStyle = '#cccccc';
-        ctx.font = '20px Arial';
+        ctx.font = '20px "KaiTi", "STKaiti", serif';
         ctx.fillText('穿越时空只为找到你~', centerX, centerY - 120);
 
         // 按钮
@@ -10405,7 +12616,7 @@ class GameManager {
             ctx.strokeRect(x, y, w, h);
         }
         ctx.fillStyle = textColor;
-        ctx.font = 'bold 24px Arial';
+        ctx.font = 'bold 24px "KaiTi", "STKaiti", serif';
         ctx.textAlign = 'center';
         this.fillTextFit(ctx, text, x + w/2, y + h/2 + 8, w - 22, { align: 'center', minSize: 12 });
     }
@@ -10601,6 +12812,7 @@ class GameManager {
             timeText: `生存时间 ${minutes}:${seconds.toString().padStart(2, '0')}`,
             resonance: this.currentResonance || 0,
             rerolls: player.rerolls || 0,
+            maxWeaponSlots: getMaxWeaponSlots(),
             weapons: (player.weapons || []).map(weapon => ({
                 type: weapon.type,
                 name: weaponNames[weapon.type] || weapon.type,
@@ -10653,8 +12865,8 @@ class GameManager {
                 };
             }),
             mainMenu: {
-                title: '千里走单骑',
-                subtitle: '穿越时空只为找到你',
+                title: getUiText('title', '千里走单骑'),
+                subtitle: getUiText('subtitle', '穿越时空只为找到你'),
                 weaponPreview: [],
             },
             perkMenu: {
@@ -10667,7 +12879,7 @@ class GameManager {
                     const cost = this.getUpgradeCost(level);
                     const isMaxed = level >= PERK_MAX_LEVEL;
                     const match = perk.description.match(/^(.*)([+-]\d+(?:\.\d+)?)(.*)$/);
-                    let nextText = isMaxed ? '已满级' : `下级 +${PERK_PROGRESS_STEP_PERCENT}%`;
+                    let nextText = isMaxed ? getUiText('perkMenu.maxed', '已满级') : `${getUiText('perkMenu.next', '下级')} +${PERK_PROGRESS_STEP_PERCENT}%`;
                     let description = perk.description;
                     if (match) {
                         description = match[1].replace(/[→ ]+$/, '');
@@ -10693,8 +12905,8 @@ class GameManager {
                 }),
             },
             result: {
-                title: this.gameState === GAME_STATE.VICTORY ? '历史回路已接通' : this.gameState === GAME_STATE.GAME_OVER ? '历史推演失败' : '已暂停',
-                subtitle: this.gameState === GAME_STATE.VICTORY ? '千里走单骑完成' : this.gameState === GAME_STATE.GAME_OVER ? '回到最初的开始吧' : '战斗逻辑已冻结',
+                title: this.gameState === GAME_STATE.VICTORY ? getUiText('systemMenu.victory', '历史回路已接通') : this.gameState === GAME_STATE.GAME_OVER ? getUiText('systemMenu.gameOver', '历史推演失败') : getUiText('systemMenu.paused', '已暂停'),
+                subtitle: this.gameState === GAME_STATE.VICTORY ? getUiText('systemMenu.victorySubtitle', '千里走单骑完成') : this.gameState === GAME_STATE.GAME_OVER ? getUiText('systemMenu.gameOverSubtitle', '回到最初的开始吧') : getUiText('systemMenu.pausedSubtitle', '战斗逻辑已冻结'),
                 time: `${minutes}:${seconds.toString().padStart(2, '0')}`,
                 level: player.level || 1,
                 runResonance: this.currentResonance || 0,
@@ -10717,11 +12929,11 @@ class GameManager {
         ctx.fillStyle = '#ffd36a';
         ctx.font = 'bold 30px Arial';
         ctx.textAlign = 'center';
-        this.fillTextFit(ctx, '历史残响 基因重塑', this.canvas.width / 2, 50, 680, { align: 'center', minSize: 18 });
+        this.fillTextFit(ctx, getUiText('perkMenu.title', '历史残响 基因重塑'), this.canvas.width / 2, 50, 680, { align: 'center', minSize: 18 });
         ctx.font = '18px Arial';
         ctx.fillStyle = '#cccccc';
-        this.fillTextFit(ctx, `当前残响：${this.totalResonance}`, this.canvas.width / 2, 80, 680, { align: 'center', minSize: 12 });
-        this.fillTextFit(ctx, '点击购买永久升级，死亡后保留效果', this.canvas.width / 2, 105, 680, { align: 'center', minSize: 12 });
+        this.fillTextFit(ctx, `${getUiText('perkMenu.currency', '当前残响')}：${this.totalResonance}`, this.canvas.width / 2, 80, 680, { align: 'center', minSize: 12 });
+        this.fillTextFit(ctx, getUiText('perkMenu.subtitle', '点击购买永久升级，死亡后保留效果'), this.canvas.width / 2, 105, 680, { align: 'center', minSize: 12 });
 
         // 列表 - 双列布局：左列5个，右列5个
         const startY = 126;
@@ -11378,14 +13590,240 @@ class GameManager {
         ctx.restore();
     }
 
+    getProgrammaticMapPalette(phase) {
+        const tileId = phase?.tileId || 'grass';
+        const palettes = {
+            grass: {
+                base: '#183123',
+                deep: '#0d1813',
+                accent: 'rgba(111, 158, 78, 0.14)',
+                dust: 'rgba(180, 154, 84, 0.10)',
+                road: 'rgba(108, 86, 49, 0.20)',
+                grain: 'rgba(156, 190, 102, 0.13)',
+            },
+            loess: {
+                base: '#382917',
+                deep: '#17110b',
+                accent: 'rgba(185, 132, 55, 0.13)',
+                dust: 'rgba(211, 176, 103, 0.12)',
+                road: 'rgba(124, 83, 42, 0.24)',
+                grain: 'rgba(231, 187, 101, 0.12)',
+            },
+            stone: {
+                base: '#242d32',
+                deep: '#11181c',
+                accent: 'rgba(112, 139, 148, 0.13)',
+                dust: 'rgba(190, 203, 204, 0.08)',
+                road: 'rgba(70, 82, 86, 0.26)',
+                grain: 'rgba(142, 158, 164, 0.11)',
+            },
+            blood: {
+                base: '#2a1417',
+                deep: '#100708',
+                accent: 'rgba(154, 42, 44, 0.15)',
+                dust: 'rgba(108, 70, 52, 0.12)',
+                road: 'rgba(64, 34, 29, 0.28)',
+                grain: 'rgba(184, 66, 58, 0.10)',
+            },
+            fire: {
+                base: '#1f100a',
+                deep: '#070403',
+                accent: 'rgba(216, 72, 28, 0.16)',
+                dust: 'rgba(255, 145, 51, 0.11)',
+                road: 'rgba(90, 35, 21, 0.30)',
+                grain: 'rgba(255, 109, 35, 0.11)',
+            },
+        };
+        return palettes[tileId] || palettes.grass;
+    }
+
+    renderProgrammaticMapBase(ctx, baseColor, cameraX, cameraY, phase) {
+        const palette = this.getProgrammaticMapPalette(phase);
+        const width = this.canvas.width;
+        const height = this.canvas.height;
+        const centerX = width / 2;
+        const centerY = height / 2;
+
+        ctx.save();
+        const baseGradient = ctx.createRadialGradient(centerX, centerY, Math.min(width, height) * 0.12, centerX, centerY, Math.max(width, height) * 0.78);
+        baseGradient.addColorStop(0, palette.base);
+        baseGradient.addColorStop(0.58, palette.base);
+        baseGradient.addColorStop(1, palette.deep);
+        ctx.fillStyle = baseGradient;
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.globalCompositeOperation = 'screen';
+        ctx.globalAlpha = 0.55;
+        const battleX = this.player ? this.player.x - cameraX : centerX;
+        const battleY = this.player ? this.player.y - cameraY : centerY;
+        const battleGradient = ctx.createRadialGradient(battleX, battleY, 60, battleX, battleY, 430);
+        battleGradient.addColorStop(0, 'rgba(255, 236, 175, 0.060)');
+        battleGradient.addColorStop(0.42, palette.accent);
+        battleGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = battleGradient;
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.globalCompositeOperation = 'source-over';
+        const roadSalt = this.getMapPhaseSalt(`${phase?.key || 'map'}:procedural-road`);
+        ctx.lineCap = 'round';
+        for (let i = -2; i <= 2; i++) {
+            const hash = this.getMapTileHash(i, Math.floor((cameraY + i * 113) / 640), roadSalt);
+            const laneY = height * (0.22 + i * 0.16) - ((cameraY * (0.05 + i * 0.006)) % 90);
+            ctx.strokeStyle = palette.road;
+            ctx.lineWidth = 54 + ((hash >>> 9) & 31);
+            ctx.globalAlpha = 0.42;
+            ctx.beginPath();
+            ctx.moveTo(-100, laneY + Math.sin((cameraX + hash) * 0.0012) * 18);
+            ctx.bezierCurveTo(width * 0.28, laneY - 36, width * 0.66, laneY + 42, width + 100, laneY + Math.cos((cameraX + hash) * 0.001) * 22);
+            ctx.stroke();
+        }
+
+        const patchSpacing = 190;
+        const startCol = Math.floor(cameraX / patchSpacing) - 1;
+        const endCol = Math.floor((cameraX + width) / patchSpacing) + 1;
+        const startRow = Math.floor(cameraY / patchSpacing) - 1;
+        const endRow = Math.floor((cameraY + height) / patchSpacing) + 1;
+        const patchSalt = this.getMapPhaseSalt(`${phase?.key || 'map'}:procedural-patches`);
+        for (let col = startCol; col <= endCol; col++) {
+            for (let row = startRow; row <= endRow; row++) {
+                const hash = this.getMapTileHash(col, row, patchSalt);
+                if ((hash & 255) > 138) continue;
+                const px = col * patchSpacing + (((hash >>> 8) & 255) / 255) * patchSpacing - cameraX;
+                const py = row * patchSpacing + (((hash >>> 16) & 255) / 255) * patchSpacing - cameraY;
+                const size = 18 + ((hash >>> 24) & 63);
+                ctx.save();
+                ctx.translate(px, py);
+                ctx.rotate(((hash >>> 3) & 255) / 255 * Math.PI);
+                ctx.globalAlpha = 0.14;
+                ctx.fillStyle = (hash & 0x1000) ? palette.accent : palette.dust;
+                ctx.beginPath();
+                ctx.ellipse(0, 0, size * 1.25, size * 0.42, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        const grainSpacing = 58;
+        const grainSalt = this.getMapPhaseSalt(`${phase?.key || 'map'}:procedural-grain`);
+        ctx.globalAlpha = 0.38;
+        ctx.strokeStyle = palette.grain;
+        ctx.lineWidth = 1;
+        for (let col = Math.floor(cameraX / grainSpacing) - 1; col <= Math.floor((cameraX + width) / grainSpacing) + 1; col++) {
+            for (let row = Math.floor(cameraY / grainSpacing) - 1; row <= Math.floor((cameraY + height) / grainSpacing) + 1; row++) {
+                const hash = this.getMapTileHash(col, row, grainSalt);
+                const x = col * grainSpacing + (((hash >>> 8) & 255) / 255) * grainSpacing - cameraX;
+                const y = row * grainSpacing + (((hash >>> 16) & 255) / 255) * grainSpacing - cameraY;
+                const len = 5 + ((hash >>> 24) & 9);
+                const angle = ((hash >>> 4) & 255) / 255 * Math.PI;
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + Math.cos(angle) * len, y + Math.sin(angle) * len);
+                ctx.stroke();
+            }
+        }
+
+        ctx.globalAlpha = 0.12;
+        ctx.fillStyle = baseColor;
+        ctx.fillRect(0, 0, width, height);
+        ctx.restore();
+
+        this.renderAiTileDecorationPatches(ctx, cameraX, cameraY, phase);
+        this.renderGeneratedMapKitDecorations(ctx, cameraX, cameraY, phase);
+        this.applyMapNoiseOverlay(ctx, 0.040);
+        this.drawMapVignette(ctx);
+    }
+
+    renderGeneratedMapKitDecorations(ctx, cameraX, cameraY, phase) {
+        if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !this.assets?.getMapKitEntries) return;
+        const entries = this.assets.getMapKitEntries('decals', phase?.tileId) || [];
+        if (!entries.length) return;
+        const spacing = this.canvas.width <= 760 ? 280 : 340;
+        const startCol = Math.floor(cameraX / spacing) - 1;
+        const endCol = Math.floor((cameraX + this.canvas.width) / spacing) + 1;
+        const startRow = Math.floor(cameraY / spacing) - 1;
+        const endRow = Math.floor((cameraY + this.canvas.height) / spacing) + 1;
+        const salt = this.getMapPhaseSalt(`${phase?.key || 'map'}:generated-map-kit`);
+
+        ctx.save();
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.globalCompositeOperation = 'source-over';
+        for (let col = startCol; col <= endCol; col++) {
+            for (let row = startRow; row <= endRow; row++) {
+                const hash = this.getMapTileHash(col, row, salt);
+                if ((hash & 255) > 118) continue;
+                const entry = entries[(hash >>> 8) % entries.length];
+                const image = this.assets.getMapKitTexture?.(entry);
+                if (!this.assets.canDraw?.(image)) continue;
+                const drawSize = Array.isArray(entry.drawSize) ? entry.drawSize : [120, 90];
+                const width = drawSize[0] * (0.82 + (((hash >>> 17) & 31) / 31) * 0.36);
+                const height = drawSize[1] * (0.82 + (((hash >>> 22) & 31) / 31) * 0.32);
+                const x = col * spacing + (((hash >>> 13) & 255) / 255) * spacing - cameraX;
+                const y = row * spacing + (((hash >>> 21) & 255) / 255) * spacing - cameraY;
+                const alpha = Number(entry.alpha ?? 0.28);
+                drawRuntimeAsset(ctx, image, entry, x, y, width, height, {
+                    alpha: Math.max(0.08, Math.min(0.42, alpha)),
+                    angle: entry.canRotate === false ? 0 : ((((hash >>> 3) & 7) / 8) * Math.PI * 2),
+                    anchor: entry.anchor || [0.5, 0.5],
+                    debug: false,
+                });
+            }
+        }
+        ctx.restore();
+    }
+
+    renderAiTileDecorationPatches(ctx, cameraX, cameraY, phase) {
+        if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !FEATURE_FLAGS.ENABLE_ART_TILES || !this.assets) return;
+        const tileImages = this.getDrawableMapTileImages(phase?.tileId, phase?.levelId);
+        if (!tileImages.length) return;
+        const spacing = this.canvas.width <= 760 ? 620 : 760;
+        const startCol = Math.floor(cameraX / spacing) - 1;
+        const endCol = Math.floor((cameraX + this.canvas.width) / spacing) + 1;
+        const startRow = Math.floor(cameraY / spacing) - 1;
+        const endRow = Math.floor((cameraY + this.canvas.height) / spacing) + 1;
+        const salt = this.getMapPhaseSalt(`${phase?.key || 'map'}:ai-decal-patches`);
+
+        ctx.save();
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.globalCompositeOperation = 'overlay';
+        ctx.filter = 'contrast(0.78) saturate(0.86) brightness(0.92)';
+        for (let col = startCol; col <= endCol; col++) {
+            for (let row = startRow; row <= endRow; row++) {
+                const hash = this.getMapTileHash(col, row, salt);
+                if ((hash & 255) > 88) continue;
+                const image = tileImages[(hash >>> 8) % tileImages.length];
+                const patch = this.getFeatheredMapTile(ctx, image);
+                const localX = (((hash >>> 16) & 255) / 255 - 0.5) * spacing * 0.62;
+                const localY = (((hash >>> 24) & 255) / 255 - 0.5) * spacing * 0.62;
+                const size = 190 + ((hash >>> 3) & 127);
+                const x = col * spacing + spacing / 2 + localX - cameraX;
+                const y = row * spacing + spacing / 2 + localY - cameraY;
+                ctx.save();
+                ctx.globalAlpha = 0.055 + (((hash >>> 12) & 31) / 31) * 0.035;
+                ctx.translate(x, y);
+                ctx.rotate((((hash >>> 19) & 3) * Math.PI) / 2);
+                ctx.scale((hash & 0x1000) ? -1 : 1, (hash & 0x2000) ? -1 : 1);
+                ctx.drawImage(patch, -size / 2, -size / 2, size, size);
+                ctx.restore();
+            }
+        }
+        ctx.restore();
+    }
+
     renderScrollingBackground(ctx, baseColor) {
         ctx.fillStyle = baseColor;
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         const cameraX = FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA ? this.camera.x : 0;
         const cameraY = FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA ? this.camera.y : 0;
+        const phase = this.getCurrentMapTerrainPhase();
+
+        if (FEATURE_FLAGS.ENABLE_PROCEDURAL_MAP_BASE) {
+            this.renderProgrammaticMapBase(ctx, baseColor, cameraX, cameraY, phase);
+            return;
+        }
 
         if (FEATURE_FLAGS.ENABLE_ART_ASSETS && FEATURE_FLAGS.ENABLE_ART_TILES && this.assets) {
-            const phase = this.getCurrentMapTerrainPhase();
             if (this.renderArtMapTiles(ctx, baseColor, cameraX, cameraY, phase)) return;
         }
         if (!FEATURE_FLAGS.ENABLE_SCROLLING_BACKGROUND) return;
@@ -11531,6 +13969,18 @@ class GameManager {
         }
     }
 
+    renderActiveWeaponsLayer(ctx, layer) {
+        for (const weapon of this.activeWeapons || []) {
+            const weaponLayer = weapon?.getRenderLayer?.() || weapon?.renderLayer || 'aboveEntities';
+            if (weaponLayer !== layer || typeof weapon.render !== 'function') continue;
+            weapon.render(ctx, this.player);
+            ctx.globalAlpha = 1;
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.shadowBlur = 0;
+            ctx.shadowColor = 'transparent';
+        }
+    }
+
     renderPlaying() {
         const ctx = this.ctx;
 
@@ -11626,6 +14076,9 @@ class GameManager {
         ctx.shadowBlur = 0;
         ctx.shadowColor = 'transparent';
 
+        // 贴地/角色下层武器视觉：例如八门金锁盾蓄力圈，不能盖住主角和敌人。
+        this.renderActiveWeaponsLayer(ctx, 'belowEntities');
+
         // 玩家
         this.player.render(ctx);
         this.renderWeaponCooldownHUD(ctx);
@@ -11641,10 +14094,8 @@ class GameManager {
             enemy.render(ctx, this.assets);
         }
 
-        // 持续武器攻击特效画在角色和敌人之上，避免刀、枪、盾、青釭剑视觉被实体精灵盖住。
-        for (const weapon of this.activeWeapons) {
-            weapon.render(ctx, this.player);
-        }
+        // 前景攻击视觉：刀光、枪刺、青釭飞剑等保留在实体上层，保证命中方向可读。
+        this.renderActiveWeaponsLayer(ctx, 'aboveEntities');
 
         // 子弹/追踪弹
         for (const projectile of this.projectiles) {
@@ -11750,7 +14201,7 @@ class GameManager {
         ctx.fillStyle = '#fff';
         ctx.font = 'bold 14px Arial';
         ctx.textAlign = 'center';
-        this.fillTextFit(ctx, this.gameState === GAME_STATE.PAUSED ? '继续' : '暂停', pauseX + buttonW/2, pauseY + buttonH/2 + 5, buttonW - 14, { align: 'center', minSize: 10 });
+        this.fillTextFit(ctx, this.gameState === GAME_STATE.PAUSED ? getUiText('hud.resume', '继续') : getUiText('hud.pause', '暂停'), pauseX + buttonW/2, pauseY + buttonH/2 + 5, buttonW - 14, { align: 'center', minSize: 10 });
 
         // 重启按钮
         const restartX = this.canvas.width - 2 * buttonW - 2 * padding;
@@ -11766,7 +14217,7 @@ class GameManager {
             ctx.strokeRect(restartX, restartY, buttonW, buttonH);
         }
         ctx.fillStyle = '#fff';
-        this.fillTextFit(ctx, '主页', restartX + buttonW/2, restartY + buttonH/2 + 5, buttonW - 14, { align: 'center', minSize: 10 });
+        this.fillTextFit(ctx, getUiText('hud.home', '主页'), restartX + buttonW/2, restartY + buttonH/2 + 5, buttonW - 14, { align: 'center', minSize: 10 });
 
         // ========== 顶部经验条 ==========
         ctx.fillStyle = '#ffffff';
@@ -12153,11 +14604,11 @@ class GameManager {
         ctx.fillStyle = '#ffffff';
         ctx.font = 'bold 40px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText('已暂停', this.canvas.width / 2, this.canvas.height / 2 - 20);
+        ctx.fillText(getUiText('systemMenu.paused', '已暂停'), this.canvas.width / 2, this.canvas.height / 2 - 20);
         ctx.font = '18px Arial';
         ctx.fillStyle = '#cccccc';
         ctx.fillText('(PAUSED)', this.canvas.width / 2, this.canvas.height / 2 + 20);
-        ctx.fillText('按 ESC 或 P 继续', this.canvas.width / 2, this.canvas.height / 2 + 55);
+        ctx.fillText(getUiText('systemMenu.pauseHint', '按 ESC 或 P 继续'), this.canvas.width / 2, this.canvas.height / 2 + 55);
     }
 
     renderVictory() {
@@ -12292,6 +14743,9 @@ class GameManager {
 
     render(deltaTime) {
         switch (this.gameState) {
+            case GAME_STATE.OPENING_CUTSCENE:
+                this.renderOpeningCutscene(deltaTime);
+                break;
             case GAME_STATE.MENU:
                 if (FEATURE_FLAGS.ENABLE_DOM_MENUS && this.uiBridge) {
                     this.renderDomBackdrop();
@@ -12308,6 +14762,9 @@ class GameManager {
                 break;
             case GAME_STATE.PLAYING:
                 this.renderPlaying();
+                break;
+            case GAME_STATE.RUN_ENTRY:
+                this.renderRunEntry(deltaTime);
                 break;
             case GAME_STATE.PAUSED:
                 if (FEATURE_FLAGS.ENABLE_DOM_MENUS && this.uiBridge) {
@@ -12373,7 +14830,8 @@ class GameManager {
     handleLevelUpKey(key) {
         if (this.gameState !== GAME_STATE.LEVEL_UP) return false;
         const num = parseInt(key);
-        if (num >= 1 && num <= 3 && this.levelUpOptions[num - 1]) {
+        const choiceCount = Math.max(1, Math.floor(Number(PROGRESSION_RULE_CONFIG.levelUpChoiceCount) || 3));
+        if (num >= 1 && num <= choiceCount && this.levelUpOptions[num - 1]) {
             this.selectLevelUpOption(num - 1);
             return true;
         }
@@ -12404,34 +14862,25 @@ class GameManager {
         }
 
         // 暂停切换：ESC 或 P
-        if (this.gameState === GAME_STATE.PLAYING && (this.keys['escape'] || this.keys['p'])) {
-            this.gameState = GAME_STATE.PAUSED;
-            this.keys['escape'] = false;
-            this.keys['p'] = false;
-        } else if (this.gameState === GAME_STATE.PAUSED && (this.keys['escape'] || this.keys['p'])) {
-            this.gameState = GAME_STATE.PLAYING;
-            this.keys['escape'] = false;
-            this.keys['p'] = false;
+        if ((this.gameState === GAME_STATE.PLAYING || this.gameState === GAME_STATE.PAUSED) && this.input.consume('pause')) {
+            this.togglePause();
         }
 
         // 游戏结束按R重开
-        if (this.gameState === GAME_STATE.GAME_OVER && this.keys['r']) {
+        if (this.gameState === GAME_STATE.GAME_OVER && this.input.consume('reset')) {
             this.restartGame();
-            this.keys['r'] = false;
         }
 
         // 数字键选择升级，R键刷新选项
         if (this.gameState === GAME_STATE.LEVEL_UP) {
             for (let i = 1; i <= 3; i++) {
-                if (this.keys[i.toString()]) {
+                if (this.input.consumeKey(i.toString())) {
                     this.handleLevelUpKey(i.toString());
-                    this.keys[i.toString()] = false;
                     break;
                 }
             }
             // R键触发刷新
-            if (this.keys['r']) {
-                this.keys['r'] = false;
+            if (this.input.consume('reset')) {
                 if (this.player.rerolls > 0) {
                     this.player.rerolls--;
                     this.levelUpOptions = this.generateLevelUpOptions();
@@ -12440,9 +14889,8 @@ class GameManager {
         }
 
         // 点击返回在菜单点击处理，但游戏结束/胜利也点按钮返回
-        if ((this.gameState === GAME_STATE.GAME_OVER || this.gameState === GAME_STATE.VICTORY) && this.keys['enter']) {
+        if ((this.gameState === GAME_STATE.GAME_OVER || this.gameState === GAME_STATE.VICTORY) && this.input.consume('confirm')) {
             this.returnToMenu();
-            this.keys['enter'] = false;
         }
 
         if (this.legacySystemPipeline && this.gameState === GAME_STATE.PLAYING) {
@@ -12456,6 +14904,7 @@ class GameManager {
             this.render(deltaTime);
         }
         GameRuntime.endFrame(this);
+        this.input?.update?.();
 
         if (GameRuntime.shouldStop()) return;
         requestAnimationFrame(this.gameLoop);
@@ -12464,6 +14913,13 @@ class GameManager {
 
 async function bootstrapGame() {
     setBootState('loading', 'Preparing game runtime...');
+    try {
+        const specConfig = await loadRuntimeSpecConfig(true);
+        applyRuntimeSpecConfig(specConfig);
+        window.__BOOTSTRAP_SPEC_CONFIG__ = window.__SPEC_CONFIG_APPLIED__;
+    } catch (error) {
+        console.warn('[SpecLoader] Falling back to built-in runtime spec config.', error);
+    }
 
     if (FEATURE_FLAGS.ENABLE_ART_ASSETS && window.assetRuntime) {
         setBootState('loading', 'Loading startup assets...');

@@ -27,8 +27,8 @@ canvas {
     inset: 0;
     z-index: 1;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(420px, 680px);
-    gap: 18px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
     padding: 18px;
     background:
         radial-gradient(circle at 30% 10%, rgba(45, 68, 64, 0.22), transparent 34%),
@@ -46,7 +46,7 @@ canvas {
 
 .game-viewport {
     position: relative;
-    width: min(100%, 1040px);
+    width: min(100%, 1280px);
     aspect-ratio: 16 / 9;
     max-height: calc(100vh - 72px);
     border: 1px solid rgba(255, 211, 106, 0.34);
@@ -116,6 +116,12 @@ body[data-boot-state='fallback'] #bootOverlay {
 }
 
 .game-editor-sidebar {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    bottom: 18px;
+    z-index: 12;
+    width: min(680px, calc(100vw - 86px));
     min-width: 0;
     min-height: 0;
     overflow: hidden;
@@ -127,6 +133,67 @@ body[data-boot-state='fallback'] #bootOverlay {
     color: #eef4f2;
     box-shadow: 0 18px 58px rgba(0, 0, 0, 0.36);
     backdrop-filter: blur(8px);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(calc(100% + 28px));
+    transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.game-editor-toggle {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    z-index: 14;
+    display: grid;
+    place-items: center;
+    min-width: 42px;
+    min-height: 84px;
+    padding: 10px 8px;
+    border: 1px solid rgba(255, 211, 106, 0.44);
+    border-right: 0;
+    border-radius: 999px 0 0 999px;
+    color: #fff3c1;
+    background:
+        linear-gradient(180deg, rgba(255, 211, 106, 0.18), rgba(69, 240, 255, 0.08)),
+        rgba(7, 10, 12, 0.88);
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.36);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 900;
+    line-height: 1.1;
+    writing-mode: vertical-rl;
+    transform: translateY(-50%);
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+}
+
+.game-editor-shell.editor-sidebar-open .game-editor-sidebar {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+}
+
+.game-editor-shell.editor-sidebar-open .game-editor-toggle {
+    color: #0b0f12;
+    background: linear-gradient(180deg, #ffe08a, #b99b45);
+    border-color: rgba(255, 243, 193, 0.86);
+}
+
+body[data-game-state='OPENING_CUTSCENE'] .game-editor-shell,
+body[data-game-state='RUN_ENTRY'] .game-editor-shell {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+body[data-game-state='OPENING_CUTSCENE'] .game-editor-sidebar,
+body[data-game-state='OPENING_CUTSCENE'] .game-editor-toggle,
+body[data-game-state='RUN_ENTRY'] .game-editor-sidebar,
+body[data-game-state='RUN_ENTRY'] .game-editor-toggle {
+    display: none !important;
+}
+
+body[data-game-state='OPENING_CUTSCENE'] .game-viewport,
+body[data-game-state='RUN_ENTRY'] .game-viewport {
+    width: min(100%, 1280px);
 }
 
 .editor-loading,
@@ -444,7 +511,7 @@ body[data-boot-state='fallback'] #bootOverlay {
     top: 0;
     z-index: 5;
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) 38px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
     gap: 12px;
     padding: 12px;
@@ -454,6 +521,12 @@ body[data-boot-state='fallback'] #bootOverlay {
         radial-gradient(circle at 14% 0%, rgba(69, 240, 255, 0.13), transparent 34%),
         linear-gradient(180deg, rgba(16, 24, 25, 0.98), rgba(7, 10, 12, 0.98));
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.30);
+}
+
+.media-detail-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .media-back-button {
@@ -469,8 +542,23 @@ body[data-boot-state='fallback'] #bootOverlay {
     cursor: pointer;
 }
 
+.media-collapse-button {
+    min-height: 30px;
+    padding: 0 10px;
+    border: 1px solid rgba(69, 240, 255, 0.26);
+    border-radius: 999px;
+    color: rgba(238, 244, 242, 0.82);
+    background: rgba(69, 240, 255, 0.08);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
 .media-back-button:hover,
-.media-back-button:focus-visible {
+.media-back-button:focus-visible,
+.media-collapse-button:hover,
+.media-collapse-button:focus-visible {
     color: #fff3c1;
     border-color: rgba(255, 211, 106, 0.58);
     background: rgba(255, 211, 106, 0.18);
@@ -519,6 +607,27 @@ body[data-boot-state='fallback'] #bootOverlay {
     line-height: 1;
 }
 
+.media-collapsed-strip {
+    min-height: 46px;
+    width: 100%;
+    border: 1px dashed rgba(69, 240, 255, 0.28);
+    border-radius: 8px;
+    color: rgba(238, 244, 242, 0.66);
+    background:
+        radial-gradient(circle at 16% 0%, rgba(69, 240, 255, 0.08), transparent 34%),
+        rgba(7, 10, 12, 0.58);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.media-collapsed-strip:hover,
+.media-collapsed-strip:focus-visible {
+    color: #fff3c1;
+    border-color: rgba(255, 211, 106, 0.42);
+}
+
 .media-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -550,9 +659,37 @@ body[data-boot-state='fallback'] #bootOverlay {
     background: rgba(6, 8, 10, 0.78);
 }
 
-.media-thumb-image {
+.media-thumb-card.is-replacing {
+    opacity: 0.72;
+}
+
+.media-thumb-card.is-replaced {
+    border-color: rgba(108, 255, 181, 0.62);
+    box-shadow: 0 0 0 1px rgba(108, 255, 181, 0.20) inset;
+}
+
+.media-thumb-replace {
     width: 100%;
     height: 78%;
+    display: block;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    background: transparent;
+}
+
+.media-thumb-replace:hover .media-thumb-image {
+    filter: brightness(1.12) saturate(1.08);
+}
+
+.media-thumb-replace:focus-visible {
+    outline: 2px solid rgba(255, 211, 106, 0.9);
+    outline-offset: -2px;
+}
+
+.media-thumb-image {
+    width: 100%;
+    height: 100%;
     display: block;
     object-fit: contain;
     background:
@@ -589,6 +726,8 @@ body[data-boot-state='fallback'] #bootOverlay {
     font: inherit;
     font-size: 20px;
     line-height: 1;
+    cursor: pointer;
+    z-index: 2;
 }
 
 .media-empty {
@@ -781,9 +920,14 @@ body[data-boot-state='fallback'] #bootOverlay {
 
 @media (max-width: 1180px) {
     .game-editor-shell {
-        grid-template-columns: minmax(0, 1fr) 480px;
-        gap: 12px;
         padding: 12px;
+    }
+
+    .game-editor-sidebar {
+        top: 12px;
+        right: 12px;
+        bottom: 12px;
+        width: min(560px, calc(100vw - 72px));
     }
 
     .editor-mode-tab {
@@ -807,11 +951,37 @@ body[data-boot-state='fallback'] #bootOverlay {
 @media (max-width: 920px) {
     .game-editor-shell {
         grid-template-columns: 1fr;
-        grid-template-rows: minmax(0, 1fr) minmax(260px, 38vh);
+        grid-template-rows: minmax(0, 1fr);
         overflow: hidden;
+        padding: 8px;
     }
 
     .game-workbench {
         padding: 4px;
+    }
+
+    .game-viewport {
+        width: 100%;
+        height: calc(100dvh - 16px);
+        max-height: none;
+        aspect-ratio: auto;
+    }
+
+    .game-editor-sidebar {
+        top: 8px;
+        bottom: 8px;
+        right: 8px;
+        width: min(88vw, 430px);
+        transform: translateX(calc(100% + 18px));
+    }
+
+    .game-editor-shell.editor-sidebar-open .game-editor-sidebar {
+        transform: translateX(0);
+    }
+
+    .game-editor-toggle {
+        right: 0;
+        top: 50%;
+        border-radius: 999px 0 0 999px;
     }
 }

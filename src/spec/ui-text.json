@@ -1,0 +1,83 @@
+{
+  "title": "千里走单骑",
+  "subtitle": "穿越时空只为找到你",
+  "hud": {
+    "hp": "生命",
+    "stage": "关卡",
+    "boss": "Boss",
+    "wave": "波次",
+    "resonance": "残响",
+    "level": "等级",
+    "time": "生存时间",
+    "home": "主页",
+    "settings": "设置",
+    "pause": "暂停",
+    "resume": "继续",
+    "restart": "重启",
+    "weapons": "武器",
+    "passives": "被动技能",
+    "inRun": "局内",
+    "weaponCooldown": "武器冷却"
+  },
+  "levelUp": {
+    "title": "升级",
+    "titleWithLevel": "升级：等级 {level}",
+    "subtitle": "选择一项增益",
+    "reroll": "刷新选项"
+  },
+  "mainMenu": {
+    "start": "开始新游戏",
+    "perks": "局外升级",
+    "audioSettings": "音频设置",
+    "quit": "退出"
+  },
+  "perkMenu": {
+    "title": "历史残响 基因重塑",
+    "subtitle": "点击购买永久升级，死亡后保留效果",
+    "currency": "当前残响",
+    "back": "返回主页",
+    "price": "价格",
+    "maxed": "已满级",
+    "next": "下级"
+  },
+  "systemMenu": {
+    "system": "SYSTEM",
+    "paused": "已暂停",
+    "pausedSubtitle": "战斗逻辑已冻结",
+    "pauseHint": "按 ESC 或 P 继续",
+    "victory": "历史回路已接通",
+    "victorySubtitle": "千里走单骑完成",
+    "gameOver": "历史推演失败",
+    "gameOverSubtitle": "回到最初的开始吧",
+    "time": "存活时间",
+    "runLevel": "本局等级",
+    "runResonance": "本局残响",
+    "totalResonance": "累计残响",
+    "resume": "继续",
+    "restart": "重启时空",
+    "audioSettings": "音频设置",
+    "back": "返回主页",
+    "kickerVictory": "VICTORY",
+    "kickerGameOver": "GAME OVER",
+    "kickerPaused": "PAUSED"
+  },
+  "audio": {
+    "title": "音频设置",
+    "mode": "Synthetic audio",
+    "close": "关闭",
+    "master": "总音量",
+    "sfx": "战斗音效",
+    "music": "背景音乐",
+    "ui": "界面音效",
+    "alert": "警告音效",
+    "mute": "静音",
+    "test": "测试音效"
+  },
+  "settings": {
+    "playerHealth": "Player Health",
+    "playerIntensity": "Player Intensity",
+    "gameHard": "Difficulty Setting",
+    "drops": "Drops Rate",
+    "level": "Experience"
+  }
+}
