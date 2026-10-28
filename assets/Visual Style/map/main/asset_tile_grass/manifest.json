@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "image": "map_with_grass.png",
+  "exportedAt": "2026-06-02T06:29:00.069Z",
+  "type": "mapWithObstacles",
+  "mapWidth": 4452,
+  "mapHeight": 3386,
+  "gridSize": 32,
+  "obstacleCount": 30
+}

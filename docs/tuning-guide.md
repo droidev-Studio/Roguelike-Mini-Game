@@ -2,6 +2,17 @@
 
 Use `GameSettings.js` for global tuning. Use `src/spec/*.json` for content tables. Do not add common tuning values directly to `game.js`.
 
+## Campaign encounter tuning (2026-10-29)
+
+- `GameSettings.js > CAMPAIGN.DIRECTOR`: per-stage troop composition, normal/swarm population budget, 45-second warning/assault cycle, and reduced troop frequency during guard fights.
+- `GameSettings.js > CAMPAIGN.BOSS`: bounded level scaling, 1.1-second skill warning, half-health cooldown change, limited arrow tracking/lifetime, and post-guard recovery.
+- `src/spec/waves.json > orders`: optional per-stage kill orders with one-time supply and resonance rewards. Summons cannot farm normal orders; the final order explicitly targets phantoms.
+- XP pickup values are actual XP. Do not multiply `expValue` again when collecting or merging.
+- `stages.json > bossSecond` is the earliest guard appearance time. Defeating all prior guards is also required; time does not skip guards.
+- `src/rules/CampaignRules.js` contains the deterministic encounter calculations. Runtime/visual integration remains in game.js.
+- Validation: `node --test tools/campaign-rules.test.mjs`, `node tools/loop-scenarios.mjs <evidence-directory>`, then `node tools/loop-validation.mjs <evidence-directory>`.
+- Real-time policy play: `node tools/loop-playtest.mjs --seconds=780 --label=normal --out=<evidence-directory>`. Add `--difficulty=easy` only when explicitly testing the existing Easy editor preset; do not call that a normal-difficulty run.
+
 ## Combat Rules
 
 The editor sidebar exposes five runtime controls:

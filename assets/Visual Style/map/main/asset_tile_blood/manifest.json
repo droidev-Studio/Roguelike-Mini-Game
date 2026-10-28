@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "image": "asset_tile_blood.png",
+  "exportedAt": "2026-06-03T10:03:35.293Z",
+  "type": "mapWithObstacles",
+  "mapWidth": 4452,
+  "mapHeight": 3386,
+  "gridSize": 32,
+  "collisionRule": {
+    "blockMode": "allEntityObstacle",
+    "affects": "allEntities",
+    "ignoredByTags": [
+      "ignoreCollisionEnemy"
+    ]
+  },
+  "obstacleCount": 16
+}

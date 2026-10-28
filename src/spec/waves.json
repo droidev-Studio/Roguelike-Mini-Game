@@ -1,4 +1,11 @@
 {
+  "orders": [
+    {"name":"先登破阵","target":"any","count":15,"resonance":8,"hint":"击败 15 名敌兵，获补给与 8 残响"},
+    {"name":"截断箭雨","target":"archer","count":6,"resonance":12,"hint":"击败 6 名弩手，获补给与 12 残响"},
+    {"name":"斩将夺旗","target":"elite","count":3,"resonance":16,"hint":"击败 3 名精英，获补给与 16 残响"},
+    {"name":"火线突围","target":"any","count":35,"resonance":20,"hint":"击败 35 名敌兵，获补给与 20 残响"},
+    {"name":"破除投影","target":"phantom","count":4,"resonance":24,"hint":"击破 4 道守将幻影，获补给与 24 残响"}
+  ],
   "timeline": {
     "durationMinutes": 10,
     "specialMinuteStart": 1,
@@ -11,10 +18,10 @@
     "cutsceneDuration": 5
   },
   "miniBoss": {
-    "baseHp": 400,
-    "hpPerMinute": 200,
-    "hpPerMinuteSquared": 40,
-    "playerLevelHpMultiplier": 0.15,
+    "baseHp": 100,
+    "hpPerMinute": 60,
+    "hpPerMinuteSquared": 12,
+    "playerLevelHpMultiplier": 0.035,
     "spawnOffset": 200,
     "speedMultiplier": 1.2,
     "size": 50,
@@ -34,11 +41,11 @@
   "swarm": {
     "startMinute": 1,
     "endMinute": 9,
-    "baseLayers": 3,
+    "baseLayers": 1,
     "layerPerMinutes": 2,
-    "maxLayers": 6,
-    "countPerLayerBase": 20,
-    "countPerLayerRandom": 10,
+    "maxLayers": 3,
+    "countPerLayerBase": 10,
+    "countPerLayerRandom": 5,
     "spacingX": 30,
     "spacingY": 40,
     "depthOffsetBase": 50,
@@ -62,7 +69,7 @@
   "finalBoss": {
     "phantomCount": 4,
     "phantomDistance": 150,
-    "phantomHpMultiplier": 0.4,
+    "phantomHpMultiplier": 0.15,
     "phantomSize": 30,
     "phantomColors": ["#59f2a9", "#b56cff", "#5fb2ff", "#ff6b48"]
   }

@@ -8,6 +8,7 @@ The current runtime still uses root `game.js` as the stable execution entry. The
 - `src/spec/*.json`: content tables for rules, stages, waves, entities, enemies, weapons, progression, drops, effects, and UI text.
 - `assets/manifest.json`: the only runtime asset registry.
 - `game.js`: the legacy execution engine and coordinator while migration is in progress.
+- `src/rules/CampaignRules.js`: small deterministic campaign rules (guard ordering, encounter budgets, bounded boss scaling and order eligibility); loaded before game.js. This does not enable the paused system migration.
 
 ## Current Priority
 

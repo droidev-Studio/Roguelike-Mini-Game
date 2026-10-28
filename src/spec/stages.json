@@ -22,7 +22,7 @@
       "id": "luoyang",
       "name": "洛阳城",
       "boss": "韩福",
-      "description": "因果律暗箭：必定命中",
+      "description": "因果律暗箭：短时追踪，横向走位可避",
       "fromSecond": 240,
       "toSecond": 360,
       "bossSecond": 240,

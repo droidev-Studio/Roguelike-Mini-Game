@@ -46,11 +46,12 @@
       "radius": 60,
       "tickInterval": 0.2,
       "moveSpeed": 20,
-      "massiveStormDurationMin": 3,
-      "massiveStormDurationRandom": 2,
-      "massiveStormRadiusMultiplier": 5,
-      "massiveStormTickMultiplier": 0.3,
-      "massiveStormDamageMultiplier": 2
+      "massiveStormDurationMin": 2.4,
+      "massiveStormDurationRandom": 1.1,
+      "massiveStormRadiusMultiplier": 3.5,
+      "massiveStormTickMultiplier": 0.45,
+      "massiveStormDamageMultiplier": 1.6,
+      "massiveStormMaxRadius": 220
     }
   },
   "fireRing": {

@@ -3,6 +3,22 @@
         VERSION: '1.1.0',
         LAST_UPDATED: '2026-05-06',
 
+        CAMPAIGN: {
+            ENABLED: true,
+            BOSS: { hpPerLevel: 0.045, maxLevelMultiplier: 1.55, skillPerLevel: 0.025, maxSkillMultiplier: 1.4, spawnDistance: 330, warningSeconds: 1.1, recoveryHeal: 15, restSeconds: 8, enrageCooldownMultiplier: 0.85, arrowTrackingSeconds: 1.1, arrowLifetime: 5 },
+            DIRECTOR: {
+                cycleSeconds: 45, warningSeconds: 5, assaultSeconds: 10, assaultRate: 1.25,
+                minimumInterval: 0.32, bossIntervalMultiplier: 1.8,
+                stages: [
+                    {population: 34, interval: 0.95, batch: 1, burst: 2, archerChance: 0.07, eliteChance: 0.04, archerGroup: 1},
+                    {population: 46, interval: 0.82, batch: 2, burst: 3, archerChance: 0.16, eliteChance: 0.05, archerGroup: 2},
+                    {population: 58, interval: 0.72, batch: 2, burst: 3, archerChance: 0.10, eliteChance: 0.10, archerGroup: 2},
+                    {population: 70, interval: 0.64, batch: 2, burst: 3, archerChance: 0.13, eliteChance: 0.12, archerGroup: 2},
+                    {population: 80, interval: 0.58, batch: 3, burst: 4, archerChance: 0.16, eliteChance: 0.12, archerGroup: 2 },
+                ],
+            },
+        },
+
         DEBUG: {
             INVINCIBLE_MODE: false,
             ONE_HIT_KILL: false,

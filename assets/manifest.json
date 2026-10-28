@@ -1201,10 +1201,10 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              38,
-              57,
-              474,
-              419
+              42,
+              61,
+              470,
+              411
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "arc",
@@ -1266,10 +1266,10 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              27,
-              49,
-              458,
-              414
+              31,
+              53,
+              450,
+              406
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "arc",
@@ -1331,10 +1331,10 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              37,
-              43,
-              475,
-              435
+              41,
+              48,
+              471,
+              426
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "arc",
@@ -1396,10 +1396,10 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              27,
-              38,
-              458,
-              436
+              32,
+              42,
+              449,
+              428
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "arc",
@@ -1461,10 +1461,10 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              23,
-              23,
-              489,
-              467
+              27,
+              27,
+              485,
+              459
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "arc",
@@ -1526,10 +1526,10 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              9,
-              9,
-              503,
-              495
+              13,
+              13,
+              499,
+              487
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "arc",
@@ -1587,8 +1587,8 @@
           "body": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv1.png",
             "sourceSize": [
-              1024,
-              256
+              2172,
+              724
             ],
             "usage": [
               "weapon_body"
@@ -1639,10 +1639,10 @@
             "logicalLength": 130,
             "logicalWidth": 24,
             "safeFrame": [
-              48,
-              106,
-              929,
-              44
+              27,
+              245,
+              2117,
+              333
             ],
             "disableShapeMask": true
           },
@@ -1684,8 +1684,8 @@
           "body": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv2.png",
             "sourceSize": [
-              1024,
-              256
+              2172,
+              724
             ],
             "usage": [
               "weapon_body"
@@ -1736,10 +1736,10 @@
             "logicalLength": 130,
             "logicalWidth": 24,
             "safeFrame": [
-              48,
-              106,
-              929,
-              44
+              27,
+              245,
+              2117,
+              333
             ],
             "disableShapeMask": true
           },
@@ -1781,8 +1781,8 @@
           "body": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv3.png",
             "sourceSize": [
-              1024,
-              256
+              2172,
+              724
             ],
             "usage": [
               "weapon_body"
@@ -1833,10 +1833,10 @@
             "logicalLength": 130,
             "logicalWidth": 24,
             "safeFrame": [
-              48,
-              88,
-              929,
-              81
+              27,
+              245,
+              2117,
+              333
             ],
             "disableShapeMask": true
           },
@@ -1878,8 +1878,8 @@
           "body": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv4.png",
             "sourceSize": [
-              1024,
-              256
+              2172,
+              724
             ],
             "usage": [
               "weapon_body"
@@ -1930,10 +1930,10 @@
             "logicalLength": 130,
             "logicalWidth": 24,
             "safeFrame": [
-              48,
-              88,
-              929,
-              81
+              27,
+              245,
+              2117,
+              333
             ],
             "disableShapeMask": true
           },
@@ -1975,8 +1975,8 @@
           "body": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv5.png",
             "sourceSize": [
-              1024,
-              256
+              2172,
+              724
             ],
             "usage": [
               "weapon_body"
@@ -2027,10 +2027,10 @@
             "logicalLength": 130,
             "logicalWidth": 24,
             "safeFrame": [
-              48,
-              40,
-              929,
-              177
+              31,
+              236,
+              2095,
+              415
             ],
             "disableShapeMask": true
           },
@@ -2072,8 +2072,8 @@
           "body": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_spear_lv6.png",
             "sourceSize": [
-              1024,
-              256
+              2172,
+              724
             ],
             "usage": [
               "weapon_body"
@@ -2124,10 +2124,10 @@
             "logicalLength": 130,
             "logicalWidth": 24,
             "safeFrame": [
-              48,
-              10,
-              929,
-              236
+              30,
+              223,
+              2083,
+              366
             ],
             "disableShapeMask": true
           },
@@ -2173,18 +2173,18 @@
           "projectile": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv1.png",
             "sourceSize": [
-              1254,
-              1254
+              2172,
+              724
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              67,
-              550,
-              1120,
-              157
+              353,
+              318,
+              1411,
+              107
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "projectile",
@@ -2200,39 +2200,6 @@
             "logicalWidth": 12,
             "blendMode": "source-over",
             "trail": true,
-            "disableShapeMask": true
-          },
-          "fx": {
-            "src": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_crossbow_effect_lv1.png",
-            "sourceSize": [
-              512,
-              128
-            ],
-            "usage": [
-              "weapon_effect"
-            ],
-            "assetRole": "weaponEffect",
-            "safeFrame": [
-              27,
-              42,
-              458,
-              43
-            ],
-            "sortLayer": "weaponEffect",
-            "attackShape": "projectile",
-            "drawSize": [
-              60,
-              20
-            ],
-            "anchor": [
-              0.12,
-              0.5
-            ],
-            "logicalLength": 42,
-            "logicalWidth": 12,
-            "blendMode": "screen",
-            "trail": true,
-            "overlayAlpha": 0.85,
             "disableShapeMask": true
           }
         },
@@ -2240,18 +2207,18 @@
           "projectile": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv2.png",
             "sourceSize": [
-              1254,
-              1254
+              2172,
+              724
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              67,
-              550,
-              1120,
-              157
+              137,
+              249,
+              1916,
+              264
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "projectile",
@@ -2267,39 +2234,6 @@
             "logicalWidth": 12,
             "blendMode": "source-over",
             "trail": true,
-            "disableShapeMask": true
-          },
-          "fx": {
-            "src": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_crossbow_effect_lv1.png",
-            "sourceSize": [
-              512,
-              128
-            ],
-            "usage": [
-              "weapon_effect"
-            ],
-            "assetRole": "weaponEffect",
-            "safeFrame": [
-              27,
-              42,
-              458,
-              43
-            ],
-            "sortLayer": "weaponEffect",
-            "attackShape": "projectile",
-            "drawSize": [
-              60,
-              20
-            ],
-            "anchor": [
-              0.12,
-              0.5
-            ],
-            "logicalLength": 42,
-            "logicalWidth": 12,
-            "blendMode": "screen",
-            "trail": true,
-            "overlayAlpha": 0.85,
             "disableShapeMask": true
           }
         },
@@ -2307,18 +2241,18 @@
           "projectile": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv3.png",
             "sourceSize": [
-              1254,
-              1254
+              2172,
+              724
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              67,
-              550,
-              1120,
-              157
+              113,
+              242,
+              1827,
+              252
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "projectile",
@@ -2334,39 +2268,6 @@
             "logicalWidth": 12,
             "blendMode": "source-over",
             "trail": true,
-            "disableShapeMask": true
-          },
-          "fx": {
-            "src": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_crossbow_effect_lv1.png",
-            "sourceSize": [
-              512,
-              128
-            ],
-            "usage": [
-              "weapon_effect"
-            ],
-            "assetRole": "weaponEffect",
-            "safeFrame": [
-              27,
-              42,
-              458,
-              43
-            ],
-            "sortLayer": "weaponEffect",
-            "attackShape": "projectile",
-            "drawSize": [
-              60,
-              20
-            ],
-            "anchor": [
-              0.12,
-              0.5
-            ],
-            "logicalLength": 42,
-            "logicalWidth": 12,
-            "blendMode": "screen",
-            "trail": true,
-            "overlayAlpha": 0.85,
             "disableShapeMask": true
           }
         },
@@ -2374,18 +2275,18 @@
           "projectile": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv4.png",
             "sourceSize": [
-              1254,
-              1254
+              2172,
+              724
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              67,
-              550,
-              1120,
-              157
+              214,
+              245,
+              1775,
+              242
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "projectile",
@@ -2402,57 +2303,24 @@
             "blendMode": "source-over",
             "trail": true,
             "disableShapeMask": true
-          },
-          "fx": {
-            "src": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_crossbow_effect_lv1.png",
-            "sourceSize": [
-              512,
-              128
-            ],
-            "usage": [
-              "weapon_effect"
-            ],
-            "assetRole": "weaponEffect",
-            "safeFrame": [
-              27,
-              42,
-              458,
-              43
-            ],
-            "sortLayer": "weaponEffect",
-            "attackShape": "projectile",
-            "drawSize": [
-              60,
-              20
-            ],
-            "anchor": [
-              0.12,
-              0.5
-            ],
-            "logicalLength": 42,
-            "logicalWidth": 12,
-            "blendMode": "screen",
-            "trail": true,
-            "overlayAlpha": 0.85,
-            "disableShapeMask": true
           }
         },
         "5": {
           "projectile": {
-            "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv5.png",
+            "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv4.png",
             "sourceSize": [
-              512,
-              512
+              2172,
+              724
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              22,
-              34,
-              468,
-              444
+              214,
+              245,
+              1775,
+              242
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "projectile",
@@ -2481,10 +2349,10 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              22,
-              34,
-              468,
-              444
+              26,
+              38,
+              460,
+              436
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
@@ -2502,57 +2370,24 @@
             "trail": true,
             "logicalRadius": 70,
             "disableShapeMask": true
-          },
-          "fx": {
-            "src": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_crossbow_effect_lv1.png",
-            "sourceSize": [
-              512,
-              128
-            ],
-            "usage": [
-              "weapon_effect"
-            ],
-            "assetRole": "weaponEffect",
-            "safeFrame": [
-              27,
-              42,
-              458,
-              43
-            ],
-            "sortLayer": "weaponEffect",
-            "attackShape": "projectile",
-            "drawSize": [
-              60,
-              20
-            ],
-            "anchor": [
-              0.12,
-              0.5
-            ],
-            "logicalLength": 42,
-            "logicalWidth": 12,
-            "blendMode": "screen",
-            "trail": true,
-            "overlayAlpha": 0.85,
-            "disableShapeMask": true
           }
         },
         "6": {
           "projectile": {
-            "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv6.png",
+            "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_crossbow_lv4.png",
             "sourceSize": [
-              512,
-              512
+              2172,
+              724
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              24,
-              22,
-              464,
-              468
+              214,
+              245,
+              1775,
+              242
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "projectile",
@@ -2581,10 +2416,10 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              22,
-              34,
-              468,
-              444
+              26,
+              38,
+              460,
+              436
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
@@ -2614,10 +2449,10 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              24,
-              22,
-              464,
-              468
+              28,
+              26,
+              456,
+              460
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "line",
@@ -2635,39 +2470,6 @@
             "trail": true,
             "logicalRadius": 70,
             "disableShapeMask": true
-          },
-          "fx": {
-            "src": "Game Art/weapons/attacks/weapon_effect/asset_weapon_attack_crossbow_effect_lv1.png",
-            "sourceSize": [
-              512,
-              128
-            ],
-            "usage": [
-              "weapon_effect"
-            ],
-            "assetRole": "weaponEffect",
-            "safeFrame": [
-              27,
-              42,
-              458,
-              43
-            ],
-            "sortLayer": "weaponEffect",
-            "attackShape": "projectile",
-            "drawSize": [
-              60,
-              20
-            ],
-            "anchor": [
-              0.12,
-              0.5
-            ],
-            "logicalLength": 42,
-            "logicalWidth": 12,
-            "blendMode": "screen",
-            "trail": true,
-            "overlayAlpha": 0.85,
-            "disableShapeMask": true
           }
         }
       }
@@ -2678,18 +2480,18 @@
           "primary": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv1.png",
             "sourceSize": [
-              512,
-              512
+              1254,
+              1254
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              176,
-              25,
-              189,
-              479
+              356,
+              69,
+              564,
+              1140
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "orbitBlade",
@@ -2717,18 +2519,18 @@
           "primary": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv2.png",
             "sourceSize": [
-              512,
-              512
+              1254,
+              1254
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              166,
-              27,
-              180,
-              458
+              356,
+              69,
+              564,
+              1140
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "orbitBlade",
@@ -2756,18 +2558,18 @@
           "primary": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv3.png",
             "sourceSize": [
-              512,
-              512
+              1254,
+              1254
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              166,
-              27,
-              180,
-              458
+              356,
+              69,
+              564,
+              1140
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "orbitBlade",
@@ -2795,18 +2597,18 @@
           "primary": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv4.png",
             "sourceSize": [
-              512,
-              512
+              1254,
+              1254
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              166,
-              27,
-              180,
-              458
+              356,
+              69,
+              564,
+              1140
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "orbitBlade",
@@ -2834,18 +2636,18 @@
           "primary": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_qinggang_lv5.png",
             "sourceSize": [
-              512,
-              512
+              1254,
+              1254
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              146,
-              27,
-              220,
-              458
+              323,
+              62,
+              624,
+              1160
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "orbitBlade",
@@ -2881,10 +2683,10 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              27,
-              47,
-              458,
-              418
+              31,
+              51,
+              450,
+              410
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
@@ -2917,10 +2719,10 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              27,
-              27,
-              458,
-              458
+              31,
+              31,
+              450,
+              450
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
@@ -2953,10 +2755,10 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              27,
-              47,
-              458,
-              418
+              31,
+              51,
+              450,
+              410
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
@@ -2995,16 +2797,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              86,
-              78,
-              1080,
-              1084
+              150,
+              175,
+              951,
+              900
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              192,
+              192
             ],
             "anchor": [
               0.5,
@@ -3014,7 +2816,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 96,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3031,16 +2833,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              86,
-              78,
-              1080,
-              1084
+              150,
+              175,
+              951,
+              900
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              56,
+              56
             ],
             "anchor": [
               0.5,
@@ -3050,7 +2852,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 28,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3067,16 +2869,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              53,
-              75,
-              1141,
-              1130
+              45,
+              98,
+              1171,
+              1098
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              192,
+              192
             ],
             "anchor": [
               0.5,
@@ -3086,7 +2888,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 96,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3105,16 +2907,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              86,
-              78,
-              1080,
-              1084
+              150,
+              175,
+              951,
+              900
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              226,
+              226
             ],
             "anchor": [
               0.5,
@@ -3124,7 +2926,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 113,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3141,16 +2943,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              86,
-              78,
-              1080,
-              1084
+              150,
+              175,
+              951,
+              900
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              56,
+              56
             ],
             "anchor": [
               0.5,
@@ -3160,7 +2962,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 28,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3177,16 +2979,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              53,
-              75,
-              1141,
-              1130
+              45,
+              98,
+              1171,
+              1098
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              226,
+              226
             ],
             "anchor": [
               0.5,
@@ -3196,7 +2998,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 113,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3215,16 +3017,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              86,
-              78,
-              1080,
-              1084
+              36,
+              57,
+              1171,
+              1143
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              226,
+              226
             ],
             "anchor": [
               0.5,
@@ -3234,7 +3036,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 113,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3251,16 +3053,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              86,
-              78,
-              1080,
-              1084
+              36,
+              57,
+              1171,
+              1143
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              56,
+              56
             ],
             "anchor": [
               0.5,
@@ -3270,7 +3072,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 28,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3279,24 +3081,24 @@
           "release": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_shield_lv3_release.png",
             "sourceSize": [
-              512,
-              512
+              1254,
+              1254
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              22,
-              26,
-              468,
-              461
+              50,
+              111,
+              1152,
+              1053
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              226,
+              226
             ],
             "anchor": [
               0.5,
@@ -3306,7 +3108,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 113,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3325,16 +3127,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              86,
-              78,
-              1080,
-              1084
+              45,
+              43,
+              1160,
+              1153
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              226,
+              226
             ],
             "anchor": [
               0.5,
@@ -3344,7 +3146,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 113,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3361,16 +3163,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              86,
-              78,
-              1080,
-              1084
+              45,
+              43,
+              1160,
+              1153
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              56,
+              56
             ],
             "anchor": [
               0.5,
@@ -3380,7 +3182,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 28,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3389,24 +3191,24 @@
           "release": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_shield_lv4_release.png",
             "sourceSize": [
-              512,
-              512
+              1254,
+              1254
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              22,
-              26,
-              468,
-              461
+              45,
+              54,
+              1179,
+              1138
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              226,
+              226
             ],
             "anchor": [
               0.5,
@@ -3416,7 +3218,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 113,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3427,24 +3229,24 @@
           "primary": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_shield_lv5_charge.png",
             "sourceSize": [
-              512,
-              512
+              1254,
+              1254
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              22,
-              22,
-              467,
-              468
+              57,
+              70,
+              1144,
+              1131
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              226,
+              226
             ],
             "anchor": [
               0.5,
@@ -3454,7 +3256,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 113,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3463,24 +3265,24 @@
           "charge": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_shield_lv5_charge.png",
             "sourceSize": [
-              512,
-              512
+              1254,
+              1254
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              22,
-              22,
-              467,
-              468
+              57,
+              70,
+              1144,
+              1131
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              56,
+              56
             ],
             "anchor": [
               0.5,
@@ -3490,7 +3292,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 28,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3507,16 +3309,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              53,
-              75,
-              1141,
-              1130
+              2,
+              34,
+              1244,
+              1171
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              226,
+              226
             ],
             "anchor": [
               0.5,
@@ -3526,7 +3328,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 113,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3537,24 +3339,24 @@
           "primary": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_shield_lv6_charge.png",
             "sourceSize": [
-              512,
-              512
+              1254,
+              1254
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              25,
-              22,
-              462,
-              468
+              24,
+              26,
+              1220,
+              1191
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              226,
+              226
             ],
             "anchor": [
               0.5,
@@ -3564,7 +3366,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 113,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3573,24 +3375,24 @@
           "charge": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_shield_lv6_charge.png",
             "sourceSize": [
-              512,
-              512
+              1254,
+              1254
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              25,
-              22,
-              462,
-              468
+              24,
+              26,
+              1220,
+              1191
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              56,
+              56
             ],
             "anchor": [
               0.5,
@@ -3600,7 +3402,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 28,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3609,24 +3411,24 @@
           "release": {
             "src": "Game Art/weapons/attacks/weapon_attack/asset_weapon_attack_shield_lv6_release.png",
             "sourceSize": [
-              512,
-              512
+              1254,
+              1254
             ],
             "usage": [
               "weapon_attack"
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              22,
-              24,
-              468,
-              465
+              25,
+              33,
+              1218,
+              1194
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              140,
-              140
+              226,
+              226
             ],
             "anchor": [
               0.5,
@@ -3636,7 +3438,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 113,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3661,8 +3463,8 @@
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              150,
-              150
+              226,
+              226
             ],
             "anchor": [
               0.5,
@@ -3672,7 +3474,7 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 70,
+            "logicalRadius": 113,
             "alpha": 1,
             "blendMode": "source-over",
             "disableShapeMask": true,
@@ -3695,16 +3497,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              22,
-              34,
-              468,
-              443
+              26,
+              38,
+              460,
+              435
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              170,
-              170
+              120,
+              120
             ],
             "anchor": [
               0.5,
@@ -3714,8 +3516,8 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 78,
-            "alpha": 0.48,
+            "logicalRadius": 60,
+            "alpha": 0.58,
             "blendMode": "screen",
             "disableShapeMask": true
           }
@@ -3732,16 +3534,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              15,
-              45,
-              1228,
-              1161
+              19,
+              49,
+              1220,
+              1153
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              170,
-              170
+              120,
+              120
             ],
             "anchor": [
               0.5,
@@ -3751,8 +3553,8 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 78,
-            "alpha": 0.48,
+            "logicalRadius": 60,
+            "alpha": 0.58,
             "blendMode": "screen",
             "disableShapeMask": true
           }
@@ -3769,16 +3571,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              15,
-              45,
-              1228,
-              1161
+              19,
+              49,
+              1220,
+              1153
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              170,
-              170
+              120,
+              120
             ],
             "anchor": [
               0.5,
@@ -3788,8 +3590,8 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 78,
-            "alpha": 0.48,
+            "logicalRadius": 60,
+            "alpha": 0.58,
             "blendMode": "screen",
             "disableShapeMask": true
           }
@@ -3806,16 +3608,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              15,
-              45,
-              1228,
-              1161
+              19,
+              49,
+              1220,
+              1153
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              170,
-              170
+              120,
+              120
             ],
             "anchor": [
               0.5,
@@ -3825,8 +3627,8 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 78,
-            "alpha": 0.48,
+            "logicalRadius": 60,
+            "alpha": 0.58,
             "blendMode": "screen",
             "disableShapeMask": true
           }
@@ -3843,16 +3645,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              22,
-              30,
-              468,
-              452
+              26,
+              34,
+              460,
+              444
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              170,
-              170
+              120,
+              120
             ],
             "anchor": [
               0.5,
@@ -3862,8 +3664,8 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 78,
-            "alpha": 0.48,
+            "logicalRadius": 60,
+            "alpha": 0.58,
             "blendMode": "screen",
             "disableShapeMask": true
           }
@@ -3880,16 +3682,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              22,
-              30,
-              468,
-              452
+              26,
+              34,
+              460,
+              444
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              170,
-              170
+              120,
+              120
             ],
             "anchor": [
               0.5,
@@ -3899,8 +3701,8 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 78,
-            "alpha": 0.48,
+            "logicalRadius": 60,
+            "alpha": 0.58,
             "blendMode": "screen",
             "disableShapeMask": true
           },
@@ -3915,16 +3717,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              22,
-              32,
-              468,
-              449
+              26,
+              36,
+              460,
+              441
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              170,
-              170
+              120,
+              120
             ],
             "anchor": [
               0.5,
@@ -3934,8 +3736,8 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 78,
-            "alpha": 0.48,
+            "logicalRadius": 60,
+            "alpha": 0.58,
             "blendMode": "screen",
             "disableShapeMask": true
           },
@@ -3950,16 +3752,16 @@
             ],
             "assetRole": "weaponAttack",
             "safeFrame": [
-              22,
-              37,
-              468,
-              438
+              26,
+              41,
+              460,
+              430
             ],
             "sortLayer": "weaponEffect",
             "attackShape": "circle",
             "drawSize": [
-              170,
-              170
+              420,
+              420
             ],
             "anchor": [
               0.5,
@@ -3969,8 +3771,8 @@
               0.5,
               0.5
             ],
-            "logicalRadius": 78,
-            "alpha": 0.48,
+            "logicalRadius": 210,
+            "alpha": 0.72,
             "blendMode": "screen",
             "disableShapeMask": true
           }
@@ -4825,8 +4627,8 @@
           "Game Art/bosses/asset_boss_kongxiu_idle_02.png"
         ],
         "sourceSize": [
-          256,
-          256
+          512,
+          512
         ],
         "anchor": [
           0.5,
@@ -4851,8 +4653,8 @@
         "safeFrame": [
           0,
           0,
-          256,
-          256
+          512,
+          512
         ],
         "shadow": {
           "blur": 14,
@@ -4866,8 +4668,8 @@
           "Game Art/bosses/asset_boss_kongxiu_cast_02.png"
         ],
         "sourceSize": [
-          256,
-          256
+          512,
+          512
         ],
         "anchor": [
           0.5,
@@ -4892,8 +4694,8 @@
         "safeFrame": [
           0,
           0,
-          256,
-          256
+          512,
+          512
         ],
         "shadow": {
           "blur": 14,
@@ -4909,8 +4711,8 @@
           "Game Art/bosses/asset_boss_hanfu_idle_02.png"
         ],
         "sourceSize": [
-          256,
-          256
+          512,
+          512
         ],
         "anchor": [
           0.5,
@@ -4935,8 +4737,8 @@
         "safeFrame": [
           0,
           0,
-          256,
-          256
+          512,
+          512
         ],
         "shadow": {
           "blur": 14,
@@ -4950,8 +4752,8 @@
           "Game Art/bosses/asset_boss_hanfu_cast_02.png"
         ],
         "sourceSize": [
-          256,
-          256
+          512,
+          512
         ],
         "anchor": [
           0.5,
@@ -4976,8 +4778,8 @@
         "safeFrame": [
           0,
           0,
-          256,
-          256
+          512,
+          512
         ],
         "shadow": {
           "blur": 14,
@@ -4993,8 +4795,8 @@
           "Game Art/bosses/asset_boss_bianxi_idle_02.png"
         ],
         "sourceSize": [
-          256,
-          256
+          512,
+          512
         ],
         "anchor": [
           0.5,
@@ -5019,8 +4821,8 @@
         "safeFrame": [
           0,
           0,
-          256,
-          256
+          512,
+          512
         ],
         "shadow": {
           "blur": 14,
@@ -5034,8 +4836,8 @@
           "Game Art/bosses/asset_boss_bianxi_cast_02.png"
         ],
         "sourceSize": [
-          256,
-          256
+          512,
+          512
         ],
         "anchor": [
           0.5,
@@ -5060,8 +4862,8 @@
         "safeFrame": [
           0,
           0,
-          256,
-          256
+          512,
+          512
         ],
         "shadow": {
           "blur": 14,
@@ -5077,8 +4879,8 @@
           "Game Art/bosses/asset_boss_wangzhi_idle_02.png"
         ],
         "sourceSize": [
-          256,
-          256
+          512,
+          512
         ],
         "anchor": [
           0.5,
@@ -5103,8 +4905,8 @@
         "safeFrame": [
           0,
           0,
-          256,
-          256
+          512,
+          512
         ],
         "shadow": {
           "blur": 14,
@@ -5118,8 +4920,8 @@
           "Game Art/bosses/asset_boss_wangzhi_cast_02.png"
         ],
         "sourceSize": [
-          256,
-          256
+          512,
+          512
         ],
         "anchor": [
           0.5,
@@ -5144,8 +4946,8 @@
         "safeFrame": [
           0,
           0,
-          256,
-          256
+          512,
+          512
         ],
         "shadow": {
           "blur": 14,
@@ -5161,8 +4963,8 @@
           "Game Art/bosses/asset_boss_qinqi_idle_02.png"
         ],
         "sourceSize": [
-          256,
-          256
+          512,
+          512
         ],
         "anchor": [
           0.5,
@@ -5187,8 +4989,8 @@
         "safeFrame": [
           0,
           0,
-          256,
-          256
+          512,
+          512
         ],
         "shadow": {
           "blur": 14,
@@ -5202,8 +5004,8 @@
           "Game Art/bosses/asset_boss_qinqi_cast_02.png"
         ],
         "sourceSize": [
-          256,
-          256
+          512,
+          512
         ],
         "anchor": [
           0.5,
@@ -5228,8 +5030,8 @@
         "safeFrame": [
           0,
           0,
-          256,
-          256
+          512,
+          512
         ],
         "shadow": {
           "blur": 14,
@@ -6545,303 +6347,98 @@
         0.5,
         0.5
       ]
+    },
+    "run_entry_portal": {
+      "frames": [
+        "ui-art/run-entry/portal_open_01.png",
+        "ui-art/run-entry/portal_open_02.png",
+        "ui-art/run-entry/portal_open_03.png",
+        "ui-art/run-entry/portal_open_04.png",
+        "ui-art/run-entry/portal_open_05.png",
+        "ui-art/run-entry/portal_open_06.png",
+        "ui-art/run-entry/portal_loop_01.png",
+        "ui-art/run-entry/portal_loop_02.png",
+        "ui-art/run-entry/portal_loop_03.png",
+        "ui-art/run-entry/portal_loop_04.png",
+        "ui-art/run-entry/portal_loop_05.png",
+        "ui-art/run-entry/portal_loop_06.png",
+        "ui-art/run-entry/portal_close_01.png",
+        "ui-art/run-entry/portal_close_02.png",
+        "ui-art/run-entry/portal_close_03.png",
+        "ui-art/run-entry/portal_close_04.png",
+        "ui-art/run-entry/portal_close_05.png",
+        "ui-art/run-entry/portal_close_06.png"
+      ],
+      "sourceSize": [
+        768,
+        768
+      ],
+      "usage": [
+        "run_entry",
+        "portal_cinematic"
+      ],
+      "assetRole": "uiSkin",
+      "sortLayer": "cinematic",
+      "drawSize": [
+        190,
+        190
+      ],
+      "anchor": [
+        0.5,
+        0.78
+      ],
+      "safeFrame": [
+        0,
+        0,
+        768,
+        768
+      ],
+      "frameWidth": 768,
+      "frameHeight": 768,
+      "portalFrames": 18
+    },
+    "run_entry_player_walk": {
+      "frames": [
+        "ui-art/run-entry/player_portal_walk_01.png",
+        "ui-art/run-entry/player_portal_walk_02.png",
+        "ui-art/run-entry/player_portal_walk_03.png",
+        "ui-art/run-entry/player_portal_walk_04.png",
+        "ui-art/run-entry/player_portal_walk_05.png",
+        "ui-art/run-entry/player_portal_walk_06.png"
+      ],
+      "sourceSize": [
+        768,
+        768
+      ],
+      "usage": [
+        "run_entry",
+        "player_cinematic"
+      ],
+      "assetRole": "uiSkin",
+      "sortLayer": "cinematic",
+      "drawSize": [
+        156,
+        156
+      ],
+      "anchor": [
+        0.5,
+        0.78
+      ],
+      "safeFrame": [
+        0,
+        0,
+        768,
+        768
+      ],
+      "frameWidth": 768,
+      "frameHeight": 768,
+      "playerWalkFrames": 6
     }
   },
   "map": {
     "main": {
       "rookie_training": {
-        "src": "Visual Style/map/main/asset_tile_Rookie Training.png",
-        "sourceSize": [
-          1254,
-          1254
-        ],
-        "usage": [
-          "world_background",
-          "map_main"
-        ],
-        "variants": [
-          "Visual Style/map/main/asset_tile_Rookie Training.png"
-        ],
-        "assetRole": "aiTileDecorationCandidate",
-        "drawSize": [
-          256,
-          256
-        ],
-        "anchor": [
-          0.5,
-          0.5
-        ],
-        "safeFrame": [
-          0,
-          0,
-          1254,
-          1254
-        ],
-        "sortLayer": "terrain",
-        "placement": "local_map_kit"
-      },
-      "grass": {
-        "src": "Visual Style/map/main/asset_tile_grass/asset_tile_grass1.png",
-        "sourceSize": [
-          1254,
-          1254
-        ],
-        "usage": [
-          "world_background",
-          "map_main"
-        ],
-        "variants": [
-          "Visual Style/map/main/asset_tile_grass/asset_tile_grass1.png",
-          "Visual Style/map/main/asset_tile_grass/asset_tile_grass2.png",
-          "Visual Style/map/main/asset_tile_grass/asset_tile_grass3.png",
-          "Visual Style/map/main/asset_tile_grass/asset_tile_grass4.png"
-        ],
-        "assetRole": "aiTileDecorationCandidate",
-        "drawSize": [
-          256,
-          256
-        ],
-        "anchor": [
-          0.5,
-          0.5
-        ],
-        "safeFrame": [
-          0,
-          0,
-          1254,
-          1254
-        ],
-        "sortLayer": "terrain",
-        "placement": "local_map_kit"
-      },
-      "stone": {
-        "src": "Visual Style/map/main/asset_tile_stone/asset_tile_stone1.png",
-        "sourceSize": [
-          1254,
-          1254
-        ],
-        "usage": [
-          "world_background",
-          "map_main"
-        ],
-        "variants": [
-          "Visual Style/map/main/asset_tile_stone/asset_tile_stone1.png",
-          "Visual Style/map/main/asset_tile_stone/asset_tile_stone2.png",
-          "Visual Style/map/main/asset_tile_stone/asset_tile_stone3.png",
-          "Visual Style/map/main/asset_tile_stone/asset_tile_stone4.png"
-        ],
-        "assetRole": "aiTileDecorationCandidate",
-        "drawSize": [
-          256,
-          256
-        ],
-        "anchor": [
-          0.5,
-          0.5
-        ],
-        "safeFrame": [
-          0,
-          0,
-          1254,
-          1254
-        ],
-        "sortLayer": "terrain",
-        "placement": "local_map_kit"
-      },
-      "loess": {
-        "src": "Visual Style/map/main/asset_tile_loess/asset_tile_loess1.png",
-        "sourceSize": [
-          1254,
-          1254
-        ],
-        "usage": [
-          "world_background",
-          "map_main"
-        ],
-        "variants": [
-          "Visual Style/map/main/asset_tile_loess/asset_tile_loess1.png",
-          "Visual Style/map/main/asset_tile_loess/asset_tile_loess2.png",
-          "Visual Style/map/main/asset_tile_loess/asset_tile_loess3.png",
-          "Visual Style/map/main/asset_tile_loess/asset_tile_loess4.png"
-        ],
-        "assetRole": "aiTileDecorationCandidate",
-        "drawSize": [
-          256,
-          256
-        ],
-        "anchor": [
-          0.5,
-          0.5
-        ],
-        "safeFrame": [
-          0,
-          0,
-          1254,
-          1254
-        ],
-        "sortLayer": "terrain",
-        "placement": "local_map_kit"
-      },
-      "blood": {
-        "src": "Visual Style/map/main/asset_tile_blood/asset_tile_blood1.png",
-        "sourceSize": [
-          1254,
-          1254
-        ],
-        "usage": [
-          "world_background",
-          "map_main"
-        ],
-        "variants": [
-          "Visual Style/map/main/asset_tile_blood/asset_tile_blood1.png",
-          "Visual Style/map/main/asset_tile_blood/asset_tile_blood2.png",
-          "Visual Style/map/main/asset_tile_blood/asset_tile_blood3.png",
-          "Visual Style/map/main/asset_tile_blood/asset_tile_blood4.png"
-        ],
-        "assetRole": "aiTileDecorationCandidate",
-        "drawSize": [
-          256,
-          256
-        ],
-        "anchor": [
-          0.5,
-          0.5
-        ],
-        "safeFrame": [
-          0,
-          0,
-          1254,
-          1254
-        ],
-        "sortLayer": "terrain",
-        "placement": "local_map_kit"
-      },
-      "fire": {
-        "src": "Visual Style/map/main/asset_tile_fire/asset_tile_fire.png",
-        "sourceSize": [
-          1254,
-          1254
-        ],
-        "usage": [
-          "world_background",
-          "map_main"
-        ],
-        "variants": [
-          "Visual Style/map/main/asset_tile_fire/asset_tile_fire.png"
-        ],
-        "assetRole": "aiTileDecorationCandidate",
-        "drawSize": [
-          256,
-          256
-        ],
-        "anchor": [
-          0.5,
-          0.5
-        ],
-        "safeFrame": [
-          0,
-          0,
-          1254,
-          1254
-        ],
-        "sortLayer": "terrain",
-        "placement": "local_map_kit"
-      },
-      "siege_fire": {
-        "src": "Visual Style/map/main/asset_tile_fire/asset_tile_fire.png",
-        "sourceSize": [
-          1254,
-          1254
-        ],
-        "usage": [
-          "world_background",
-          "legacy_alias",
-          "map_main"
-        ],
-        "variants": [
-          "Visual Style/map/main/asset_tile_fire/asset_tile_fire.png"
-        ],
-        "assetRole": "aiTileDecorationCandidate",
-        "drawSize": [
-          256,
-          256
-        ],
-        "anchor": [
-          0.5,
-          0.5
-        ],
-        "safeFrame": [
-          0,
-          0,
-          1254,
-          1254
-        ],
-        "sortLayer": "terrain",
-        "placement": "local_map_kit"
-      },
-      "normal": {
-        "src": "Visual Style/map/main/asset_tile_Rookie Training.png",
-        "sourceSize": [
-          1254,
-          1254
-        ],
-        "usage": [
-          "world_background",
-          "legacy_alias",
-          "map_main"
-        ],
-        "variants": [
-          "Visual Style/map/main/asset_tile_Rookie Training.png"
-        ],
-        "assetRole": "aiTileDecorationCandidate",
-        "drawSize": [
-          256,
-          256
-        ],
-        "anchor": [
-          0.5,
-          0.5
-        ],
-        "safeFrame": [
-          0,
-          0,
-          1254,
-          1254
-        ],
-        "sortLayer": "terrain",
-        "placement": "local_map_kit"
-      },
-      "void": {
-        "src": "Visual Style/map/main/legacy_scifi/asset_tile_void.png",
-        "sourceSize": [
-          512,
-          512
-        ],
-        "usage": [
-          "world_background",
-          "legacy_alias",
-          "map_main"
-        ],
-        "assetRole": "aiTileDecorationCandidate",
-        "drawSize": [
-          256,
-          256
-        ],
-        "anchor": [
-          0.5,
-          0.5
-        ],
-        "safeFrame": [
-          0,
-          0,
-          512,
-          512
-        ],
-        "sortLayer": "terrain",
-        "placement": "local_map_kit"
-      },
-      "lv1": {
-        "src": "Visual Style/map/main/asset_tile_grass/asset_tile_grass1.png",
+        "src": "Visual Style/map/main/asset_tile_practise/map_with_practise.png",
         "sourceSize": [
           1254,
           1254
@@ -6849,19 +6446,1075 @@
         "usage": [
           "world_background",
           "map_main",
+          "static_stage_map",
+          "practise",
+          "practice",
+          "legacy_alias"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_practise/map_with_practise.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          1254,
+          1254
+        ],
+        "worldSize": [
+          1254,
+          1254
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "practise",
+        "activeMinutes": "0-2",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_practise/manifest.json",
+        "collisionRule": null,
+        "obstacles": [
+          {
+            "id": "top_left_water",
+            "kind": "water_block",
+            "shape": "ellipse",
+            "x": 70,
+            "y": 235,
+            "radiusX": 95,
+            "radiusY": 86,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_right_water",
+            "kind": "water_block",
+            "shape": "ellipse",
+            "x": 1168,
+            "y": 240,
+            "radiusX": 118,
+            "radiusY": 90,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_left_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 136,
+            "y": 112,
+            "width": 72,
+            "height": 108,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_right_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 1130,
+            "y": 104,
+            "width": 80,
+            "height": 118,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_left_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 144,
+            "y": 1130,
+            "width": 84,
+            "height": 104,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_right_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 1122,
+            "y": 1130,
+            "width": 86,
+            "height": 108,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_left_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 285,
+            "y": 122,
+            "width": 255,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_center_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 630,
+            "y": 118,
+            "width": 365,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_right_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 968,
+            "y": 120,
+            "width": 260,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_left_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 295,
+            "y": 1102,
+            "width": 270,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_center_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 645,
+            "y": 1104,
+            "width": 335,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_right_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 950,
+            "y": 1102,
+            "width": 240,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "left_vertical_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 99,
+            "y": 610,
+            "width": 34,
+            "height": 242,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "right_vertical_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 1134,
+            "y": 605,
+            "width": 34,
+            "height": 230,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "northwest_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 330,
+            "y": 305,
+            "radiusX": 92,
+            "radiusY": 64,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "northeast_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 855,
+            "y": 340,
+            "radiusX": 94,
+            "radiusY": 66,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "center_small_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 628,
+            "y": 516,
+            "radiusX": 72,
+            "radiusY": 42,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "southwest_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 326,
+            "y": 744,
+            "radiusX": 88,
+            "radiusY": 60,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "southeast_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 904,
+            "y": 746,
+            "radiusX": 96,
+            "radiusY": 64,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "south_center_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 657,
+            "y": 904,
+            "radiusX": 108,
+            "radiusY": 48,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "north_mid_flag_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 494,
+            "y": 111,
+            "radiusX": 74,
+            "radiusY": 45,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "north_east_flag_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 760,
+            "y": 116,
+            "radiusX": 66,
+            "radiusY": 42,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "left_edge_bamboo",
+            "kind": "tree_line",
+            "shape": "rect",
+            "x": 28,
+            "y": 928,
+            "width": 62,
+            "height": 210,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "right_edge_trees",
+            "kind": "tree_line",
+            "shape": "rect",
+            "x": 1215,
+            "y": 710,
+            "width": 70,
+            "height": 280,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_left_corner_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 82,
+            "y": 1030,
+            "radiusX": 82,
+            "radiusY": 78,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_right_corner_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 1168,
+            "y": 1010,
+            "radiusX": 86,
+            "radiusY": 76,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          }
+        ]
+      },
+      "grass": {
+        "src": "Visual Style/map/main/asset_tile_grass/map_with_grass.png",
+        "sourceSize": [
+          4452,
+          3386
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "grass",
+          "stage_1",
+          "legacy_alias"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_grass/map_with_grass.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          4452,
+          3386
+        ],
+        "worldSize": [
+          4452,
+          3386
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          4452,
+          3386
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "grass",
+        "activeMinutes": "2-4",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_grass/manifest.json",
+        "collisionRule": null,
+        "obstacles": []
+      },
+      "stone": {
+        "src": "Visual Style/map/main/asset_tile_stone/map_with_stone.png",
+        "sourceSize": [
+          4452,
+          3386
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "stone",
+          "stage_3",
+          "legacy_alias"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_stone/map_with_stone.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          4452,
+          3386
+        ],
+        "worldSize": [
+          4452,
+          3386
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          4452,
+          3386
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "stone",
+        "activeMinutes": "6-8",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_stone/manifest.json",
+        "collisionRule": {
+          "blockMode": "allEntityObstacle",
+          "affects": "allEntities",
+          "ignoredByTags": [
+            "ignoreCollisionEnemy"
+          ]
+        },
+        "obstacles": []
+      },
+      "loess": {
+        "src": "Visual Style/map/main/asset_tile_loess/map_with_loess.png",
+        "sourceSize": [
+          4452,
+          3386
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "loess",
+          "stage_2",
+          "legacy_alias"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_loess/map_with_loess.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          4452,
+          3386
+        ],
+        "worldSize": [
+          4452,
+          3386
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          4452,
+          3386
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "loess",
+        "activeMinutes": "4-6",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_loess/manifest.json",
+        "collisionRule": {
+          "blockMode": "allEntityObstacle",
+          "affects": "allEntities",
+          "ignoredByTags": [
+            "ignoreCollisionEnemy"
+          ]
+        },
+        "obstacles": []
+      },
+      "blood": {
+        "src": "Visual Style/map/main/asset_tile_blood/asset_tile_blood.png",
+        "sourceSize": [
+          4452,
+          3386
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "blood",
+          "stage_4",
+          "legacy_alias"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_blood/asset_tile_blood.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          4452,
+          3386
+        ],
+        "worldSize": [
+          4452,
+          3386
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          4452,
+          3386
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "blood",
+        "activeMinutes": "8-10",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_blood/manifest.json",
+        "collisionRule": {
+          "blockMode": "allEntityObstacle",
+          "affects": "allEntities",
+          "ignoredByTags": [
+            "ignoreCollisionEnemy"
+          ]
+        },
+        "obstacles": []
+      },
+      "fire": {
+        "src": "Visual Style/map/main/asset_tile_fire/map_with_fire.png",
+        "sourceSize": [
+          1254,
+          1254
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "fire",
+          "final_boss",
+          "legacy_alias"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_fire/map_with_fire.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          1254,
+          1254
+        ],
+        "worldSize": [
+          1254,
+          1254
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "fire",
+        "activeMinutes": "10+",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_fire/manifest.json",
+        "collisionRule": {
+          "blockMode": "playerOnlyBoundary",
+          "affects": "player",
+          "ignoredByTags": []
+        },
+        "obstacles": []
+      },
+      "siege_fire": {
+        "src": "Visual Style/map/main/asset_tile_fire/map_with_fire.png",
+        "sourceSize": [
+          1254,
+          1254
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "fire",
+          "final_boss",
+          "legacy_alias"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_fire/map_with_fire.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          1254,
+          1254
+        ],
+        "worldSize": [
+          1254,
+          1254
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "fire",
+        "activeMinutes": "10+",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_fire/manifest.json",
+        "collisionRule": {
+          "blockMode": "playerOnlyBoundary",
+          "affects": "player",
+          "ignoredByTags": []
+        },
+        "obstacles": []
+      },
+      "normal": {
+        "src": "Visual Style/map/main/asset_tile_practise/map_with_practise.png",
+        "sourceSize": [
+          1254,
+          1254
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "practise",
+          "practice",
+          "legacy_alias"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_practise/map_with_practise.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          1254,
+          1254
+        ],
+        "worldSize": [
+          1254,
+          1254
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "practise",
+        "activeMinutes": "0-2",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_practise/manifest.json",
+        "collisionRule": null,
+        "obstacles": [
+          {
+            "id": "top_left_water",
+            "kind": "water_block",
+            "shape": "ellipse",
+            "x": 70,
+            "y": 235,
+            "radiusX": 95,
+            "radiusY": 86,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_right_water",
+            "kind": "water_block",
+            "shape": "ellipse",
+            "x": 1168,
+            "y": 240,
+            "radiusX": 118,
+            "radiusY": 90,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_left_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 136,
+            "y": 112,
+            "width": 72,
+            "height": 108,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_right_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 1130,
+            "y": 104,
+            "width": 80,
+            "height": 118,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_left_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 144,
+            "y": 1130,
+            "width": 84,
+            "height": 104,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_right_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 1122,
+            "y": 1130,
+            "width": 86,
+            "height": 108,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_left_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 285,
+            "y": 122,
+            "width": 255,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_center_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 630,
+            "y": 118,
+            "width": 365,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_right_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 968,
+            "y": 120,
+            "width": 260,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_left_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 295,
+            "y": 1102,
+            "width": 270,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_center_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 645,
+            "y": 1104,
+            "width": 335,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_right_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 950,
+            "y": 1102,
+            "width": 240,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "left_vertical_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 99,
+            "y": 610,
+            "width": 34,
+            "height": 242,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "right_vertical_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 1134,
+            "y": 605,
+            "width": 34,
+            "height": 230,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "northwest_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 330,
+            "y": 305,
+            "radiusX": 92,
+            "radiusY": 64,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "northeast_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 855,
+            "y": 340,
+            "radiusX": 94,
+            "radiusY": 66,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "center_small_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 628,
+            "y": 516,
+            "radiusX": 72,
+            "radiusY": 42,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "southwest_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 326,
+            "y": 744,
+            "radiusX": 88,
+            "radiusY": 60,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "southeast_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 904,
+            "y": 746,
+            "radiusX": 96,
+            "radiusY": 64,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "south_center_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 657,
+            "y": 904,
+            "radiusX": 108,
+            "radiusY": 48,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "north_mid_flag_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 494,
+            "y": 111,
+            "radiusX": 74,
+            "radiusY": 45,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "north_east_flag_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 760,
+            "y": 116,
+            "radiusX": 66,
+            "radiusY": 42,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "left_edge_bamboo",
+            "kind": "tree_line",
+            "shape": "rect",
+            "x": 28,
+            "y": 928,
+            "width": 62,
+            "height": 210,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "right_edge_trees",
+            "kind": "tree_line",
+            "shape": "rect",
+            "x": 1215,
+            "y": 710,
+            "width": 70,
+            "height": 280,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_left_corner_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 82,
+            "y": 1030,
+            "radiusX": 82,
+            "radiusY": 78,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_right_corner_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 1168,
+            "y": 1010,
+            "radiusX": 86,
+            "radiusY": 76,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          }
+        ]
+      },
+      "void": {
+        "src": "Visual Style/map/main/asset_tile_fire/map_with_fire.png",
+        "sourceSize": [
+          1254,
+          1254
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "fire",
+          "final_boss",
+          "legacy_alias"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_fire/map_with_fire.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          1254,
+          1254
+        ],
+        "worldSize": [
+          1254,
+          1254
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "fire",
+        "activeMinutes": "10+",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_fire/manifest.json",
+        "collisionRule": {
+          "blockMode": "playerOnlyBoundary",
+          "affects": "player",
+          "ignoredByTags": []
+        },
+        "obstacles": []
+      },
+      "lv1": {
+        "src": "Visual Style/map/main/asset_tile_grass/map_with_grass.png",
+        "sourceSize": [
+          4452,
+          3386
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "grass",
+          "stage_1",
           "map_level",
           "lv1"
         ],
         "variants": [
-          "Visual Style/map/main/asset_tile_grass/asset_tile_grass1.png",
-          "Visual Style/map/main/asset_tile_grass/asset_tile_grass2.png",
-          "Visual Style/map/main/asset_tile_grass/asset_tile_grass3.png",
-          "Visual Style/map/main/asset_tile_grass/asset_tile_grass4.png"
+          "Visual Style/map/main/asset_tile_grass/map_with_grass.png"
         ],
-        "assetRole": "aiTileDecorationCandidate",
+        "assetRole": "staticWorldMap",
         "drawSize": [
-          256,
-          256
+          4452,
+          3386
+        ],
+        "worldSize": [
+          4452,
+          3386
         ],
         "anchor": [
           0.5,
@@ -6870,34 +7523,43 @@
         "safeFrame": [
           0,
           0,
-          1254,
-          1254
+          4452,
+          3386
         ],
         "sortLayer": "terrain",
-        "placement": "local_map_kit"
+        "placement": "static_stage_map",
+        "stageKey": "grass",
+        "activeMinutes": "2-4",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_grass/manifest.json",
+        "collisionRule": null,
+        "obstacles": []
       },
       "lv2": {
-        "src": "Visual Style/map/main/asset_tile_stone/asset_tile_stone1.png",
+        "src": "Visual Style/map/main/asset_tile_loess/map_with_loess.png",
         "sourceSize": [
-          1254,
-          1254
+          4452,
+          3386
         ],
         "usage": [
           "world_background",
           "map_main",
+          "static_stage_map",
+          "loess",
+          "stage_2",
           "map_level",
           "lv2"
         ],
         "variants": [
-          "Visual Style/map/main/asset_tile_stone/asset_tile_stone1.png",
-          "Visual Style/map/main/asset_tile_stone/asset_tile_stone2.png",
-          "Visual Style/map/main/asset_tile_stone/asset_tile_stone3.png",
-          "Visual Style/map/main/asset_tile_stone/asset_tile_stone4.png"
+          "Visual Style/map/main/asset_tile_loess/map_with_loess.png"
         ],
-        "assetRole": "aiTileDecorationCandidate",
+        "assetRole": "staticWorldMap",
         "drawSize": [
-          256,
-          256
+          4452,
+          3386
+        ],
+        "worldSize": [
+          4452,
+          3386
         ],
         "anchor": [
           0.5,
@@ -6906,34 +7568,49 @@
         "safeFrame": [
           0,
           0,
-          1254,
-          1254
+          4452,
+          3386
         ],
         "sortLayer": "terrain",
-        "placement": "local_map_kit"
+        "placement": "static_stage_map",
+        "stageKey": "loess",
+        "activeMinutes": "4-6",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_loess/manifest.json",
+        "collisionRule": {
+          "blockMode": "allEntityObstacle",
+          "affects": "allEntities",
+          "ignoredByTags": [
+            "ignoreCollisionEnemy"
+          ]
+        },
+        "obstacles": []
       },
       "lv3": {
-        "src": "Visual Style/map/main/asset_tile_loess/asset_tile_loess1.png",
+        "src": "Visual Style/map/main/asset_tile_stone/map_with_stone.png",
         "sourceSize": [
-          1254,
-          1254
+          4452,
+          3386
         ],
         "usage": [
           "world_background",
           "map_main",
+          "static_stage_map",
+          "stone",
+          "stage_3",
           "map_level",
           "lv3"
         ],
         "variants": [
-          "Visual Style/map/main/asset_tile_loess/asset_tile_loess1.png",
-          "Visual Style/map/main/asset_tile_loess/asset_tile_loess2.png",
-          "Visual Style/map/main/asset_tile_loess/asset_tile_loess3.png",
-          "Visual Style/map/main/asset_tile_loess/asset_tile_loess4.png"
+          "Visual Style/map/main/asset_tile_stone/map_with_stone.png"
         ],
-        "assetRole": "aiTileDecorationCandidate",
+        "assetRole": "staticWorldMap",
         "drawSize": [
-          256,
-          256
+          4452,
+          3386
+        ],
+        "worldSize": [
+          4452,
+          3386
         ],
         "anchor": [
           0.5,
@@ -6942,34 +7619,49 @@
         "safeFrame": [
           0,
           0,
-          1254,
-          1254
+          4452,
+          3386
         ],
         "sortLayer": "terrain",
-        "placement": "local_map_kit"
+        "placement": "static_stage_map",
+        "stageKey": "stone",
+        "activeMinutes": "6-8",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_stone/manifest.json",
+        "collisionRule": {
+          "blockMode": "allEntityObstacle",
+          "affects": "allEntities",
+          "ignoredByTags": [
+            "ignoreCollisionEnemy"
+          ]
+        },
+        "obstacles": []
       },
       "lv4": {
-        "src": "Visual Style/map/main/asset_tile_blood/asset_tile_blood1.png",
+        "src": "Visual Style/map/main/asset_tile_blood/asset_tile_blood.png",
         "sourceSize": [
-          1254,
-          1254
+          4452,
+          3386
         ],
         "usage": [
           "world_background",
           "map_main",
+          "static_stage_map",
+          "blood",
+          "stage_4",
           "map_level",
           "lv4"
         ],
         "variants": [
-          "Visual Style/map/main/asset_tile_blood/asset_tile_blood1.png",
-          "Visual Style/map/main/asset_tile_blood/asset_tile_blood2.png",
-          "Visual Style/map/main/asset_tile_blood/asset_tile_blood3.png",
-          "Visual Style/map/main/asset_tile_blood/asset_tile_blood4.png"
+          "Visual Style/map/main/asset_tile_blood/asset_tile_blood.png"
         ],
-        "assetRole": "aiTileDecorationCandidate",
+        "assetRole": "staticWorldMap",
         "drawSize": [
-          256,
-          256
+          4452,
+          3386
+        ],
+        "worldSize": [
+          4452,
+          3386
         ],
         "anchor": [
           0.5,
@@ -6978,14 +7670,25 @@
         "safeFrame": [
           0,
           0,
-          1254,
-          1254
+          4452,
+          3386
         ],
         "sortLayer": "terrain",
-        "placement": "local_map_kit"
+        "placement": "static_stage_map",
+        "stageKey": "blood",
+        "activeMinutes": "8-10",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_blood/manifest.json",
+        "collisionRule": {
+          "blockMode": "allEntityObstacle",
+          "affects": "allEntities",
+          "ignoredByTags": [
+            "ignoreCollisionEnemy"
+          ]
+        },
+        "obstacles": []
       },
       "lv5": {
-        "src": "Visual Style/map/main/asset_tile_fire/asset_tile_fire.png",
+        "src": "Visual Style/map/main/asset_tile_fire/map_with_fire.png",
         "sourceSize": [
           1254,
           1254
@@ -6993,16 +7696,23 @@
         "usage": [
           "world_background",
           "map_main",
+          "static_stage_map",
+          "fire",
+          "final_boss",
           "map_level",
           "lv5"
         ],
         "variants": [
-          "Visual Style/map/main/asset_tile_fire/asset_tile_fire.png"
+          "Visual Style/map/main/asset_tile_fire/map_with_fire.png"
         ],
-        "assetRole": "aiTileDecorationCandidate",
+        "assetRole": "staticWorldMap",
         "drawSize": [
-          256,
-          256
+          1254,
+          1254
+        ],
+        "worldSize": [
+          1254,
+          1254
         ],
         "anchor": [
           0.5,
@@ -7015,11 +7725,20 @@
           1254
         ],
         "sortLayer": "terrain",
-        "placement": "local_map_kit"
+        "placement": "static_stage_map",
+        "stageKey": "fire",
+        "activeMinutes": "10+",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_fire/manifest.json",
+        "collisionRule": {
+          "blockMode": "playerOnlyBoundary",
+          "affects": "player",
+          "ignoredByTags": []
+        },
+        "obstacles": []
       },
       "legacy": {
         "rookie_training": {
-          "src": "Visual Style/map/main/asset_tile_Rookie Training.png",
+          "src": "Visual Style/map/main/asset_tile_practise/map_with_practise.png",
           "sourceSize": [
             1254,
             1254
@@ -7027,15 +7746,22 @@
           "usage": [
             "world_background",
             "map_main",
+            "static_stage_map",
+            "practise",
+            "practice",
             "legacy_alias"
           ],
           "variants": [
-            "Visual Style/map/main/asset_tile_Rookie Training.png"
+            "Visual Style/map/main/asset_tile_practise/map_with_practise.png"
           ],
-          "assetRole": "aiTileDecorationCandidate",
+          "assetRole": "staticWorldMap",
           "drawSize": [
-            256,
-            256
+            1254,
+            1254
+          ],
+          "worldSize": [
+            1254,
+            1254
           ],
           "anchor": [
             0.5,
@@ -7048,26 +7774,351 @@
             1254
           ],
           "sortLayer": "terrain",
-          "placement": "local_map_kit"
+          "placement": "static_stage_map",
+          "stageKey": "practise",
+          "activeMinutes": "0-2",
+          "collisionManifestSrc": "Visual Style/map/main/asset_tile_practise/manifest.json",
+          "collisionRule": null,
+          "obstacles": [
+            {
+              "id": "top_left_water",
+              "kind": "water_block",
+              "shape": "ellipse",
+              "x": 70,
+              "y": 235,
+              "radiusX": 95,
+              "radiusY": 86,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "top_right_water",
+              "kind": "water_block",
+              "shape": "ellipse",
+              "x": 1168,
+              "y": 240,
+              "radiusX": 118,
+              "radiusY": 90,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "top_left_watchtower",
+              "kind": "watchtower",
+              "shape": "rect",
+              "x": 136,
+              "y": 112,
+              "width": 72,
+              "height": 108,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "top_right_watchtower",
+              "kind": "watchtower",
+              "shape": "rect",
+              "x": 1130,
+              "y": 104,
+              "width": 80,
+              "height": 118,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "bottom_left_watchtower",
+              "kind": "watchtower",
+              "shape": "rect",
+              "x": 144,
+              "y": 1130,
+              "width": 84,
+              "height": 104,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "bottom_right_watchtower",
+              "kind": "watchtower",
+              "shape": "rect",
+              "x": 1122,
+              "y": 1130,
+              "width": 86,
+              "height": 108,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "top_left_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 285,
+              "y": 122,
+              "width": 255,
+              "height": 34,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "top_center_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 630,
+              "y": 118,
+              "width": 365,
+              "height": 34,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "top_right_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 968,
+              "y": 120,
+              "width": 260,
+              "height": 34,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "bottom_left_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 295,
+              "y": 1102,
+              "width": 270,
+              "height": 34,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "bottom_center_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 645,
+              "y": 1104,
+              "width": 335,
+              "height": 34,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "bottom_right_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 950,
+              "y": 1102,
+              "width": 240,
+              "height": 34,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "left_vertical_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 99,
+              "y": 610,
+              "width": 34,
+              "height": 242,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "right_vertical_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 1134,
+              "y": 605,
+              "width": 34,
+              "height": 230,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "northwest_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 330,
+              "y": 305,
+              "radiusX": 92,
+              "radiusY": 64,
+              "collisionType": "block",
+              "collisionScope": "all",
+              "collisionRole": "gameplay_obstacle"
+            },
+            {
+              "id": "northeast_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 855,
+              "y": 340,
+              "radiusX": 94,
+              "radiusY": 66,
+              "collisionType": "block",
+              "collisionScope": "all",
+              "collisionRole": "gameplay_obstacle"
+            },
+            {
+              "id": "center_small_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 628,
+              "y": 516,
+              "radiusX": 72,
+              "radiusY": 42,
+              "collisionType": "block",
+              "collisionScope": "all",
+              "collisionRole": "gameplay_obstacle"
+            },
+            {
+              "id": "southwest_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 326,
+              "y": 744,
+              "radiusX": 88,
+              "radiusY": 60,
+              "collisionType": "block",
+              "collisionScope": "all",
+              "collisionRole": "gameplay_obstacle"
+            },
+            {
+              "id": "southeast_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 904,
+              "y": 746,
+              "radiusX": 96,
+              "radiusY": 64,
+              "collisionType": "block",
+              "collisionScope": "all",
+              "collisionRole": "gameplay_obstacle"
+            },
+            {
+              "id": "south_center_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 657,
+              "y": 904,
+              "radiusX": 108,
+              "radiusY": 48,
+              "collisionType": "block",
+              "collisionScope": "all",
+              "collisionRole": "gameplay_obstacle"
+            },
+            {
+              "id": "north_mid_flag_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 494,
+              "y": 111,
+              "radiusX": 74,
+              "radiusY": 45,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "north_east_flag_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 760,
+              "y": 116,
+              "radiusX": 66,
+              "radiusY": 42,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "left_edge_bamboo",
+              "kind": "tree_line",
+              "shape": "rect",
+              "x": 28,
+              "y": 928,
+              "width": 62,
+              "height": 210,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "right_edge_trees",
+              "kind": "tree_line",
+              "shape": "rect",
+              "x": 1215,
+              "y": 710,
+              "width": 70,
+              "height": 280,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "bottom_left_corner_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 82,
+              "y": 1030,
+              "radiusX": 82,
+              "radiusY": 78,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "bottom_right_corner_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 1168,
+              "y": 1010,
+              "radiusX": 86,
+              "radiusY": 76,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            }
+          ]
         },
         "normal": {
-          "src": "Visual Style/map/main/asset_tile_Rookie Training.png",
+          "src": "Visual Style/map/main/asset_tile_practise/map_with_practise.png",
           "sourceSize": [
             1254,
             1254
           ],
           "usage": [
             "world_background",
-            "legacy_alias",
-            "map_main"
+            "map_main",
+            "static_stage_map",
+            "practise",
+            "practice",
+            "legacy_alias"
           ],
           "variants": [
-            "Visual Style/map/main/asset_tile_Rookie Training.png"
+            "Visual Style/map/main/asset_tile_practise/map_with_practise.png"
           ],
-          "assetRole": "aiTileDecorationCandidate",
+          "assetRole": "staticWorldMap",
           "drawSize": [
-            256,
-            256
+            1254,
+            1254
+          ],
+          "worldSize": [
+            1254,
+            1254
           ],
           "anchor": [
             0.5,
@@ -7080,55 +8131,351 @@
             1254
           ],
           "sortLayer": "terrain",
-          "placement": "local_map_kit"
+          "placement": "static_stage_map",
+          "stageKey": "practise",
+          "activeMinutes": "0-2",
+          "collisionManifestSrc": "Visual Style/map/main/asset_tile_practise/manifest.json",
+          "collisionRule": null,
+          "obstacles": [
+            {
+              "id": "top_left_water",
+              "kind": "water_block",
+              "shape": "ellipse",
+              "x": 70,
+              "y": 235,
+              "radiusX": 95,
+              "radiusY": 86,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "top_right_water",
+              "kind": "water_block",
+              "shape": "ellipse",
+              "x": 1168,
+              "y": 240,
+              "radiusX": 118,
+              "radiusY": 90,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "top_left_watchtower",
+              "kind": "watchtower",
+              "shape": "rect",
+              "x": 136,
+              "y": 112,
+              "width": 72,
+              "height": 108,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "top_right_watchtower",
+              "kind": "watchtower",
+              "shape": "rect",
+              "x": 1130,
+              "y": 104,
+              "width": 80,
+              "height": 118,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "bottom_left_watchtower",
+              "kind": "watchtower",
+              "shape": "rect",
+              "x": 144,
+              "y": 1130,
+              "width": 84,
+              "height": 104,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "bottom_right_watchtower",
+              "kind": "watchtower",
+              "shape": "rect",
+              "x": 1122,
+              "y": 1130,
+              "width": 86,
+              "height": 108,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "top_left_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 285,
+              "y": 122,
+              "width": 255,
+              "height": 34,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "top_center_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 630,
+              "y": 118,
+              "width": 365,
+              "height": 34,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "top_right_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 968,
+              "y": 120,
+              "width": 260,
+              "height": 34,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "bottom_left_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 295,
+              "y": 1102,
+              "width": 270,
+              "height": 34,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "bottom_center_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 645,
+              "y": 1104,
+              "width": 335,
+              "height": 34,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "bottom_right_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 950,
+              "y": 1102,
+              "width": 240,
+              "height": 34,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "left_vertical_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 99,
+              "y": 610,
+              "width": 34,
+              "height": 242,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "right_vertical_fence",
+              "kind": "wood_fence",
+              "shape": "rect",
+              "x": 1134,
+              "y": 605,
+              "width": 34,
+              "height": 230,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "northwest_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 330,
+              "y": 305,
+              "radiusX": 92,
+              "radiusY": 64,
+              "collisionType": "block",
+              "collisionScope": "all",
+              "collisionRole": "gameplay_obstacle"
+            },
+            {
+              "id": "northeast_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 855,
+              "y": 340,
+              "radiusX": 94,
+              "radiusY": 66,
+              "collisionType": "block",
+              "collisionScope": "all",
+              "collisionRole": "gameplay_obstacle"
+            },
+            {
+              "id": "center_small_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 628,
+              "y": 516,
+              "radiusX": 72,
+              "radiusY": 42,
+              "collisionType": "block",
+              "collisionScope": "all",
+              "collisionRole": "gameplay_obstacle"
+            },
+            {
+              "id": "southwest_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 326,
+              "y": 744,
+              "radiusX": 88,
+              "radiusY": 60,
+              "collisionType": "block",
+              "collisionScope": "all",
+              "collisionRole": "gameplay_obstacle"
+            },
+            {
+              "id": "southeast_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 904,
+              "y": 746,
+              "radiusX": 96,
+              "radiusY": 64,
+              "collisionType": "block",
+              "collisionScope": "all",
+              "collisionRole": "gameplay_obstacle"
+            },
+            {
+              "id": "south_center_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 657,
+              "y": 904,
+              "radiusX": 108,
+              "radiusY": 48,
+              "collisionType": "block",
+              "collisionScope": "all",
+              "collisionRole": "gameplay_obstacle"
+            },
+            {
+              "id": "north_mid_flag_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 494,
+              "y": 111,
+              "radiusX": 74,
+              "radiusY": 45,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "north_east_flag_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 760,
+              "y": 116,
+              "radiusX": 66,
+              "radiusY": 42,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "left_edge_bamboo",
+              "kind": "tree_line",
+              "shape": "rect",
+              "x": 28,
+              "y": 928,
+              "width": 62,
+              "height": 210,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "right_edge_trees",
+              "kind": "tree_line",
+              "shape": "rect",
+              "x": 1215,
+              "y": 710,
+              "width": 70,
+              "height": 280,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "bottom_left_corner_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 82,
+              "y": 1030,
+              "radiusX": 82,
+              "radiusY": 78,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            },
+            {
+              "id": "bottom_right_corner_rocks",
+              "kind": "rock_cluster",
+              "shape": "ellipse",
+              "x": 1168,
+              "y": 1010,
+              "radiusX": 86,
+              "radiusY": 76,
+              "collisionType": "block",
+              "collisionScope": "playerOnly",
+              "collisionRole": "map_boundary"
+            }
+          ]
         },
         "void": {
-          "src": "Visual Style/map/main/legacy_scifi/asset_tile_void.png",
-          "sourceSize": [
-            512,
-            512
-          ],
-          "usage": [
-            "world_background",
-            "legacy_alias",
-            "map_main"
-          ],
-          "assetRole": "aiTileDecorationCandidate",
-          "drawSize": [
-            256,
-            256
-          ],
-          "anchor": [
-            0.5,
-            0.5
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            512
-          ],
-          "sortLayer": "terrain",
-          "placement": "local_map_kit"
-        },
-        "siege_fire": {
-          "src": "Visual Style/map/main/asset_tile_fire/asset_tile_fire.png",
+          "src": "Visual Style/map/main/asset_tile_fire/map_with_fire.png",
           "sourceSize": [
             1254,
             1254
           ],
           "usage": [
             "world_background",
-            "legacy_alias",
-            "map_main"
+            "map_main",
+            "static_stage_map",
+            "fire",
+            "final_boss",
+            "legacy_alias"
           ],
           "variants": [
-            "Visual Style/map/main/asset_tile_fire/asset_tile_fire.png"
+            "Visual Style/map/main/asset_tile_fire/map_with_fire.png"
           ],
-          "assetRole": "aiTileDecorationCandidate",
+          "assetRole": "staticWorldMap",
           "drawSize": [
-            256,
-            256
+            1254,
+            1254
+          ],
+          "worldSize": [
+            1254,
+            1254
           ],
           "anchor": [
             0.5,
@@ -7141,8 +8488,1015 @@
             1254
           ],
           "sortLayer": "terrain",
-          "placement": "local_map_kit"
+          "placement": "static_stage_map",
+          "stageKey": "fire",
+          "activeMinutes": "10+",
+          "collisionManifestSrc": "Visual Style/map/main/asset_tile_fire/manifest.json",
+          "collisionRule": {
+            "blockMode": "playerOnlyBoundary",
+            "affects": "player",
+            "ignoredByTags": []
+          },
+          "obstacles": []
+        },
+        "siege_fire": {
+          "src": "Visual Style/map/main/asset_tile_fire/map_with_fire.png",
+          "sourceSize": [
+            1254,
+            1254
+          ],
+          "usage": [
+            "world_background",
+            "map_main",
+            "static_stage_map",
+            "fire",
+            "final_boss",
+            "legacy_alias"
+          ],
+          "variants": [
+            "Visual Style/map/main/asset_tile_fire/map_with_fire.png"
+          ],
+          "assetRole": "staticWorldMap",
+          "drawSize": [
+            1254,
+            1254
+          ],
+          "worldSize": [
+            1254,
+            1254
+          ],
+          "anchor": [
+            0.5,
+            0.5
+          ],
+          "safeFrame": [
+            0,
+            0,
+            1254,
+            1254
+          ],
+          "sortLayer": "terrain",
+          "placement": "static_stage_map",
+          "stageKey": "fire",
+          "activeMinutes": "10+",
+          "collisionManifestSrc": "Visual Style/map/main/asset_tile_fire/manifest.json",
+          "collisionRule": {
+            "blockMode": "playerOnlyBoundary",
+            "affects": "player",
+            "ignoredByTags": []
+          },
+          "obstacles": []
         }
+      },
+      "map_with_obstacles": {
+        "src": "Visual Style/map/main/asset_tile_practise/map_with_practise.png",
+        "sourceSize": [
+          1254,
+          1254
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "practise",
+          "practice",
+          "legacy_alias"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_practise/map_with_practise.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          1254,
+          1254
+        ],
+        "worldSize": [
+          1254,
+          1254
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "practise",
+        "activeMinutes": "0-2",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_practise/manifest.json",
+        "collisionRule": null,
+        "obstacles": [
+          {
+            "id": "top_left_water",
+            "kind": "water_block",
+            "shape": "ellipse",
+            "x": 70,
+            "y": 235,
+            "radiusX": 95,
+            "radiusY": 86,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_right_water",
+            "kind": "water_block",
+            "shape": "ellipse",
+            "x": 1168,
+            "y": 240,
+            "radiusX": 118,
+            "radiusY": 90,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_left_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 136,
+            "y": 112,
+            "width": 72,
+            "height": 108,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_right_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 1130,
+            "y": 104,
+            "width": 80,
+            "height": 118,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_left_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 144,
+            "y": 1130,
+            "width": 84,
+            "height": 104,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_right_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 1122,
+            "y": 1130,
+            "width": 86,
+            "height": 108,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_left_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 285,
+            "y": 122,
+            "width": 255,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_center_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 630,
+            "y": 118,
+            "width": 365,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_right_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 968,
+            "y": 120,
+            "width": 260,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_left_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 295,
+            "y": 1102,
+            "width": 270,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_center_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 645,
+            "y": 1104,
+            "width": 335,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_right_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 950,
+            "y": 1102,
+            "width": 240,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "left_vertical_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 99,
+            "y": 610,
+            "width": 34,
+            "height": 242,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "right_vertical_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 1134,
+            "y": 605,
+            "width": 34,
+            "height": 230,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "northwest_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 330,
+            "y": 305,
+            "radiusX": 92,
+            "radiusY": 64,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "northeast_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 855,
+            "y": 340,
+            "radiusX": 94,
+            "radiusY": 66,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "center_small_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 628,
+            "y": 516,
+            "radiusX": 72,
+            "radiusY": 42,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "southwest_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 326,
+            "y": 744,
+            "radiusX": 88,
+            "radiusY": 60,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "southeast_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 904,
+            "y": 746,
+            "radiusX": 96,
+            "radiusY": 64,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "south_center_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 657,
+            "y": 904,
+            "radiusX": 108,
+            "radiusY": 48,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "north_mid_flag_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 494,
+            "y": 111,
+            "radiusX": 74,
+            "radiusY": 45,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "north_east_flag_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 760,
+            "y": 116,
+            "radiusX": 66,
+            "radiusY": 42,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "left_edge_bamboo",
+            "kind": "tree_line",
+            "shape": "rect",
+            "x": 28,
+            "y": 928,
+            "width": 62,
+            "height": 210,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "right_edge_trees",
+            "kind": "tree_line",
+            "shape": "rect",
+            "x": 1215,
+            "y": 710,
+            "width": 70,
+            "height": 280,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_left_corner_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 82,
+            "y": 1030,
+            "radiusX": 82,
+            "radiusY": 78,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_right_corner_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 1168,
+            "y": 1010,
+            "radiusX": 86,
+            "radiusY": 76,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          }
+        ]
+      },
+      "map_with_practise": {
+        "src": "Visual Style/map/main/asset_tile_practise/map_with_practise.png",
+        "sourceSize": [
+          1254,
+          1254
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "practise",
+          "practice"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_practise/map_with_practise.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          1254,
+          1254
+        ],
+        "worldSize": [
+          1254,
+          1254
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "practise",
+        "activeMinutes": "0-2",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_practise/manifest.json",
+        "collisionRule": null,
+        "obstacles": [
+          {
+            "id": "top_left_water",
+            "kind": "water_block",
+            "shape": "ellipse",
+            "x": 70,
+            "y": 235,
+            "radiusX": 95,
+            "radiusY": 86,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_right_water",
+            "kind": "water_block",
+            "shape": "ellipse",
+            "x": 1168,
+            "y": 240,
+            "radiusX": 118,
+            "radiusY": 90,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_left_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 136,
+            "y": 112,
+            "width": 72,
+            "height": 108,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_right_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 1130,
+            "y": 104,
+            "width": 80,
+            "height": 118,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_left_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 144,
+            "y": 1130,
+            "width": 84,
+            "height": 104,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_right_watchtower",
+            "kind": "watchtower",
+            "shape": "rect",
+            "x": 1122,
+            "y": 1130,
+            "width": 86,
+            "height": 108,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_left_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 285,
+            "y": 122,
+            "width": 255,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_center_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 630,
+            "y": 118,
+            "width": 365,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "top_right_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 968,
+            "y": 120,
+            "width": 260,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_left_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 295,
+            "y": 1102,
+            "width": 270,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_center_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 645,
+            "y": 1104,
+            "width": 335,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_right_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 950,
+            "y": 1102,
+            "width": 240,
+            "height": 34,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "left_vertical_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 99,
+            "y": 610,
+            "width": 34,
+            "height": 242,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "right_vertical_fence",
+            "kind": "wood_fence",
+            "shape": "rect",
+            "x": 1134,
+            "y": 605,
+            "width": 34,
+            "height": 230,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "northwest_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 330,
+            "y": 305,
+            "radiusX": 92,
+            "radiusY": 64,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "northeast_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 855,
+            "y": 340,
+            "radiusX": 94,
+            "radiusY": 66,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "center_small_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 628,
+            "y": 516,
+            "radiusX": 72,
+            "radiusY": 42,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "southwest_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 326,
+            "y": 744,
+            "radiusX": 88,
+            "radiusY": 60,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "southeast_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 904,
+            "y": 746,
+            "radiusX": 96,
+            "radiusY": 64,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "south_center_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 657,
+            "y": 904,
+            "radiusX": 108,
+            "radiusY": 48,
+            "collisionType": "block",
+            "collisionScope": "all",
+            "collisionRole": "gameplay_obstacle"
+          },
+          {
+            "id": "north_mid_flag_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 494,
+            "y": 111,
+            "radiusX": 74,
+            "radiusY": 45,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "north_east_flag_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 760,
+            "y": 116,
+            "radiusX": 66,
+            "radiusY": 42,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "left_edge_bamboo",
+            "kind": "tree_line",
+            "shape": "rect",
+            "x": 28,
+            "y": 928,
+            "width": 62,
+            "height": 210,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "right_edge_trees",
+            "kind": "tree_line",
+            "shape": "rect",
+            "x": 1215,
+            "y": 710,
+            "width": 70,
+            "height": 280,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_left_corner_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 82,
+            "y": 1030,
+            "radiusX": 82,
+            "radiusY": 78,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          },
+          {
+            "id": "bottom_right_corner_rocks",
+            "kind": "rock_cluster",
+            "shape": "ellipse",
+            "x": 1168,
+            "y": 1010,
+            "radiusX": 86,
+            "radiusY": 76,
+            "collisionType": "block",
+            "collisionScope": "playerOnly",
+            "collisionRole": "map_boundary"
+          }
+        ]
+      },
+      "map_with_grass": {
+        "src": "Visual Style/map/main/asset_tile_grass/map_with_grass.png",
+        "sourceSize": [
+          4452,
+          3386
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "grass",
+          "stage_1"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_grass/map_with_grass.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          4452,
+          3386
+        ],
+        "worldSize": [
+          4452,
+          3386
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          4452,
+          3386
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "grass",
+        "activeMinutes": "2-4",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_grass/manifest.json",
+        "collisionRule": null,
+        "obstacles": []
+      },
+      "map_with_loess": {
+        "src": "Visual Style/map/main/asset_tile_loess/map_with_loess.png",
+        "sourceSize": [
+          4452,
+          3386
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "loess",
+          "stage_2"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_loess/map_with_loess.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          4452,
+          3386
+        ],
+        "worldSize": [
+          4452,
+          3386
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          4452,
+          3386
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "loess",
+        "activeMinutes": "4-6",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_loess/manifest.json",
+        "collisionRule": {
+          "blockMode": "allEntityObstacle",
+          "affects": "allEntities",
+          "ignoredByTags": [
+            "ignoreCollisionEnemy"
+          ]
+        },
+        "obstacles": []
+      },
+      "map_with_stone": {
+        "src": "Visual Style/map/main/asset_tile_stone/map_with_stone.png",
+        "sourceSize": [
+          4452,
+          3386
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "stone",
+          "stage_3"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_stone/map_with_stone.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          4452,
+          3386
+        ],
+        "worldSize": [
+          4452,
+          3386
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          4452,
+          3386
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "stone",
+        "activeMinutes": "6-8",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_stone/manifest.json",
+        "collisionRule": {
+          "blockMode": "allEntityObstacle",
+          "affects": "allEntities",
+          "ignoredByTags": [
+            "ignoreCollisionEnemy"
+          ]
+        },
+        "obstacles": []
+      },
+      "map_with_blood": {
+        "src": "Visual Style/map/main/asset_tile_blood/asset_tile_blood.png",
+        "sourceSize": [
+          4452,
+          3386
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "blood",
+          "stage_4"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_blood/asset_tile_blood.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          4452,
+          3386
+        ],
+        "worldSize": [
+          4452,
+          3386
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          4452,
+          3386
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "blood",
+        "activeMinutes": "8-10",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_blood/manifest.json",
+        "collisionRule": {
+          "blockMode": "allEntityObstacle",
+          "affects": "allEntities",
+          "ignoredByTags": [
+            "ignoreCollisionEnemy"
+          ]
+        },
+        "obstacles": []
+      },
+      "map_with_fire": {
+        "src": "Visual Style/map/main/asset_tile_fire/map_with_fire.png",
+        "sourceSize": [
+          1254,
+          1254
+        ],
+        "usage": [
+          "world_background",
+          "map_main",
+          "static_stage_map",
+          "fire",
+          "final_boss"
+        ],
+        "variants": [
+          "Visual Style/map/main/asset_tile_fire/map_with_fire.png"
+        ],
+        "assetRole": "staticWorldMap",
+        "drawSize": [
+          1254,
+          1254
+        ],
+        "worldSize": [
+          1254,
+          1254
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "safeFrame": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "sortLayer": "terrain",
+        "placement": "static_stage_map",
+        "stageKey": "fire",
+        "activeMinutes": "10+",
+        "collisionManifestSrc": "Visual Style/map/main/asset_tile_fire/manifest.json",
+        "collisionRule": {
+          "blockMode": "playerOnlyBoundary",
+          "affects": "player",
+          "ignoredByTags": []
+        },
+        "obstacles": []
       }
     },
     "obstacles": {
@@ -7175,10 +9529,10 @@
         "placement": "local_map_kit"
       },
       "lv1_broken_flag_shu": {
-        "src": "Visual Style/map/obstacles/asset_terrain_broken_flag(shu)_lv.1.png",
+        "src": "Visual Style/map/obstacles/asset_terrain_broken_flag(wei)_lv.1.png",
         "sourceSize": [
-          1131,
-          1007
+          1058,
+          946
         ],
         "usage": [
           "world_terrain_blocker",
@@ -7196,8 +9550,8 @@
         "safeFrame": [
           0,
           0,
-          1131,
-          1007
+          1058,
+          946
         ],
         "sortLayer": "terrain",
         "placement": "local_map_kit"
@@ -7455,7 +9809,7 @@
         "placement": "local_map_kit"
       },
       "lv4_broken_chariot": {
-        "src": "Visual Style/map/obstacles/asset_terrain_broken_chariot_lv.4.png",
+        "src": "Visual Style/map/obstacles/asset_terrain_broken_chariot.png",
         "sourceSize": [
           1152,
           1033
@@ -7709,10 +10063,10 @@
         "placement": "local_map_kit"
       },
       "fallen_banner": {
-        "src": "Visual Style/map/obstacles/asset_terrain_broken_flag(shu)_lv.1.png",
+        "src": "Visual Style/map/obstacles/asset_terrain_broken_flag(wei)_lv.1.png",
         "sourceSize": [
-          1131,
-          1007
+          1058,
+          946
         ],
         "usage": [
           "world_terrain_blocker",
@@ -7731,8 +10085,8 @@
         "safeFrame": [
           0,
           0,
-          1131,
-          1007
+          1058,
+          946
         ],
         "sortLayer": "terrain",
         "placement": "local_map_kit"
@@ -7912,7 +10266,7 @@
         "placement": "local_map_kit"
       },
       "broken_chariot": {
-        "src": "Visual Style/map/obstacles/asset_terrain_broken_chariot_lv.4.png",
+        "src": "Visual Style/map/obstacles/asset_terrain_broken_chariot.png",
         "sourceSize": [
           1152,
           1033
@@ -8117,10 +10471,10 @@
           "placement": "local_map_kit"
         },
         "lv1_broken_flag_shu": {
-          "src": "Visual Style/map/obstacles/asset_terrain_broken_flag(shu)_lv.1.png",
+          "src": "Visual Style/map/obstacles/asset_terrain_broken_flag(wei)_lv.1.png",
           "sourceSize": [
-            1131,
-            1007
+            1058,
+            946
           ],
           "usage": [
             "world_terrain_blocker",
@@ -8140,8 +10494,8 @@
           "safeFrame": [
             0,
             0,
-            1131,
-            1007
+            1058,
+            946
           ],
           "sortLayer": "terrain",
           "placement": "local_map_kit"
@@ -8269,10 +10623,10 @@
           "placement": "local_map_kit"
         },
         "fallen_banner": {
-          "src": "Visual Style/map/obstacles/asset_terrain_broken_flag(shu)_lv.1.png",
+          "src": "Visual Style/map/obstacles/asset_terrain_broken_flag(wei)_lv.1.png",
           "sourceSize": [
-            1131,
-            1007
+            1058,
+            946
           ],
           "usage": [
             "world_terrain_blocker",
@@ -8293,8 +10647,8 @@
           "safeFrame": [
             0,
             0,
-            1131,
-            1007
+            1058,
+            946
           ],
           "sortLayer": "terrain",
           "placement": "local_map_kit"
@@ -8671,7 +11025,7 @@
       },
       "lv4": {
         "lv4_broken_chariot": {
-          "src": "Visual Style/map/obstacles/asset_terrain_broken_chariot_lv.4.png",
+          "src": "Visual Style/map/obstacles/asset_terrain_broken_chariot.png",
           "sourceSize": [
             1152,
             1033
@@ -8792,7 +11146,7 @@
           "placement": "local_map_kit"
         },
         "broken_chariot": {
-          "src": "Visual Style/map/obstacles/asset_terrain_broken_chariot_lv.4.png",
+          "src": "Visual Style/map/obstacles/asset_terrain_broken_chariot.png",
           "sourceSize": [
             1152,
             1033
@@ -9164,277 +11518,12 @@
       }
     },
     "environment": {
-      "mud_slow": {
-        "src": "Visual Style/map/environment/asset_terrain_mud_slow.png",
-        "sourceSize": [
-          512,
-          256
-        ],
-        "usage": [
-          "world_terrain_hazard",
-          "map_environment"
-        ],
-        "assetRole": "decal",
-        "drawSize": [
-          140,
-          110
-        ],
-        "anchor": [
-          0.5,
-          0.5
-        ],
-        "safeFrame": [
-          0,
-          0,
-          512,
-          256
-        ],
-        "sortLayer": "terrain",
-        "placement": "local_map_kit"
-      },
-      "blood_slow": {
-        "src": "Visual Style/map/environment/asset_terrain_blood_slow.png",
-        "sourceSize": [
-          512,
-          256
-        ],
-        "usage": [
-          "world_terrain_hazard",
-          "map_environment"
-        ],
-        "assetRole": "decal",
-        "drawSize": [
-          140,
-          110
-        ],
-        "anchor": [
-          0.5,
-          0.5
-        ],
-        "safeFrame": [
-          0,
-          0,
-          512,
-          256
-        ],
-        "sortLayer": "terrain",
-        "placement": "local_map_kit"
-      },
-      "fire_line": {
-        "src": "Visual Style/map/environment/asset_terrain_fire_line.png",
-        "sourceSize": [
-          512,
-          256
-        ],
-        "usage": [
-          "world_terrain_hazard",
-          "map_environment"
-        ],
-        "assetRole": "decal",
-        "drawSize": [
-          140,
-          110
-        ],
-        "anchor": [
-          0.5,
-          0.5
-        ],
-        "safeFrame": [
-          0,
-          0,
-          512,
-          256
-        ],
-        "sortLayer": "terrain",
-        "placement": "local_map_kit"
-      },
       "lv1": {},
       "lv2": {},
-      "lv3": {
-        "mud_slow": {
-          "src": "Visual Style/map/environment/asset_terrain_mud_slow.png",
-          "sourceSize": [
-            512,
-            256
-          ],
-          "usage": [
-            "world_terrain_hazard",
-            "map_environment",
-            "map_level",
-            "lv3"
-          ],
-          "assetRole": "decal",
-          "drawSize": [
-            140,
-            110
-          ],
-          "anchor": [
-            0.5,
-            0.5
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            256
-          ],
-          "sortLayer": "terrain",
-          "placement": "local_map_kit"
-        }
-      },
-      "lv4": {
-        "blood_slow": {
-          "src": "Visual Style/map/environment/asset_terrain_blood_slow.png",
-          "sourceSize": [
-            512,
-            256
-          ],
-          "usage": [
-            "world_terrain_hazard",
-            "map_environment",
-            "map_level",
-            "lv4"
-          ],
-          "assetRole": "decal",
-          "drawSize": [
-            140,
-            110
-          ],
-          "anchor": [
-            0.5,
-            0.5
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            256
-          ],
-          "sortLayer": "terrain",
-          "placement": "local_map_kit"
-        }
-      },
-      "lv5": {
-        "fire_line": {
-          "src": "Visual Style/map/environment/asset_terrain_fire_line.png",
-          "sourceSize": [
-            512,
-            256
-          ],
-          "usage": [
-            "world_terrain_hazard",
-            "map_environment",
-            "map_level",
-            "lv5"
-          ],
-          "assetRole": "decal",
-          "drawSize": [
-            140,
-            110
-          ],
-          "anchor": [
-            0.5,
-            0.5
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            256
-          ],
-          "sortLayer": "terrain",
-          "placement": "local_map_kit"
-        }
-      },
-      "legacy": {
-        "mud_slow": {
-          "src": "Visual Style/map/environment/asset_terrain_mud_slow.png",
-          "sourceSize": [
-            512,
-            256
-          ],
-          "usage": [
-            "world_terrain_hazard",
-            "map_environment",
-            "legacy_alias"
-          ],
-          "assetRole": "decal",
-          "drawSize": [
-            140,
-            110
-          ],
-          "anchor": [
-            0.5,
-            0.5
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            256
-          ],
-          "sortLayer": "terrain",
-          "placement": "local_map_kit"
-        },
-        "blood_slow": {
-          "src": "Visual Style/map/environment/asset_terrain_blood_slow.png",
-          "sourceSize": [
-            512,
-            256
-          ],
-          "usage": [
-            "world_terrain_hazard",
-            "map_environment",
-            "legacy_alias"
-          ],
-          "assetRole": "decal",
-          "drawSize": [
-            140,
-            110
-          ],
-          "anchor": [
-            0.5,
-            0.5
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            256
-          ],
-          "sortLayer": "terrain",
-          "placement": "local_map_kit"
-        },
-        "fire_line": {
-          "src": "Visual Style/map/environment/asset_terrain_fire_line.png",
-          "sourceSize": [
-            512,
-            256
-          ],
-          "usage": [
-            "world_terrain_hazard",
-            "map_environment",
-            "legacy_alias"
-          ],
-          "assetRole": "decal",
-          "drawSize": [
-            140,
-            110
-          ],
-          "anchor": [
-            0.5,
-            0.5
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            256
-          ],
-          "sortLayer": "terrain",
-          "placement": "local_map_kit"
-        }
-      }
+      "lv3": {},
+      "lv4": {},
+      "lv5": {},
+      "legacy": {}
     },
     "randomEvents": {
       "prop_box": {
@@ -9659,826 +11748,11 @@
     },
     "kit": {
       "decals": {
-        "grass": {
-          "grass_patch_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_grass_patch_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "grass_broken_arrow_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_grass_broken_arrow_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "grass_wheel_track_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_grass_wheel_track_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "grass_debris_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_grass_debris_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "grass_stain_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_grass_stain_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "grass_banner_scrap_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_grass_banner_scrap_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          }
-        },
-        "loess": {
-          "loess_patch_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_loess_patch_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "loess_broken_arrow_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_loess_broken_arrow_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "loess_wheel_track_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_loess_wheel_track_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "loess_debris_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_loess_debris_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "loess_stain_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_loess_stain_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "loess_banner_scrap_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_loess_banner_scrap_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          }
-        },
-        "stone": {
-          "stone_patch_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_stone_patch_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "stone_broken_arrow_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_stone_broken_arrow_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "stone_wheel_track_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_stone_wheel_track_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "stone_debris_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_stone_debris_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "stone_stain_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_stone_stain_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "stone_banner_scrap_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_stone_banner_scrap_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          }
-        },
-        "blood": {
-          "blood_patch_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_blood_patch_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "blood_broken_arrow_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_blood_broken_arrow_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "blood_wheel_track_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_blood_wheel_track_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "blood_debris_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_blood_debris_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "blood_stain_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_blood_stain_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "blood_banner_scrap_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_blood_banner_scrap_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          }
-        },
-        "fire": {
-          "fire_patch_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_fire_patch_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "fire_broken_arrow_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_fire_broken_arrow_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "fire_wheel_track_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_fire_wheel_track_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "fire_debris_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_fire_debris_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "fire_stain_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_fire_stain_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          },
-          "fire_banner_scrap_01": {
-            "src": "Visual Style/map/environment/asset_map_decal_fire_banner_scrap_01.png",
-            "sourceSize": [
-              256,
-              256
-            ],
-            "drawSize": [
-              120,
-              90
-            ],
-            "anchor": [
-              0.5,
-              0.5
-            ],
-            "safeFrame": [
-              0,
-              0,
-              256,
-              256
-            ],
-            "assetRole": "decal",
-            "sortLayer": "terrain",
-            "placement": "random_low_density",
-            "canRotate": true,
-            "canMirror": true,
-            "alpha": 0.34
-          }
-        }
+        "grass": {},
+        "loess": {},
+        "stone": {},
+        "blood": {},
+        "fire": {}
       },
       "obstacles": {
         "rock_small": {
@@ -10818,285 +12092,13 @@
           }
         }
       },
-      "hazards": {
-        "fire_pool": {
-          "src": "Visual Style/map/environment/asset_map_hazard_fire_pool_01.png",
-          "sourceSize": [
-            512,
-            512
-          ],
-          "drawSize": [
-            160,
-            160
-          ],
-          "anchor": [
-            0.5,
-            0.5
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            512
-          ],
-          "assetRole": "hazard",
-          "sortLayer": "hazard",
-          "placement": "gameplay_zone",
-          "alpha": 0.55
-        },
-        "poison_pool": {
-          "src": "Visual Style/map/environment/asset_map_hazard_poison_pool_01.png",
-          "sourceSize": [
-            512,
-            512
-          ],
-          "drawSize": [
-            160,
-            160
-          ],
-          "anchor": [
-            0.5,
-            0.5
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            512
-          ],
-          "assetRole": "hazard",
-          "sortLayer": "hazard",
-          "placement": "gameplay_zone",
-          "alpha": 0.55
-        },
-        "lava_crack": {
-          "src": "Visual Style/map/environment/asset_map_hazard_lava_crack_01.png",
-          "sourceSize": [
-            512,
-            512
-          ],
-          "drawSize": [
-            160,
-            160
-          ],
-          "anchor": [
-            0.5,
-            0.5
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            512
-          ],
-          "assetRole": "hazard",
-          "sortLayer": "hazard",
-          "placement": "gameplay_zone",
-          "alpha": 0.55
-        },
-        "spike_trap": {
-          "src": "Visual Style/map/environment/asset_map_hazard_spike_trap_01.png",
-          "sourceSize": [
-            512,
-            512
-          ],
-          "drawSize": [
-            160,
-            160
-          ],
-          "anchor": [
-            0.5,
-            0.5
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            512
-          ],
-          "assetRole": "hazard",
-          "sortLayer": "hazard",
-          "placement": "gameplay_zone",
-          "alpha": 0.55
-        },
-        "cursed_zone": {
-          "src": "Visual Style/map/environment/asset_map_hazard_cursed_zone_01.png",
-          "sourceSize": [
-            512,
-            512
-          ],
-          "drawSize": [
-            160,
-            160
-          ],
-          "anchor": [
-            0.5,
-            0.5
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            512
-          ],
-          "assetRole": "hazard",
-          "sortLayer": "hazard",
-          "placement": "gameplay_zone",
-          "alpha": 0.55
-        },
-        "boss_portal": {
-          "src": "Visual Style/map/environment/asset_map_hazard_boss_portal_01.png",
-          "sourceSize": [
-            512,
-            512
-          ],
-          "drawSize": [
-            160,
-            160
-          ],
-          "anchor": [
-            0.5,
-            0.5
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            512
-          ],
-          "assetRole": "hazard",
-          "sortLayer": "hazard",
-          "placement": "gameplay_zone",
-          "alpha": 0.55
-        }
-      },
-      "landmarks": {
-        "war_banner": {
-          "src": "Game Art/map/random-events/asset_map_landmark_war_banner_01.png",
-          "sourceSize": [
-            512,
-            512
-          ],
-          "drawSize": [
-            150,
-            150
-          ],
-          "anchor": [
-            0.5,
-            0.76
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            512
-          ],
-          "assetRole": "landmark",
-          "sortLayer": "terrain",
-          "placement": "rare_landmark"
-        },
-        "ruined_gate": {
-          "src": "Game Art/map/random-events/asset_map_landmark_ruined_gate_01.png",
-          "sourceSize": [
-            512,
-            512
-          ],
-          "drawSize": [
-            150,
-            150
-          ],
-          "anchor": [
-            0.5,
-            0.76
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            512
-          ],
-          "assetRole": "landmark",
-          "sortLayer": "terrain",
-          "placement": "rare_landmark"
-        },
-        "campfire": {
-          "src": "Game Art/map/random-events/asset_map_landmark_campfire_01.png",
-          "sourceSize": [
-            512,
-            512
-          ],
-          "drawSize": [
-            150,
-            150
-          ],
-          "anchor": [
-            0.5,
-            0.76
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            512
-          ],
-          "assetRole": "landmark",
-          "sortLayer": "terrain",
-          "placement": "rare_landmark"
-        },
-        "altar": {
-          "src": "Game Art/map/random-events/asset_map_landmark_altar_01.png",
-          "sourceSize": [
-            512,
-            512
-          ],
-          "drawSize": [
-            150,
-            150
-          ],
-          "anchor": [
-            0.5,
-            0.76
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            512
-          ],
-          "assetRole": "landmark",
-          "sortLayer": "terrain",
-          "placement": "rare_landmark"
-        },
-        "stage_portal": {
-          "src": "Game Art/map/random-events/asset_map_landmark_stage_portal_01.png",
-          "sourceSize": [
-            512,
-            512
-          ],
-          "drawSize": [
-            150,
-            150
-          ],
-          "anchor": [
-            0.5,
-            0.76
-          ],
-          "safeFrame": [
-            0,
-            0,
-            512,
-            512
-          ],
-          "assetRole": "landmark",
-          "sortLayer": "terrain",
-          "placement": "rare_landmark"
-        }
-      }
+      "hazards": {},
+      "landmarks": {}
     }
   },
   "tiles": {
     "rookie_training": {
-      "src": "Visual Style/map/main/asset_tile_Rookie Training.png",
+      "src": "Visual Style/map/main/asset_tile_practise/map_with_practise.png",
       "sourceSize": [
         1254,
         1254
@@ -11107,7 +12109,7 @@
         "legacy_manifest"
       ],
       "variants": [
-        "Visual Style/map/main/asset_tile_Rookie Training.png"
+        "Visual Style/map/main/asset_tile_practise/map_with_practise.png"
       ],
       "safeFrame": [
         0,
@@ -11268,7 +12270,7 @@
       "placement": "disabled_as_base"
     },
     "fire": {
-      "src": "Visual Style/map/main/asset_tile_fire/asset_tile_fire.png",
+      "src": "Visual Style/map/main/asset_tile_fire/map_with_fire.png",
       "sourceSize": [
         1254,
         1254
@@ -11279,7 +12281,7 @@
         "legacy_manifest"
       ],
       "variants": [
-        "Visual Style/map/main/asset_tile_fire/asset_tile_fire.png"
+        "Visual Style/map/main/asset_tile_fire/map_with_fire.png"
       ],
       "safeFrame": [
         0,
@@ -11300,7 +12302,7 @@
       "placement": "disabled_as_base"
     },
     "siege_fire": {
-      "src": "Visual Style/map/main/asset_tile_fire/asset_tile_fire.png",
+      "src": "Visual Style/map/main/asset_tile_fire/map_with_fire.png",
       "sourceSize": [
         1254,
         1254
@@ -11312,7 +12314,7 @@
         "legacy_manifest"
       ],
       "variants": [
-        "Visual Style/map/main/asset_tile_fire/asset_tile_fire.png"
+        "Visual Style/map/main/asset_tile_fire/map_with_fire.png"
       ],
       "safeFrame": [
         0,
@@ -11333,7 +12335,7 @@
       "placement": "disabled_as_base"
     },
     "normal": {
-      "src": "Visual Style/map/main/asset_tile_Rookie Training.png",
+      "src": "Visual Style/map/main/asset_tile_practise/map_with_practise.png",
       "sourceSize": [
         1254,
         1254
@@ -11345,7 +12347,7 @@
         "legacy_manifest"
       ],
       "variants": [
-        "Visual Style/map/main/asset_tile_Rookie Training.png"
+        "Visual Style/map/main/asset_tile_practise/map_with_practise.png"
       ],
       "safeFrame": [
         0,
@@ -11366,10 +12368,10 @@
       "placement": "disabled_as_base"
     },
     "void": {
-      "src": "Visual Style/map/main/legacy_scifi/asset_tile_void.png",
+      "src": "Visual Style/map/main/asset_tile_fire/map_with_fire.png",
       "sourceSize": [
-        512,
-        512
+        1254,
+        1254
       ],
       "usage": [
         "world_background",
@@ -11380,8 +12382,8 @@
       "safeFrame": [
         0,
         0,
-        512,
-        512
+        1254,
+        1254
       ],
       "assetRole": "aiTileDecorationCandidate",
       "sortLayer": "terrain",
@@ -11428,10 +12430,10 @@
         "placement": "local_map_kit"
       },
       "lv1_broken_flag_shu": {
-        "src": "Visual Style/map/obstacles/asset_terrain_broken_flag(shu)_lv.1.png",
+        "src": "Visual Style/map/obstacles/asset_terrain_broken_flag(wei)_lv.1.png",
         "sourceSize": [
-          1131,
-          1007
+          1058,
+          946
         ],
         "usage": [
           "world_terrain_blocker",
@@ -11450,8 +12452,8 @@
         "safeFrame": [
           0,
           0,
-          1131,
-          1007
+          1058,
+          946
         ],
         "sortLayer": "terrain",
         "placement": "local_map_kit"
@@ -11718,7 +12720,7 @@
         "placement": "local_map_kit"
       },
       "lv4_broken_chariot": {
-        "src": "Visual Style/map/obstacles/asset_terrain_broken_chariot_lv.4.png",
+        "src": "Visual Style/map/obstacles/asset_terrain_broken_chariot.png",
         "sourceSize": [
           1152,
           1033
@@ -11981,10 +12983,10 @@
         "placement": "local_map_kit"
       },
       "fallen_banner": {
-        "src": "Visual Style/map/obstacles/asset_terrain_broken_flag(shu)_lv.1.png",
+        "src": "Visual Style/map/obstacles/asset_terrain_broken_flag(wei)_lv.1.png",
         "sourceSize": [
-          1131,
-          1007
+          1058,
+          946
         ],
         "usage": [
           "world_terrain_blocker",
@@ -12004,8 +13006,8 @@
         "safeFrame": [
           0,
           0,
-          1131,
-          1007
+          1058,
+          946
         ],
         "sortLayer": "terrain",
         "placement": "local_map_kit"
@@ -12191,7 +13193,7 @@
         "placement": "local_map_kit"
       },
       "broken_chariot": {
-        "src": "Visual Style/map/obstacles/asset_terrain_broken_chariot_lv.4.png",
+        "src": "Visual Style/map/obstacles/asset_terrain_broken_chariot.png",
         "sourceSize": [
           1152,
           1033
@@ -12371,95 +13373,7 @@
         "placement": "local_map_kit"
       }
     },
-    "hazards": {
-      "mud_slow": {
-        "src": "Visual Style/map/environment/asset_terrain_mud_slow.png",
-        "sourceSize": [
-          512,
-          256
-        ],
-        "usage": [
-          "world_terrain_hazard",
-          "map_environment",
-          "legacy_manifest"
-        ],
-        "assetRole": "hazard",
-        "drawSize": [
-          160,
-          160
-        ],
-        "anchor": [
-          0.5,
-          0.5
-        ],
-        "safeFrame": [
-          0,
-          0,
-          512,
-          256
-        ],
-        "sortLayer": "hazard",
-        "placement": "gameplay_zone"
-      },
-      "blood_slow": {
-        "src": "Visual Style/map/environment/asset_terrain_blood_slow.png",
-        "sourceSize": [
-          512,
-          256
-        ],
-        "usage": [
-          "world_terrain_hazard",
-          "map_environment",
-          "legacy_manifest"
-        ],
-        "assetRole": "hazard",
-        "drawSize": [
-          160,
-          160
-        ],
-        "anchor": [
-          0.5,
-          0.5
-        ],
-        "safeFrame": [
-          0,
-          0,
-          512,
-          256
-        ],
-        "sortLayer": "hazard",
-        "placement": "gameplay_zone"
-      },
-      "fire_line": {
-        "src": "Visual Style/map/environment/asset_terrain_fire_line.png",
-        "sourceSize": [
-          512,
-          256
-        ],
-        "usage": [
-          "world_terrain_hazard",
-          "map_environment",
-          "legacy_manifest"
-        ],
-        "assetRole": "hazard",
-        "drawSize": [
-          160,
-          160
-        ],
-        "anchor": [
-          0.5,
-          0.5
-        ],
-        "safeFrame": [
-          0,
-          0,
-          512,
-          256
-        ],
-        "sortLayer": "hazard",
-        "placement": "gameplay_zone"
-      }
-    }
+    "hazards": {}
   },
   "atlases": {},
   "styleProofs": {
@@ -12905,7 +13819,7 @@
         210
       ],
       "derived": [
-        "Visual Style/map/main/asset_tile_Rookie Training.png",
+        "Visual Style/map/main/asset_tile_practise/map_with_practise.png",
         "Visual Style/map/main/asset_tile_grass.png",
         "Visual Style/map/main/asset_tile_stone.png",
         "Visual Style/map/main/asset_tile_loess.png",

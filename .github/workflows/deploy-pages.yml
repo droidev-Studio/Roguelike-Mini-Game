@@ -25,19 +25,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install build dependencies
+        run: npm ci
+
       - name: Prepare static artifact
-        run: |
-          mkdir -p _site
-          cp index.html _site/
-          cp game.css _site/
-          cp game.js _site/
-          cp GameSettings.js _site/
-          cp AssetRuntime.js _site/
-          cp AudioManager.js _site/
-          cp -R assets _site/assets
-          cp -R src _site/src
-          cp -R vendor _site/vendor
-          touch _site/.nojekyll
+        run: node tools/build-pages.mjs
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

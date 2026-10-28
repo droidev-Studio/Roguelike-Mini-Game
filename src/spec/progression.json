@@ -6,8 +6,8 @@
   "expRequirement": {
     "scaleCombatRule": true,
     "tiers": [
-      { "belowLevel": 5, "base": 35, "perLevel": 35, "levelOffset": 0 },
-      { "belowLevel": 20, "base": 175, "perLevel": 75, "levelOffset": 4 },
+      { "belowLevel": 5, "base": 15, "perLevel": 25, "levelOffset": 0 },
+      { "belowLevel": 20, "base": 115, "perLevel": 55, "levelOffset": 4 },
       { "belowLevel": 40, "base": 1300, "perLevel": 300, "levelOffset": 19 },
       { "base": 7300, "perLevel": 800, "levelOffset": 39 }
     ]

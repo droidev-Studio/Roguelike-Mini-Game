@@ -104,6 +104,13 @@
                     </div>
                     <div class="weapon-cd-panel" data-ui="weaponCooldownPanel" aria-label="武器冷却"></div>
                     <div class="low-hp-vignette"></div>
+                    <section class="campaign-objective" data-ui="campaignPanel" aria-label="本关目标">
+                        <div class="campaign-line"><span>军情</span><b data-ui="campaignPhase"></b><small data-ui="campaignCleared"></small></div>
+                        <strong data-ui="campaignObjective"></strong>
+                        <div data-ui="campaignOrder"></div>
+                        <small data-ui="campaignOrderHint"></small>
+                        <p>WASD / 方向键移动 · 鼠标瞄准 · P 暂停</p>
+                    </section>
                 </div>
                 <section class="dom-levelup" role="dialog" aria-modal="true" aria-label="升级选择">
                     <div class="levelup-panel">
@@ -312,7 +319,9 @@
                 if (typeof src !== 'string' || !src) continue;
                 const rawPath = `${basePath}${src}`;
                 const requestPath = runtime.getAssetRequestPath?.(rawPath) || rawPath;
-                this.root.style.setProperty(cssVar, `url("${requestPath}")`);
+                // CSS is bundled under assets/ on Pages; resolve against the HTML root.
+                const absolutePath = new URL(requestPath, document.baseURI).href;
+                this.root.style.setProperty(cssVar, `url("${absolutePath}")`);
                 resolved[cssVar] = src;
             }
             global.__DOM_UI_SKINS__ = resolved;
@@ -436,6 +445,12 @@
             this.setText('levelText', `${uiText('hud.level', '等级')} ${snapshot.level}`);
             this.setText('timeText', snapshot.timeText);
             this.setMeter('expFill', snapshot.expPct);
+            this.setText('campaignPhase', snapshot.campaign?.phase || '巡防战');
+            this.setText('campaignCleared', `${snapshot.campaign?.cleared || 0}/5 关`);
+            this.setText('campaignObjective', snapshot.campaign?.objective || '');
+            this.setText('campaignOrder', snapshot.campaign?.order || '');
+            this.setText('campaignOrderHint', snapshot.campaign?.orderHint || '');
+            this.root.querySelector('[data-ui="campaignPanel"]')?.classList.toggle('is-warning', Boolean(snapshot.campaign?.warning));
             const left = this.root.querySelector('[data-ui="hud-left"]');
             if (left) left.classList.toggle('is-low', snapshot.lowHp);
             const banner = this.root.querySelector('[data-ui="bossBanner"]');

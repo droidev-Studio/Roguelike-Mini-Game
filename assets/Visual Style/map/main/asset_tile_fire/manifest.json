@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "image": "map_with_fire.png",
+  "exportedAt": "2026-06-03T10:12:28.803Z",
+  "type": "mapWithObstacles",
+  "mapWidth": 1254,
+  "mapHeight": 1254,
+  "gridSize": 32,
+  "collisionRule": {
+    "blockMode": "playerOnlyBoundary",
+    "affects": "player",
+    "ignoredByTags": []
+  },
+  "obstacleCount": 0
+}

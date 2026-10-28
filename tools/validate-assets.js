@@ -281,7 +281,7 @@ if (manifest) {
     }
   }
   for (const [tileId, entry] of Object.entries(manifest.map?.main || {})) {
-    if (entry?.assetRole && entry.assetRole !== 'aiTileDecorationCandidate') {
+    if (entry?.assetRole && !['aiTileDecorationCandidate', 'staticWorldMap'].includes(entry.assetRole)) {
       errors.push(`Map main asset must not be treated as runtime base tile: map.main.${tileId}`);
     }
   }

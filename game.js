@@ -52,6 +52,16 @@ const FEATURE_FLAGS = {
     ENABLE_MAP_TERRAIN_OBSTACLES: true,
 };
 
+const STATIC_STAGE_MAPS = [
+    { id: 'map_with_practise', threshold: 0, key: 'practise' },
+    { id: 'map_with_grass', threshold: 120, key: 'grass' },
+    { id: 'map_with_loess', threshold: 240, key: 'loess' },
+    { id: 'map_with_stone', threshold: 360, key: 'stone' },
+    { id: 'map_with_blood', threshold: 480, key: 'blood' },
+];
+const FINAL_STATIC_MAP_ID = 'map_with_fire';
+const STATIC_START_MAP_ID = STATIC_STAGE_MAPS[0].id;
+
 const FEATURE_FLAG_PARAMS = new URLSearchParams(window.location.search);
 for (const flagName of Object.keys(FEATURE_FLAGS)) {
     if (FEATURE_FLAG_PARAMS.has(flagName)) {
@@ -319,6 +329,15 @@ function stopGameMusic() {
     return true;
 }
 
+function getRuntimeRandom() {
+    if (window.crypto?.getRandomValues) {
+        const values = new Uint32Array(1);
+        window.crypto.getRandomValues(values);
+        return values[0] / 0x100000000;
+    }
+    return Math.random();
+}
+
 function getDrawableImageSrc(image) {
     if (!image || !window.assetRuntime?.canDraw?.(image)) return '';
     return image.currentSrc || image.src || '';
@@ -421,7 +440,7 @@ function drawArtWeaponAttackComposite(ctx, weaponId, level, slot, x, y, width, h
             filter: options.filter,
             shadowBlur: options.shadowBlur,
             shadowColor: options.shadowColor,
-            blendMode: layerOptions.blendMode || options.blendMode || entry.blendMode,
+            blendMode: layerOptions.blendMode || options.baseBlendMode || entry.blendMode || options.blendMode,
         }) || drewAny;
         return true;
     };
@@ -429,7 +448,7 @@ function drawArtWeaponAttackComposite(ctx, weaponId, level, slot, x, y, width, h
     const baseEntry = getWeaponAttackEntryExact(assets, weaponId, level, slot) || assets.getWeaponAttackEntry?.(weaponId, level, slot) || {};
     drawEntry(baseEntry);
 
-    if (options.layered !== false) {
+    if (options.layered !== false && weaponId !== 'saber') {
         for (const effectSlot of getWeaponEffectOverlaySlots(slot)) {
             const effectEntry = getWeaponAttackEntryExact(assets, weaponId, level, effectSlot);
             if (!effectEntry) continue;
@@ -1223,11 +1242,14 @@ const OPENING_TIMELINE = {
     skipHint: [0.9, 1.0],
 };
 const RUN_ENTRY_TIMELINE = {
-    duration: 1.8,
-    seal: [0.0, 0.25],
-    portalOpen: [0.25, 0.45],
-    emerge: [0.7, 0.65],
-    close: [1.35, 0.45],
+    duration: 2.25,
+    blackout: [0.0, 0.2],
+    seal: [0.0, 0.42],
+    portalOpen: [0.16, 0.58],
+    emerge: [0.68, 0.72],
+    stand: [1.40, 0.36],
+    close: [1.74, 0.46],
+    hudFade: [1.86, 0.32],
 };
 
 function clamp01(value) {
@@ -1505,9 +1527,9 @@ const WEAPON_UPGRADES = {
     shield: {
         type: 'weapon',
         name: '八门金锁盾',
-        baseDamage: 45, // 极长CD换来一击清屏
+        baseDamage: 45, // 近身保护脉冲，360度范围需要比方向性武器克制
         1: { name: '八门金锁盾', desc: '以玩家为中心周期性爆发力场脉冲，先滞留蓄力再骤然向外爆发，伤害击退。', action: (w) => {} },
-        2: { name: '阵扩', desc: '脉冲最大扩张半径增加 30%。', action: (w) => { w.maxRadius *= 1.3; } },
+        2: { name: '阵扩', desc: '脉冲最大扩张半径增加 18%。', action: (w) => { w.maxRadius *= 1.18; } },
         3: { name: '连绵', desc: '爆发触发间隔减少 30%。', action: (w) => { w.baseAttackInterval *= 0.7; } },
         4: { name: '反震', desc: '脉冲基础伤害提升 100%，击退距离提升 50%。', action: (w) => { w.baseDamage *= 2; w.baseKnockback *= 1.5; } },
         5: { name: '绝对壁垒', desc: '脉冲扩张期间摧毁触碰到的所有敌方投射物。', action: (w) => { w.canDestroyProjectiles = true; } },
@@ -3780,10 +3802,11 @@ class Spear extends Weapon {
         const handDistance = Math.max(player.size * 0.24, Math.min(visualLength * 0.12, player.size * 0.55));
         const handX = player.x + stab.dirX * handDistance;
         const handY = player.y + stab.dirY * handDistance;
-        const bodyBaseSize = Array.isArray(bodyEntry?.drawSize) ? bodyEntry.drawSize : [160, 36];
-        const bodyScale = Math.max(0.86, Math.min(isUltimate ? (isMain ? 1.36 : 1.12) : 1.28, visualLength / Math.max(1, bodyBaseSize[0])));
-        const bodyWidth = bodyBaseSize[0] * bodyScale;
-        const bodyHeight = bodyBaseSize[1] * Math.max(0.92, Math.min(1.18, bodyScale));
+        const bodyAnchor = bodyEntry?.pivot || bodyEntry?.gripAnchor || bodyEntry?.anchor || [0.18, 0.5];
+        const bodyAnchorX = Math.max(0.05, Math.min(0.45, Number(bodyAnchor?.[0]) || 0.18));
+        const bodyReach = Math.max(0.25, 1 - bodyAnchorX);
+        const bodyWidth = Math.max(36, (visualLength - handDistance) / bodyReach);
+        const bodyHeight = Math.max(22, visualWidth);
         const bodyAlpha = alpha * (isUltimate && !isMain ? 0.78 : 1);
         let drewFx = false;
         let drewBody = false;
@@ -3798,21 +3821,22 @@ class Spear extends Weapon {
         }
 
         if (assets.canDraw?.(fxImage) && fxEntry) {
-            const fxBaseSize = Array.isArray(fxEntry.drawSize) ? fxEntry.drawSize : [visualLength, visualWidth];
-            const ultimateFxWidthScale = isMain ? 0.84 : 0.56;
-            const ultimateFxHeightScale = isMain ? 0.58 : 0.38;
-            const fxWidthScale = isUltimate ? ultimateFxWidthScale : 1;
-            const fxHeightScale = isUltimate ? ultimateFxHeightScale : 1;
-            const fxWidth = Math.max(visualLength * fxWidthScale, fxBaseSize[0] * bodyScale * fxWidthScale);
-            const fxHeight = Math.max(visualWidth * 0.72 * fxHeightScale, fxBaseSize[1] * Math.min(1.06, bodyScale) * fxHeightScale);
-            const fxAlpha = alpha * (isUltimate ? (isMain ? 0.3 : 0.16) : 0.56);
-            const fxAnchor = isUltimate
+            const fxAnchorBase = isUltimate
                 ? [fxEntry.anchor?.[0] ?? 0.12, fxEntry.anchor?.[1] ?? 0.5]
                 : (fxEntry.anchor || [0.12, 0.5]);
+            const fxAnchorX = Math.max(0.04, Math.min(0.42, Number(fxAnchorBase?.[0]) || 0.12));
+            const fxReach = Math.max(0.25, 1 - fxAnchorX);
+            const ultimateFxWidthScale = isMain ? 0.92 : 0.72;
+            const ultimateFxHeightScale = isMain ? 0.82 : 0.68;
+            const fxWidthScale = isUltimate ? ultimateFxWidthScale : 1;
+            const fxHeightScale = isUltimate ? ultimateFxHeightScale : 1;
+            const fxWidth = Math.max(36, ((visualLength - handDistance) / fxReach) * fxWidthScale);
+            const fxHeight = Math.max(18, visualWidth * fxHeightScale);
+            const fxAlpha = alpha * (isUltimate ? (isMain ? 0.3 : 0.16) : 0.56);
             drewFx = drawRuntimeAsset(ctx, fxImage, fxEntry, handX, handY, fxWidth, fxHeight, {
                 angle,
                 alpha: fxAlpha,
-                anchor: fxAnchor,
+                anchor: fxAnchorBase,
                 blendMode: isUltimate ? 'source-over' : (fxEntry.blendMode || 'screen'),
                 debug: false,
             });
@@ -3962,11 +3986,10 @@ class Spear extends Weapon {
             const alpha = stab.lifeTimer / 0.25 * 0.9;
             const isHighTierArt = this.level >= 5;
             const isUltimate = this.level >= 6;
-            const lengthBase = effectiveLength + Math.max(22, effectiveWidth * 1.65);
-            const levelVisualScale = isUltimate ? (stab.isMain ? 1.0 : 0.84) : (this.level >= 5 ? 0.98 : 1);
-            const visualLength = (isHighTierArt ? lengthBase : effectiveLength * 1.18) * levelVisualScale;
-            const spearWidthMultiplier = isUltimate ? 2.55 : (this.level >= 5 ? 2.35 : 2.15);
-            const visualWidth = Math.max(42, effectiveWidth * spearWidthMultiplier) * (isUltimate ? (stab.isMain ? 1.02 : 0.9) : 1);
+            const levelVisualScale = isUltimate ? (stab.isMain ? 1.0 : 0.88) : 1;
+            const visualLength = effectiveLength * levelVisualScale;
+            const spearWidthMultiplier = isUltimate ? 1.72 : (this.level >= 5 ? 1.58 : 1.42);
+            const visualWidth = Math.max(26, effectiveWidth * spearWidthMultiplier) * (isUltimate ? (stab.isMain ? 1.02 : 0.9) : 1);
             const spearAngle = Math.atan2(dirY, dirX);
             const spearTextureAngleOffset = 0;
             const spearAnchorX = isHighTierArt ? 0.44 : 0.44;
@@ -4439,8 +4462,8 @@ class CrossbowArrow {
         const angle = Math.atan2(this.vy, this.vx);
         const endX = this.x + Math.cos(angle) * this.length;
         const endY = this.y + Math.sin(angle) * this.length;
-        const textureWidth = Math.max(this.length * 2.45, 68);
-        const textureHeight = this.hasLightningColumn ? 40 : (this.hasLightningAOE ? 36 : 32);
+        const textureWidth = Math.max(this.length * 3.35, 88);
+        const textureHeight = this.hasLightningColumn ? 20 : (this.hasLightningAOE ? 18 : 14);
         if (drawArtEffectTexture(ctx, 'crossbow_arrow', this.x, this.y, textureWidth, textureHeight, angle, 0.95, 0.1, 0.5, this.weaponLevel)) {
             return;
         }
@@ -5114,7 +5137,7 @@ class QinggangSword extends Weapon {
         if (this.level >= 6) {
             const collisionRadius = 20 * areaMul;
             const outerDamageRadius = maxOrbitRadius + collisionRadius;
-            const formationSize = Math.max(280, outerDamageRadius * 1.98);
+            const formationSize = Math.max(1, outerDamageRadius * 2);
             const innerAngle = -this.baseAngle;
             const outerAngle = this.baseAngle + Math.PI / this.count - Math.PI / 4;
             const drewOuter = drawArtWeaponAttackTexture(
@@ -5409,13 +5432,16 @@ class FireTornado {
             tickInterval: this.currentTickInterval,
             damage: this.currentDamage
         };
-        // 切换形态：巨型风暴
+        // 切换形态：大招风暴。比普通太平明显更大，但不覆盖半屏。
         this.mode = 'massive_storm';
-        this.currentRadius *= 5;
-        this.currentTickInterval *= 0.3; // 频率提升 ~3.3x 更高伤害
-        this.currentDamage *= 2; // 伤害翻倍
-        // 随机 3-5 秒持续时间
-        this.lifetime = 3 + GameRuntime.random() * 2;
+        const radiusMultiplier = Math.max(1, this.book?.massiveStormRadiusMultiplier || 3.5);
+        const radiusCap = Math.max(this.currentRadius, this.book?.massiveStormMaxRadius || 220);
+        this.currentRadius = Math.min(this.currentRadius * radiusMultiplier, radiusCap);
+        this.currentTickInterval *= Math.max(0.2, this.book?.massiveStormTickMultiplier || 0.45);
+        this.currentDamage *= Math.max(1, this.book?.massiveStormDamageMultiplier || 1.6);
+        // 持续时间略短，避免大范围常驻压过其他武器表现。
+        this.lifetime = (this.book?.massiveStormDurationMin || 2.4)
+            + GameRuntime.random() * (this.book?.massiveStormDurationRandom || 1.1);
         this.moveSpeed = 0; // 停止移动
     }
 
@@ -5586,14 +5612,14 @@ class FireTornado {
         } else if (bookLevel >= 6 && this.mode === 'massive_storm') {
             artSlot = 'detonate';
         }
-        const artSizeScale = this.mode === 'massive_storm' ? 2.1 : (this.mode === 'seek_player' ? 2.08 : 2.25);
+        const artSizeScale = this.mode === 'massive_storm' ? 2.02 : (this.mode === 'seek_player' ? 2.02 : 2.04);
         if (this.renderAxisTwistingTexture(ctx, 'taiping', artLevel, artSlot, this.x, this.y, renderRadius * artSizeScale, renderRadius * artSizeScale, artAlpha)) {
             this.renderAxisSpin(ctx, renderRadius, artAlpha);
             if (this.mode !== 'massive_storm') legacyRandomCalls++;
             for (let i = 0; i < legacyRandomCalls - 1; i++) GameRuntime.random();
             return;
         }
-        if (drawArtEffectTexture(ctx, 'taiping_tornado', this.x, this.y, renderRadius * 2.35, renderRadius * 2.35, 0, artAlpha, 0.5, 0.5)) {
+        if (drawArtEffectTexture(ctx, 'taiping_tornado', this.x, this.y, renderRadius * 2.04, renderRadius * 2.04, 0, artAlpha, 0.5, 0.5)) {
             this.renderAxisSpin(ctx, renderRadius, artAlpha);
             if (this.mode !== 'massive_storm') legacyRandomCalls++;
             for (let i = 0; i < legacyRandomCalls - 1; i++) GameRuntime.random();
@@ -5635,6 +5661,12 @@ class TaipingBook extends Weapon {
         this.baseTickInterval = getWeaponJsonParam('taiping', 'baseTickInterval', 0.2);
         this.baseDamagePerSecond = baseDamage;
         this.maxTornados = getWeaponJsonParam('taiping', 'maxTornados', 1);
+        this.massiveStormRadiusMultiplier = getWeaponJsonParam('taiping', 'massiveStormRadiusMultiplier', 3.5);
+        this.massiveStormMaxRadius = getWeaponJsonParam('taiping', 'massiveStormMaxRadius', 220);
+        this.massiveStormTickMultiplier = getWeaponJsonParam('taiping', 'massiveStormTickMultiplier', 0.45);
+        this.massiveStormDamageMultiplier = getWeaponJsonParam('taiping', 'massiveStormDamageMultiplier', 1.6);
+        this.massiveStormDurationMin = getWeaponJsonParam('taiping', 'massiveStormDurationMin', 2.4);
+        this.massiveStormDurationRandom = getWeaponJsonParam('taiping', 'massiveStormDurationRandom', 1.1);
         this.autoSeek = false;
         this.hasProximityStorm = false;
         this.spawnQueue = []; // 延迟生成队列：由update驱动逐帧生成
@@ -5861,7 +5893,7 @@ class FireRing {
         const alpha = 0.16 + 0.68 * lifeRatio;
         const pulse = 0.97 + 0.03 * Math.sin(GameRuntime.frame * 0.18);
         const renderRadius = currentRadius * pulse;
-        const ringSize = renderRadius * 2.12;
+        const ringSize = renderRadius * 2;
         const ghostFrameSize = renderRadius * 1.22;
         const ghostSize = ghostFrameSize * 0.92;
 
@@ -5925,7 +5957,7 @@ class Shield extends Weapon {
         this.releaseVisualTimer = 0;
         this.releaseVisualDuration = 0.42;
         this.currentRadius = 0;
-        this.maxRadius = getWeaponJsonParam('shield', 'maxRadius', 144); // 基础范围 ×1.2
+        this.maxRadius = getWeaponJsonParam('shield', 'maxRadius', 96); // 360度脉冲，范围比方向性武器更克制
         this.baseKnockback = getWeaponJsonParam('shield', 'baseKnockback', 60); // 基础击退距离
         this.hitRecords = new Set();
         this.x = 0;
@@ -5936,8 +5968,8 @@ class Shield extends Weapon {
         // 阶段时间配置
         this.chargeDuration = getWeaponJsonParam('shield', 'chargeDuration', 0.5);
         this.explodeDuration = getWeaponJsonParam('shield', 'explodeDuration', 0.15);
-        this.chargeStartRadius = getWeaponJsonParam('shield', 'chargeStartRadius', 20);
-        this.chargeEndRadius = getWeaponJsonParam('shield', 'chargeEndRadius', 40);
+        this.chargeStartRadius = getWeaponJsonParam('shield', 'chargeStartRadius', 14);
+        this.chargeEndRadius = getWeaponJsonParam('shield', 'chargeEndRadius', 28);
     }
 
     attack(player, enemies, projectiles, specialAreas) {
@@ -6200,9 +6232,6 @@ class Shield extends Weapon {
         const shieldArtSlot = this.getShieldArtSlot();
         const shieldArtRotation = this.getShieldArtRotation();
         const shieldArtSize = this.getShieldArtSize(player);
-        if (this.level >= 6 && this.renderLevel6Art(ctx, player, alpha)) {
-            return;
-        }
         if (drawArtWeaponAttackTextureExact(ctx, 'shield', this.level, shieldArtSlot, this.x, this.y, shieldArtSize, shieldArtSize, {
             angle: shieldArtRotation,
             alpha,
@@ -6250,14 +6279,7 @@ class Shield extends Weapon {
     }
 
     getShieldArtSize(player) {
-        const areaScale = 1 + (player.modifiers.areaMulti || 0);
-        if (this.phase === 'charge') {
-            const progress = Math.min(1, this.chargeTimer / Math.max(0.001, this.chargeDuration));
-            const start = Math.max(72, this.chargeStartRadius * 2);
-            const end = Math.max(112, this.chargeEndRadius * 2);
-            return (start + (end - start) * progress) * areaScale;
-        }
-        return this.currentRadius * 2 * areaScale;
+        return Math.max(1, this.currentRadius * 2);
     }
 
     renderLevel6Art(ctx, player, alpha) {
@@ -6267,7 +6289,7 @@ class Shield extends Weapon {
         if (this.phase === 'charge') {
             const rawProgress = Math.min(1, this.chargeTimer / Math.max(0.001, this.chargeDuration));
             const fastProgress = 1 - Math.pow(1 - rawProgress, 3);
-            const drawSize = effectiveMaxRadius * (0.26 + fastProgress * 0.58);
+            const drawSize = Math.max(1, this.currentRadius * 2);
             return drawArtWeaponAttackTextureAdvanced(ctx, 'shield', 6, 'charge', this.x, this.y, drawSize, drawSize, {
                 alpha: Math.min(0.68, 0.28 + fastProgress * 0.34),
                 angle: 0,
@@ -6282,7 +6304,7 @@ class Shield extends Weapon {
             const rawProgress = this.phase === 'release'
                 ? Math.min(1, this.releaseVisualTimer / Math.max(0.001, this.releaseVisualDuration))
                 : Math.min(1, this.explodeTimer / Math.max(0.001, this.explodeDuration));
-            const borderSize = this.currentRadius * (this.phase === 'release' ? 2.1 : 2.04);
+            const borderSize = this.currentRadius * 2;
             const innerFrameSize = borderSize * (this.phase === 'release'
                 ? (0.46 - rawProgress * 0.12)
                 : (0.52 - rawProgress * 0.1));
@@ -6349,6 +6371,7 @@ class Shield extends Weapon {
 class Player {
     constructor(canvasWidth, canvasHeight, perks, perkLevels) {
         const playerSpec = getEntitySpec('player');
+        this.isPlayer = true;
         this.size = getEntityNumber('player', 'size', 30);
         this.collisionRadius = getEntityNumber('player', 'collisionRadius', this.size / 2);
         this.x = canvasWidth / 2;
@@ -6444,7 +6467,7 @@ class Player {
         const params = new URLSearchParams(window.location.search);
         const forcedWeaponType = params.get('debugInitialWeapon');
         const forcedWeapon = weaponChoices.find(choice => choice.type === forcedWeaponType);
-        const randomIndex = Math.floor(GameRuntime.random() * weaponChoices.length);
+        const randomIndex = Math.floor(getRuntimeRandom() * weaponChoices.length);
         const picked = forcedWeapon || weaponChoices[randomIndex] || weaponChoices[0];
         const config = WEAPON_UPGRADES[picked.type];
 
@@ -6673,7 +6696,8 @@ class Player {
         const finalAmount = amount * (1 + (this.modifiers.expMulti || 0));
         this.exp += finalAmount;
         let leveledUp = false;
-        while (this.exp >= this.expToNextLevel) {
+        // Bank overflow XP; each earned level must get its own real choice screen.
+        if (this.exp >= this.expToNextLevel && gameManager.gameState !== GAME_STATE.LEVEL_UP && gameManager.gameState !== GAME_STATE.VICTORY && gameManager.gameState !== GAME_STATE.GAME_OVER) {
             this.exp -= this.expToNextLevel;
             this.level += 1;
             this.expToNextLevel = this.getExpRequirement(this.level);
@@ -6830,17 +6854,11 @@ class Enemy {
     }
 
     ignoresTerrainCollision() {
-        return this.ignoreTerrain === true ||
-            this.isBoss ||
-            this.isLevelBoss ||
-            this.isChargeMovementUnit();
+        return this.ignoreTerrain === true;
     }
 
     ignoresTerrainSlow() {
-        return this.ignoreTerrainSlow === true ||
-            this.isBoss ||
-            this.isLevelBoss ||
-            this.isChargeMovementUnit();
+        return this.ignoreTerrainSlow === true || this.isChargeMovementUnit();
     }
 
     // 需传入 canvas 尺寸用于销毁判定
@@ -6856,8 +6874,14 @@ class Enemy {
 
         if (this.dirX !== undefined && this.dirY !== undefined) {
             // 潮汐冲锋怪：沿固定矢量直线冲锋
-            this.x += this.dirX * this.speed * deltaTime;
-            this.y += this.dirY * this.speed * deltaTime;
+            const deltaX = this.dirX * this.speed * deltaTime;
+            const deltaY = this.dirY * this.speed * deltaTime;
+            if (gm?.moveEnemyWithTerrain) {
+                gm.moveEnemyWithTerrain(this, deltaX, deltaY);
+            } else {
+                this.x += deltaX;
+                this.y += deltaY;
+            }
 
             // 预判内存泄漏：飞出屏幕外较远距离自动无掉落销毁
             const margin = 800;
@@ -7008,11 +7032,12 @@ class Enemy {
         const tier = this.getThreatVisualTier();
         const radiusX = Math.max(10, visualSize * (tier === 'normal' ? 0.24 : 0.30));
         const radiusY = Math.max(4, visualSize * 0.075);
+        const groundY = this.y + visualSize * 0.20;
         ctx.save();
         ctx.globalAlpha = options.shadowAlpha ?? (tier === 'normal' ? 0.46 : 0.62);
         ctx.fillStyle = 'rgba(0, 0, 0, 0.72)';
         ctx.beginPath();
-        ctx.ellipse(this.x, this.y + visualSize * 0.32, radiusX, radiusY, 0, 0, Math.PI * 2);
+        ctx.ellipse(this.x, groundY, radiusX, radiusY, 0, 0, Math.PI * 2);
         ctx.fill();
         if (tier !== 'normal') {
             ctx.globalAlpha = tier === 'elite' ? 0.34 : 0.48;
@@ -7021,7 +7046,7 @@ class Enemy {
             ctx.shadowColor = ctx.strokeStyle;
             ctx.shadowBlur = Math.max(8, visualSize * 0.14);
             ctx.beginPath();
-            ctx.ellipse(this.x, this.y + visualSize * 0.30, radiusX * 1.08, radiusY * 1.55, 0, 0, Math.PI * 2);
+            ctx.ellipse(this.x, groundY, radiusX * 1.08, radiusY * 1.55, 0, 0, Math.PI * 2);
             ctx.stroke();
         }
         ctx.restore();
@@ -7211,7 +7236,11 @@ class Enemy {
             ctx.rotate(moveSway);
         }
         const entry = assets.getEnemyEntry?.(enemyId, artState) || {};
-        const assetAnchor = entry.feetAnchor || entry.anchor || [0.5, 0.78];
+        const baseAnchor = entry.feetAnchor || entry.anchor || [0.5, 0.78];
+        const assetAnchor = [
+            Number.isFinite(Number(baseAnchor?.[0])) ? Number(baseAnchor[0]) : 0.5,
+            Math.max(0.66, Math.min(0.86, (Number.isFinite(Number(baseAnchor?.[1])) ? Number(baseAnchor[1]) : 0.78) - 0.08)),
+        ];
         // Add dark outline for better contrast against grass background.
         if (!isStaticProp) {
             ctx.save();
@@ -7397,8 +7426,13 @@ class TigerGuardEnemy extends Enemy {
             const dy = gameManager.player.y - this.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist > 0) {
-                this.x += (dx / dist) * this.brokenFormationSpeed * deltaTime;
-                this.y += (dy / dist) * this.brokenFormationSpeed * deltaTime;
+                const moveX = (dx / dist) * this.brokenFormationSpeed * deltaTime;
+                const moveY = (dy / dist) * this.brokenFormationSpeed * deltaTime;
+                if (gameManager?.moveEnemyWithTerrain) gameManager.moveEnemyWithTerrain(this, moveX, moveY);
+                else {
+                    this.x += moveX;
+                    this.y += moveY;
+                }
             }
             return this.hp > 0;
         }
@@ -7419,8 +7453,13 @@ class TigerGuardEnemy extends Enemy {
                 this.y = targetY;
             } else {
                 // 极具压迫感的速度向内缩圈
-                this.x += (dx / dist) * this.closingSpeed * deltaTime;
-                this.y += (dy / dist) * this.closingSpeed * deltaTime;
+                const moveX = (dx / dist) * this.closingSpeed * deltaTime;
+                const moveY = (dy / dist) * this.closingSpeed * deltaTime;
+                if (gameManager?.moveEnemyWithTerrain) gameManager.moveEnemyWithTerrain(this, moveX, moveY);
+                else {
+                    this.x += moveX;
+                    this.y += moveY;
+                }
             }
         } else {
             // 阶段二：锁阵后，变为随 Boss 移动的跟屁虫
@@ -7516,8 +7555,13 @@ class WoodenOxEnemy extends Enemy {
                 this.directionChangeTimer = (Number(params.directionChangeMin) || 0.9) + GameRuntime.random() * (Number(params.directionChangeRandom) || 0.8);
             }
 
-            this.x += Math.cos(this.dirAngle) * this.speed * 1.35 * deltaTime;
-            this.y += Math.sin(this.dirAngle) * this.speed * 1.35 * deltaTime;
+            const moveX = Math.cos(this.dirAngle) * this.speed * 1.35 * deltaTime;
+            const moveY = Math.sin(this.dirAngle) * this.speed * 1.35 * deltaTime;
+            if (gm?.moveEnemyWithTerrain) gm.moveEnemyWithTerrain(this, moveX, moveY);
+            else {
+                this.x += moveX;
+                this.y += moveY;
+            }
 
             const margin = 120;
             const left = gm.getViewportLeft() - margin;
@@ -7554,8 +7598,12 @@ class WoodenOxEnemy extends Enemy {
         // 按当前方向移动
         const dx = Math.cos(this.dirAngle);
         const dy = Math.sin(this.dirAngle);
-        this.x += dx * this.speed * deltaTime;
-        this.y += dy * this.speed * deltaTime;
+        const gm = window.gameManager;
+        if (gm?.moveEnemyWithTerrain) gm.moveEnemyWithTerrain(this, dx * this.speed * deltaTime, dy * this.speed * deltaTime);
+        else {
+            this.x += dx * this.speed * deltaTime;
+            this.y += dy * this.speed * deltaTime;
+        }
 
         // 碰到边界反弹（反转对应方向分量）
         if (this.x < 30 || this.x > canvasWidth - 30) {
@@ -7610,8 +7658,13 @@ class ArcherEnemy extends Enemy {
         if (dist > preferredRange) {
             // 在射程外 → 乖乖向玩家走近
             if (dist > 0) {
-                this.x += (dx / dist) * this.speed * deltaTime;
-                this.y += (dy / dist) * this.speed * deltaTime;
+                const moveX = (dx / dist) * this.speed * deltaTime;
+                const moveY = (dy / dist) * this.speed * deltaTime;
+                if (gm?.moveEnemyWithTerrain) gm.moveEnemyWithTerrain(this, moveX, moveY);
+                else {
+                    this.x += moveX;
+                    this.y += moveY;
+                }
             }
         } else {
             // 进入射程内 → 站桩开火（玩家哪怕骑脸，它也不会再逃跑了）
@@ -7719,6 +7772,9 @@ class Boss extends Enemy {
         this.abilityTimer = 0;
         this.abilityCooldown = FEATURE_FLAGS.ENABLE_AI_BEHAVIOR_TUNING ? 4 : (Number(bossParams.abilityCooldown) || 3);
         this.halfHealthTriggered = false;
+        this.castRemaining = 0;
+        this.rageTriggered = false;
+        this.lockedAbilityTarget = null;
         this.invulnerableOnce = false;
         this.knockbackResist = Number(bossParams.knockbackResist) || 1.0; // Boss完全免疫击退
         this.contactDamage = getEntityNumber('stage_boss', 'damage', 20);
@@ -7739,6 +7795,12 @@ class Boss extends Enemy {
             this.updateCloseAttackVisual(deltaTime);
             return true;
         }
+        if (this.ability === 'none') { super.update(deltaTime); return true; }
+        if (this.castRemaining > 0) {
+            this.castRemaining = Math.max(0, this.castRemaining - deltaTime);
+            if (this.castRemaining === 0) { this.useAbility(); this.lockedAbilityTarget = null; }
+            return true;
+        }
         super.update(deltaTime);
         this.updateAffixCharge(deltaTime);
 
@@ -7746,9 +7808,16 @@ class Boss extends Enemy {
         this.abilityTimer += deltaTime;
         if (this.abilityTimer >= this.abilityCooldown) {
             this.abilityTimer -= this.abilityCooldown;
-            this.useAbility();
+            this.castRemaining = getNumericGameSetting('CAMPAIGN.BOSS.warningSeconds', 1.1);
+            const target = ['trackingArrow', 'randomAffix'].includes(this.ability) ? gameManager.player : this;
+            this.lockedAbilityTarget = { x: target.x, y: target.y };
         }
         this.updateAffixes(deltaTime);
+        if (!this.rageTriggered && this.hp <= this.maxHp * 0.5) {
+            this.rageTriggered = true;
+            this.abilityCooldown *= getNumericGameSetting('CAMPAIGN.BOSS.enrageCooldownMultiplier', 0.85);
+            gameManager.floatingTexts.push(new FloatingText(this.x, this.y - 70, '守将破釜 · 招式加快', '#ffb07a', 18));
+        }
 
         // 检测秦琪的半血召唤
         if (this.ability === 'summonPhantoms' && !this.halfHealthTriggered && this.hp < this.maxHp / 2) {
@@ -7784,8 +7853,13 @@ class Boss extends Enemy {
     updateAffixCharge(deltaTime) {
         if (this.chargeTimer <= 0) return;
         const step = Math.min(deltaTime, this.chargeTimer);
-        this.x += this.chargeVx * step;
-        this.y += this.chargeVy * step;
+        const gm = window.gameManager;
+        if (gm?.moveEnemyWithTerrain) {
+            gm.moveEnemyWithTerrain(this, this.chargeVx * step, this.chargeVy * step);
+        } else {
+            this.x += this.chargeVx * step;
+            this.y += this.chargeVy * step;
+        }
         this.chargeTimer -= step;
     }
 
@@ -7818,8 +7892,9 @@ class Boss extends Enemy {
 
     startAffixCharge() {
         const gm = gameManager;
-        const dx = gm.player.x - this.x;
-        const dy = gm.player.y - this.y;
+        const target = this.lockedAbilityTarget || gm.player;
+        const dx = target.x - this.x;
+        const dy = target.y - this.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist <= 0) return;
         const speed = getNumericGameSetting('BOSS_AFFIXES.CHARGE_SPEED', 360);
@@ -7830,7 +7905,7 @@ class Boss extends Enemy {
 
     fireAffixArrowBurst() {
         const gm = gameManager;
-        const damage = getNumericGameSetting('BOSS_AFFIXES.ARROW_DAMAGE', 12) * (1 + gm.player.level * 0.08);
+        const damage = getNumericGameSetting('BOSS_AFFIXES.ARROW_DAMAGE', 12) * window.CampaignRules.bossSkillScale(gm.player.level, getGameSetting('CAMPAIGN.BOSS', {}));
         const count = getNumericGameSetting('BOSS_AFFIXES.ARROW_COUNT', 8);
         for (let i = 0; i < count; i++) {
             const angle = (Math.PI * 2 * i) / count;
@@ -7875,7 +7950,7 @@ class Boss extends Enemy {
                 1.1
             );
             minion.color = '#8b0000';
-            gm.enemies.push(minion);
+            gm.addEnemySafely(minion);
         }
     }
 
@@ -7892,7 +7967,7 @@ class Boss extends Enemy {
     useAbility() {
         const gm = gameManager;
         // 动态技能缩放：玩家每升1级，技能强度增加 10%
-        const skillScale = 1 + (gm.player.level * 0.1);
+        const skillScale = window.CampaignRules.bossSkillScale(gm.player.level, getGameSetting('CAMPAIGN.BOSS', {}));
         switch (this.ability) {
             case 'randomAffix':
                 // 孔秀：每轮从词缀动作中随机抽一个即时触发。
@@ -7908,7 +7983,7 @@ class Boss extends Enemy {
             case 'summonMinions':
                 // 卞喜：召唤两个小怪 - 修复：读取当前同级小怪的标准动态血量
                 const wave = Math.floor(gm.gameTime / 60);
-                const hpMultiplier = Math.pow(1.10, wave) * (1 + gm.player.level * 0.15);
+                const hpMultiplier = Math.pow(1.10, wave) * window.CampaignRules.bossSkillScale(gm.player.level, getGameSetting('CAMPAIGN.BOSS', {}));
                 const baseHp = Math.floor((10 + wave * 5 + gm.currentStage * 5) * hpMultiplier);
 
                 for (let i = 0; i < 2; i++) {
@@ -7924,7 +7999,7 @@ class Boss extends Enemy {
                     minion.expValue = Math.max(2, Math.ceil(baseHp / 2));
                     minion.resonanceDrop = 1;
                     minion.color = '#ff0000';
-                    gm.enemies.push(minion);
+                    gm.addEnemySafely(minion);
                 }
                 break;
 
@@ -7963,13 +8038,14 @@ class Boss extends Enemy {
 
     shootTrackingArrow() {
         const gm = window.gameManager;
-        const dx = gm.player.x - this.x;
-        const dy = gm.player.y - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const target = this.lockedAbilityTarget || gm.player;
+        const dx = target.x - this.x;
+        const dy = target.y - this.y;
+        const dist = Math.max(0.001, Math.sqrt(dx * dx + dy * dy));
         const dirX = dx / dist;
         const dirY = dy / dist;
 
-        const skillScale = 1 + (gm.player.level * 0.1);
+        const skillScale = window.CampaignRules.bossSkillScale(gm.player.level, getGameSetting('CAMPAIGN.BOSS', {}));
         const arrowDamage = 15 * skillScale; // 动态暗箭伤害
 
         const projectile = new BossProjectile(this.x, this.y, dirX, dirY, arrowDamage);
@@ -7978,28 +8054,8 @@ class Boss extends Enemy {
     }
 
     summonPhantoms() {
-        // 召唤前四关Boss幻影（削弱版）
         const gm = gameManager;
-        const hpMultiplier = 1 + (gm.player.level * 0.15);
-        for (let i = 0; i < 4; i++) {
-            const angle = (Math.PI * 2 * i) / 4;
-            const dist = 80;
-            const x = this.x + Math.cos(angle) * dist;
-            const y = this.y + Math.sin(angle) * dist;
-            const phantom = new Boss(STAGES[i], i, { enableAffixes: false });
-            const dynamicHp = Math.floor((STAGES[i].bossHp / 3) * hpMultiplier);
-            phantom.x = x;
-            phantom.y = y;
-            phantom.hp = dynamicHp;
-            phantom.maxHp = dynamicHp;
-            phantom.size = 30;
-            phantom.isBoss = false;
-            phantom.isElite = true;
-            phantom.isQinqiPhantom = true;
-            phantom.ability = 'none';
-            phantom.color = ['#59f2a9', '#b56cff', '#5fb2ff', '#ff6b48'][i];
-            gm.enemies.push(phantom);
-        }
+        gm.spawnQinqiPhantoms(this);
     }
 
     takeDamage(damage) {
@@ -8043,8 +8099,13 @@ class Boss extends Enemy {
         ctx.save();
         const pulse = isCasting ? 1 + Math.sin(GameRuntime.frame * 0.32) * 0.035 : 1;
         const drawSize = renderSize * pulse;
+        const baseAnchor = entry.feetAnchor || entry.anchor || [0.5, 0.78];
+        const bossAnchor = [
+            Number.isFinite(Number(baseAnchor?.[0])) ? Number(baseAnchor[0]) : 0.5,
+            Math.max(0.66, Math.min(0.86, (Number.isFinite(Number(baseAnchor?.[1])) ? Number(baseAnchor[1]) : 0.78) - 0.08)),
+        ];
         drawRuntimeAsset(ctx, sprite, entry, this.x, this.y, drawSize, drawSize, {
-            anchor: entry.feetAnchor || entry.anchor || [0.5, 0.78],
+            anchor: bossAnchor,
             filter: 'brightness(1.08) saturate(1.12) contrast(1.04)',
             shadowBlur: isCasting ? Math.max(18, drawSize * 0.16) : Math.max(12, drawSize * 0.10),
             shadowColor: isCasting ? 'rgba(255, 70, 18, 0.95)' : 'rgba(255, 22, 22, 0.82)',
@@ -8058,6 +8119,16 @@ class Boss extends Enemy {
 
     render(ctx) {
         const usedArtBoss = this.tryRenderArtBoss(ctx, window.gameManager?.assets);
+        if (this.castRemaining > 0) {
+            const target = this.lockedAbilityTarget || this;
+            ctx.save();
+            ctx.strokeStyle = '#ffcd76';ctx.fillStyle = 'rgba(230, 99, 40, 0.18)';ctx.lineWidth = 3;
+            ctx.setLineDash([12, 8]);ctx.beginPath();ctx.moveTo(this.x, this.y);ctx.lineTo(target.x, target.y);ctx.stroke();ctx.setLineDash([]);
+            ctx.beginPath();ctx.arc(target.x, target.y, 58, 0, Math.PI * 2);ctx.fill();ctx.stroke();
+            ctx.font = 'bold 16px sans-serif';ctx.textAlign = 'center';ctx.fillStyle = '#ffe0a2';
+            ctx.fillText(this.ability === 'trackingArrow' ? '暗箭蓄势 · 横向走位' : '守将蓄势 · 注意走位', this.x, this.y - this.size - 15);
+            ctx.restore();
+        }
         if (!usedArtBoss) {
             // 大 Boss 渲染为巨型方块
             this.renderThreatVisibilityCue(ctx, this.size, { shadowAlpha: 0.68 });
@@ -8151,19 +8222,26 @@ class BossProjectile extends Projectile {
         this.color = '#000000'; // 黑色暗箭
         this.speed = 300;
         this.isEnemyProjectile = true;
+        this.trackingRemaining = getNumericGameSetting('CAMPAIGN.BOSS.arrowTrackingSeconds', 1.1);
+        this.lifeRemaining = getNumericGameSetting('CAMPAIGN.BOSS.arrowLifetime', 5);
     }
 
     update(deltaTime, canvasWidth, canvasHeight) {
+        this.lifeRemaining -= deltaTime;
+        if (this.lifeRemaining <= 0) return false;
+        this.trackingRemaining -= deltaTime;
+        if (this.trackingRemaining <= 0) return super.update(deltaTime, canvasWidth, canvasHeight);
         // 持续追踪玩家
         const dx = gameManager.player.x - this.x;
         const dy = gameManager.player.y - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const dist = Math.max(0.001, Math.sqrt(dx * dx + dy * dy));
         const newDirX = dx / dist;
         const newDirY = dy / dist;
         // 平滑转向
-        this.dx = this.dx * 0.9 + newDirX * 0.1;
-        this.dy = this.dy * 0.9 + newDirY * 0.1;
-        const len = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+        const turn = 1 - Math.exp(-6 * deltaTime);
+        this.dx = this.dx * (1 - turn) + newDirX * turn;
+        this.dy = this.dy * (1 - turn) + newDirY * turn;
+        const len = Math.max(0.001, Math.sqrt(this.dx * this.dx + this.dy * this.dy));
         this.dx /= len;
         this.dy /= len;
         return super.update(deltaTime, canvasWidth, canvasHeight);
@@ -8280,8 +8358,8 @@ class Pickup {
 
     onPickup(gameManager) {
         if (this.type === PICKUP_TYPES.EXP) {
-            // 数据化经验珠：一次性给予所有存储的经验 × 5
-            gameManager.player.addExp(this.expValue * 5);
+            // expValue is actual XP, including merged pickups; never multiply it again.
+            gameManager.player.addExp(this.expValue);
         } else if (this.type === PICKUP_TYPES.BOSS_EXP) {
             // 将星之血：给予当前升到下一级所需的全部经验值
             const requiredExp = gameManager.player.expToNextLevel;
@@ -8868,6 +8946,7 @@ class LegacyPixiOverlayRenderer {
 class GameInputActions {
     constructor(keys, bindings = null) {
         this.keys = keys;
+        this.pressedKeys = new Set();
         this.previousKeys = {};
         this.bindings = bindings || {
             moveUp: ['w', 'arrowup'],
@@ -8884,11 +8963,14 @@ class GameInputActions {
     }
 
     setKey(key, pressed) {
-        this.keys[String(key || '').toLowerCase()] = pressed;
+        const normalized = String(key || '').toLowerCase();
+        if (pressed && !this.keys[normalized]) this.pressedKeys.add(normalized);
+        this.keys[normalized] = pressed;
     }
 
     update() {
         this.previousKeys = { ...this.keys };
+        this.pressedKeys.clear();
     }
 
     isDown(action) {
@@ -8901,17 +8983,17 @@ class GameInputActions {
 
     consume(action) {
         const keys = this.bindings[action] || [];
-        const pressed = keys.some(key => Boolean(this.keys[key]));
+        const pressed = keys.some(key => Boolean(this.keys[key]) || this.pressedKeys.has(key));
         if (pressed) {
-            for (const key of keys) this.keys[key] = false;
+            for (const key of keys) { this.keys[key] = false; this.pressedKeys.delete(key); }
         }
         return pressed;
     }
 
     consumeKey(key) {
         const normalized = String(key || '').toLowerCase();
-        const pressed = Boolean(this.keys[normalized]);
-        if (pressed) this.keys[normalized] = false;
+        const pressed = Boolean(this.keys[normalized]) || this.pressedKeys.has(normalized);
+        if (pressed) { this.keys[normalized] = false; this.pressedKeys.delete(normalized); }
         return pressed;
     }
 
@@ -8920,6 +9002,7 @@ class GameInputActions {
             for (const key of this.bindings[action] || []) {
                 this.keys[key] = false;
                 this.previousKeys[key] = false;
+                this.pressedKeys.delete(key);
             }
         }
     }
@@ -9296,16 +9379,24 @@ class GameManager {
     }
 
     resetMapDimensions() {
-        this.mapWidth = this.defaultMapWidth || (FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA ? getNumericGameSetting('MAP.WIDTH', 6000) : 0);
-        this.mapHeight = this.defaultMapHeight || (FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA ? getNumericGameSetting('MAP.HEIGHT', 6000) : 0);
+        if (!this.applyStaticStageMapDimensions()) {
+            this.mapWidth = this.defaultMapWidth || (FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA ? getNumericGameSetting('MAP.WIDTH', 6000) : 0);
+            this.mapHeight = this.defaultMapHeight || (FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA ? getNumericGameSetting('MAP.HEIGHT', 6000) : 0);
+        }
         this.finalBossArenaActive = false;
         this.finalBossBattleTriggered = false;
     }
 
     configureFinalBossArenaSize() {
         if (!FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA) return;
+        const finalMapSize = this.getStaticStartMapWorldSize(FINAL_STATIC_MAP_ID);
+        if (finalMapSize) {
+            this.mapWidth = finalMapSize.width;
+            this.mapHeight = finalMapSize.height;
+            return;
+        }
         this.mapWidth = Math.max(this.canvas.width, 1280);
-        this.mapHeight = Math.max(this.canvas.height * 3, 2400);
+        this.mapHeight = Math.max(this.canvas.height, 1280);
     }
 
     getWorldWidth() {
@@ -9314,6 +9405,55 @@ class GameManager {
 
     getWorldHeight() {
         return FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA ? this.mapHeight : this.canvas.height;
+    }
+
+    getRunSpawnPoint() {
+        const center = {
+            x: this.getWorldWidth() / 2,
+            y: this.getWorldHeight() / 2,
+        };
+        return this.findNearestSafeRunSpawnPoint(center);
+    }
+
+    findNearestSafeRunSpawnPoint(preferred) {
+        if (!FEATURE_FLAGS.ENABLE_MAP_TERRAIN_OBSTACLES) return preferred;
+        const radius = Math.max(18, Math.round((this.player?.size || 32) * 0.86));
+        const margin = radius + 8;
+        const clampPoint = (point) => ({
+            x: Math.max(margin, Math.min(this.getWorldWidth() - margin, point.x)),
+            y: Math.max(margin, Math.min(this.getWorldHeight() - margin, point.y)),
+        });
+        const obstacles = this.shouldUseStaticStartMap()
+            ? this.getStaticStartMapObstacles()
+            : (this.mapObstacles?.length ? this.mapObstacles : []);
+        const first = clampPoint(preferred);
+        const playerCollisionProbe = this.player || { isPlayer: true };
+        if (!this.isTerrainBlockedByList(first.x, first.y, radius, obstacles, playerCollisionProbe)) return first;
+
+        const rings = [24, 40, 56, 72, 96, 128, 160, 200, 256, 320];
+        let best = null;
+        let bestDistanceSq = Infinity;
+        for (const distance of rings) {
+            const samples = Math.max(12, Math.ceil((Math.PI * 2 * distance) / 24));
+            for (let i = 0; i < samples; i++) {
+                const angle = (i / samples) * Math.PI * 2;
+                const candidate = clampPoint({
+                    x: preferred.x + Math.cos(angle) * distance,
+                    y: preferred.y + Math.sin(angle) * distance,
+                });
+                if (this.isTerrainBlockedByList(candidate.x, candidate.y, radius, obstacles, playerCollisionProbe)) continue;
+                const dx = candidate.x - preferred.x;
+                const dy = candidate.y - preferred.y;
+                const distanceSq = dx * dx + dy * dy;
+                if (distanceSq < bestDistanceSq) {
+                    best = candidate;
+                    bestDistanceSq = distanceSq;
+                }
+            }
+            if (best) return best;
+        }
+
+        return first;
     }
 
     getViewportLeft() {
@@ -9373,6 +9513,110 @@ class GameManager {
         return MAP_TERRAIN_BIOMES[phase.biomeIndex] || null;
     }
 
+    getCurrentStaticStageMapId() {
+        if (this.finalBossArenaActive) return FINAL_STATIC_MAP_ID;
+        if (getGameSetting('CAMPAIGN.ENABLED', false)) {
+            if (this.currentStage === 0 && !this.spawnedStageBosses?.has(0)) return STATIC_START_MAP_ID;
+            return STATIC_STAGE_MAPS[Math.min(STATIC_STAGE_MAPS.length - 1, (this.currentStage || 0) + 1)].id;
+        }
+        const elapsed = Math.max(0, this.gameTime || 0);
+        let current = STATIC_STAGE_MAPS[0];
+        for (const candidate of STATIC_STAGE_MAPS) {
+            if (elapsed >= candidate.threshold) current = candidate;
+        }
+        return current?.id || STATIC_START_MAP_ID;
+    }
+
+    getStaticMapObstacleStage(mapId = this.getCurrentStaticStageMapId()) {
+        return `static:${mapId || STATIC_START_MAP_ID}`;
+    }
+
+    getStaticStartMapEntry(mapId = this.getCurrentStaticStageMapId()) {
+        return this.assets?.manifest?.map?.main?.[mapId] || null;
+    }
+
+    getStaticStartMapWorldSize(mapId = this.getCurrentStaticStageMapId()) {
+        const entry = this.getStaticStartMapEntry(mapId);
+        const sourceSize = Array.isArray(entry?.sourceSize) ? entry.sourceSize : null;
+        const worldSize = Array.isArray(entry?.worldSize) ? entry.worldSize : sourceSize;
+        const width = Number(worldSize?.[0]);
+        const height = Number(worldSize?.[1]);
+        if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) return null;
+        return { width, height };
+    }
+
+    shouldUseStaticStartMap() {
+        return Boolean(FEATURE_FLAGS.ENABLE_ART_ASSETS && this.getStaticStartMapEntry());
+    }
+
+    getStaticStartMapObstacles(mapId = this.getCurrentStaticStageMapId()) {
+        const obstacles = this.getStaticStartMapEntry(mapId)?.obstacles;
+        if (!Array.isArray(obstacles)) return [];
+        return obstacles.map((obstacle, index) => ({
+            id: obstacle.id || `${mapId || STATIC_START_MAP_ID}-obstacle-${index}`,
+            kind: obstacle.kind || 'static_map_obstacle',
+            assetCategory: 'static-map',
+            collisionType: obstacle.collisionType || 'block',
+            shape: obstacle.shape || 'circle',
+            x: Number(obstacle.x) || 0,
+            y: Number(obstacle.y) || 0,
+            width: Number(obstacle.width) || undefined,
+            height: Number(obstacle.height) || undefined,
+            radius: Number(obstacle.radius) || undefined,
+            radiusX: Number(obstacle.radiusX) || undefined,
+            radiusY: Number(obstacle.radiusY) || undefined,
+            angle: Number(obstacle.angle) || 0,
+            collisionScope: obstacle.collisionScope || 'all',
+            collisionRole: obstacle.collisionRole,
+            render: false,
+            color: obstacle.color,
+            accent: obstacle.accent,
+        }));
+    }
+
+    applyStaticStageMapDimensions() {
+        const staticMapSize = this.getStaticStartMapWorldSize();
+        if (FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA && staticMapSize) {
+            this.mapWidth = staticMapSize.width;
+            this.mapHeight = staticMapSize.height;
+            return true;
+        }
+        return false;
+    }
+
+    syncStaticStageMap(force = false) {
+        if (!FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA || !this.shouldUseStaticStartMap()) return false;
+        const nextMapId = this.getCurrentStaticStageMapId();
+        if (!force && this.currentStaticStageMapId === nextMapId) return false;
+        const previousWidth = this.getWorldWidth();
+        const previousHeight = this.getWorldHeight();
+        const previousMapId = this.currentStaticStageMapId;
+        this.currentStaticStageMapId = nextMapId;
+        this.applyStaticStageMapDimensions();
+        this.gridCols = Math.ceil(this.getWorldWidth() / this.gridCellSize);
+        this.gridRows = Math.ceil(this.getWorldHeight() / this.gridCellSize);
+        this.refreshMapTerrainForStage(this.getStaticMapObstacleStage(nextMapId));
+
+        if (this.player && previousMapId && previousMapId !== nextMapId) {
+            const relativeX = previousWidth > 0 ? this.player.x / previousWidth : 0.5;
+            const relativeY = previousHeight > 0 ? this.player.y / previousHeight : 0.5;
+            const radius = Math.max(18, Math.round((this.player.size || 32) * 0.86));
+            const margin = radius + 8;
+            const preferred = {
+                x: Math.max(margin, Math.min(this.getWorldWidth() - margin, relativeX * this.getWorldWidth())),
+                y: Math.max(margin, Math.min(this.getWorldHeight() - margin, relativeY * this.getWorldHeight())),
+            };
+            const safe = this.findNearestSafeRunSpawnPoint(preferred);
+            this.player.x = safe.x;
+            this.player.y = safe.y;
+            this.player.environmentSlowMultiplier = 1;
+            this.snapCameraToPlayer();
+        }
+        // Existing enemies can overlap the new map even if their birth was safe.
+        this.repairEnemyTerrainPositions();
+        return true;
+    }
+
     getMapTerrainLevelId(phase = this.getCurrentMapTerrainPhase()) {
         if (phase?.levelId) return phase.levelId;
         const level = Math.max(1, Math.min(5, Number(phase?.obstacleLevel) || 1));
@@ -9416,8 +9660,11 @@ class GameManager {
 
     ensureMapTerrainForCurrentStage() {
         if (!FEATURE_FLAGS.ENABLE_MAP_TERRAIN_OBSTACLES) return;
-        if (this.finalBossArenaActive) {
-            this.mapObstacles = [];
+        if (this.shouldUseStaticStartMap()) {
+            const staticStage = this.getStaticMapObstacleStage();
+            if (this.mapObstacleStage !== staticStage) {
+                this.refreshMapTerrainForStage(staticStage);
+            }
             return;
         }
         const phase = this.getCurrentMapTerrainPhase();
@@ -9435,6 +9682,18 @@ class GameManager {
     }
 
     refreshMapTerrainForStage(stage = this.getCurrentMapTerrainPhase()) {
+        if (typeof stage === 'string' && stage.startsWith('static:')) {
+            const mapId = stage.slice('static:'.length) || this.getCurrentStaticStageMapId();
+            this.mapObstacleStage = this.getStaticMapObstacleStage(mapId);
+            this.mapObstacles = this.getStaticStartMapObstacles(mapId);
+            this.mapObstacleChunks = new Map();
+            this.mapObstacleChunkKey = mapId;
+            return;
+        }
+        if (this.shouldUseStaticStartMap()) {
+            this.refreshMapTerrainForStage(this.getStaticMapObstacleStage());
+            return;
+        }
         const phase = typeof stage === 'object' ? stage : this.getCurrentMapTerrainPhase();
         this.mapObstacleStage = phase.key;
         this.mapObstacles = [];
@@ -9595,19 +9854,141 @@ class GameManager {
         return dx * dx + dy * dy <= radius * radius;
     }
 
+    isTerrainBlockedByList(x, y, radius, obstacles = this.mapObstacles || [], entity = null) {
+        return obstacles.some(obstacle =>
+            obstacle.collisionType === 'block' &&
+            this.doesTerrainObstacleApplyToEntity(obstacle, entity) &&
+            this.isCircleInsideTerrainShape(x, y, radius, obstacle)
+        );
+    }
+
+    findBlockingTerrainObstacle(x, y, radius, entity = null) {
+        if (!FEATURE_FLAGS.ENABLE_MAP_TERRAIN_OBSTACLES || this.shouldIgnoreTerrain(entity, 'collision')) return null;
+        this.ensureMapTerrainForCurrentStage();
+        return (this.mapObstacles || []).find(obstacle =>
+            obstacle.collisionType === 'block' &&
+            this.doesTerrainObstacleApplyToEntity(obstacle, entity) &&
+            this.isCircleInsideTerrainShape(x, y, radius, obstacle)
+        ) || null;
+    }
+
+    getTerrainObstacleNormal(x, y, radius, obstacle) {
+        if (!obstacle) return null;
+        if (obstacle.shape === 'circle') {
+            const dx = x - obstacle.x;
+            const dy = y - obstacle.y;
+            const dist = Math.hypot(dx, dy) || 1;
+            return { x: dx / dist, y: dy / dist };
+        }
+        if (obstacle.shape === 'ellipse') {
+            const rx = Math.max(1, (obstacle.radiusX || 80) + radius);
+            const ry = Math.max(1, (obstacle.radiusY || 40) + radius);
+            const nx = (x - obstacle.x) / (rx * rx);
+            const ny = (y - obstacle.y) / (ry * ry);
+            const dist = Math.hypot(nx, ny) || 1;
+            return { x: nx / dist, y: ny / dist };
+        }
+        const bounds = this.getObstacleBounds(obstacle);
+        const centerX = bounds.x + bounds.width / 2;
+        const centerY = bounds.y + bounds.height / 2;
+        const closestX = Math.max(bounds.x, Math.min(x, bounds.x + bounds.width));
+        const closestY = Math.max(bounds.y, Math.min(y, bounds.y + bounds.height));
+        let dx = x - closestX;
+        let dy = y - closestY;
+        if (Math.abs(dx) < 0.001 && Math.abs(dy) < 0.001) {
+            const localX = x - centerX;
+            const localY = y - centerY;
+            const px = bounds.width / 2 - Math.abs(localX);
+            const py = bounds.height / 2 - Math.abs(localY);
+            if (px < py) {
+                dx = localX >= 0 ? 1 : -1;
+                dy = 0;
+            } else {
+                dx = 0;
+                dy = localY >= 0 ? 1 : -1;
+            }
+        }
+        const dist = Math.hypot(dx, dy) || 1;
+        return { x: dx / dist, y: dy / dist };
+    }
+
+    tryResolveTerrainTangentSlide(entity, originX, originY, targetX, targetY, radius, obstacle) {
+        const normal = this.getTerrainObstacleNormal(targetX, targetY, radius, obstacle);
+        if (!normal) return null;
+        const moveX = targetX - originX;
+        const moveY = targetY - originY;
+        const moveLength = Math.hypot(moveX, moveY);
+        if (moveLength <= 0.001) return null;
+
+        const dot = moveX * normal.x + moveY * normal.y;
+        const slideX = moveX - normal.x * dot;
+        const slideY = moveY - normal.y * dot;
+        const slideLength = Math.hypot(slideX, slideY);
+        const player = this.player;
+        const candidates = [];
+        if (slideLength > 0.001) {
+            const scale = Math.min(1.22, Math.max(0.72, moveLength / slideLength));
+            candidates.push({
+                x: originX + slideX * scale,
+                y: originY + slideY * scale,
+            });
+        }
+
+        const tangentA = { x: -normal.y, y: normal.x };
+        const tangentB = { x: normal.y, y: -normal.x };
+        const tangentStep = moveLength * 0.92;
+        const playerBias = player
+            ? Math.sign((player.x - originX) * tangentA.x + (player.y - originY) * tangentA.y) || 1
+            : 1;
+        const orderedTangents = playerBias >= 0 ? [tangentA, tangentB] : [tangentB, tangentA];
+        for (const tangent of orderedTangents) {
+            candidates.push({
+                x: originX + tangent.x * tangentStep,
+                y: originY + tangent.y * tangentStep,
+            });
+        }
+
+        let best = null;
+        let bestScore = Infinity;
+        for (const candidate of candidates) {
+            const x = Math.max(radius, Math.min(this.getWorldWidth() - radius, candidate.x));
+            const y = Math.max(radius, Math.min(this.getWorldHeight() - radius, candidate.y));
+            if (this.isTerrainBlockedAt(x, y, radius, entity)) continue;
+            const playerScore = player ? Math.hypot(x - player.x, y - player.y) : 0;
+            const driftScore = Math.hypot(x - targetX, y - targetY) * 0.35;
+            const score = playerScore + driftScore;
+            if (score < bestScore) {
+                bestScore = score;
+                best = { x, y };
+            }
+        }
+        return best;
+    }
+
     shouldIgnoreTerrain(entity, mode = 'collision') {
         if (!entity) return false;
         if (mode === 'slow' && typeof entity.ignoresTerrainSlow === 'function') return entity.ignoresTerrainSlow();
         if (mode === 'collision' && typeof entity.ignoresTerrainCollision === 'function') return entity.ignoresTerrainCollision();
-        return entity.ignoreTerrain === true || entity.isBoss || entity.isLevelBoss;
+        return entity.ignoreTerrain === true;
+    }
+
+    isPlayerTerrainEntity(entity) {
+        return entity === this.player || entity?.isPlayer === true;
+    }
+
+    doesTerrainObstacleApplyToEntity(obstacle, entity = null) {
+        const scope = obstacle?.collisionScope || 'all';
+        if (scope === 'none') return false;
+        if (scope === 'playerOnly') return this.isPlayerTerrainEntity(entity);
+        if (scope === 'enemyOnly') return Boolean(entity && !this.isPlayerTerrainEntity(entity));
+        if (!this.isPlayerTerrainEntity(entity) && entity?.ignoreCollisionEnemy === true) return false;
+        return true;
     }
 
     isTerrainBlockedAt(x, y, radius, entity = null) {
         if (!FEATURE_FLAGS.ENABLE_MAP_TERRAIN_OBSTACLES || this.shouldIgnoreTerrain(entity, 'collision')) return false;
         this.ensureMapTerrainForCurrentStage();
-        return this.mapObstacles.some(obstacle =>
-            obstacle.collisionType === 'block' && this.isCircleInsideTerrainShape(x, y, radius, obstacle)
-        );
+        return this.isTerrainBlockedByList(x, y, radius, this.mapObstacles, entity);
     }
 
     resolveTerrainMovement(entity, targetX, targetY, radius, options = {}) {
@@ -9619,13 +10000,19 @@ class GameManager {
         if (!this.isTerrainBlockedAt(targetX, targetY, radius, entity)) {
             return { x: targetX, y: targetY, blocked: false };
         }
+        const blocker = this.findBlockingTerrainObstacle(targetX, targetY, radius, entity);
+        if (options.allowSlide !== false && blocker) {
+            const slide = this.tryResolveTerrainTangentSlide(entity, originX, originY, targetX, targetY, radius, blocker);
+            if (slide) return { x: slide.x, y: slide.y, blocked: true, slid: true };
+        }
         if (options.allowPathfinding) {
             const dx = targetX - originX;
             const dy = targetY - originY;
             const step = Math.sqrt(dx * dx + dy * dy);
             if (step > 0.001) {
                 const baseAngle = Math.atan2(dy, dx);
-                const candidates = [-0.72, 0.72, -1.18, 1.18, Math.PI].map(offset => ({
+                const offsets = [-0.42, 0.42, -0.72, 0.72, -1.08, 1.08, -1.42, 1.42, Math.PI];
+                const candidates = offsets.map(offset => ({
                     x: originX + Math.cos(baseAngle + offset) * step,
                     y: originY + Math.sin(baseAngle + offset) * step,
                 }));
@@ -9670,6 +10057,7 @@ class GameManager {
         let multiplier = 1;
         for (const obstacle of this.mapObstacles) {
             if (obstacle.collisionType !== 'slow') continue;
+            if (!this.doesTerrainObstacleApplyToEntity(obstacle, entity)) continue;
             if (this.isCircleInsideTerrainShape(entity.x, entity.y, radius, obstacle)) {
                 multiplier = Math.min(multiplier, obstacle.slowMultiplier || 1);
             }
@@ -9677,15 +10065,106 @@ class GameManager {
         return multiplier;
     }
 
+    getEnemyTerrainRadius(enemy) {
+        // Use the same footprint for birth, map transitions and movement.
+        return Math.max(12, (enemy?.size || 20) * 0.62);
+    }
+
+    findSafeEnemySpawnPoint(enemy, preferred = enemy) {
+        if (!enemy || !Number.isFinite(preferred?.x) || !Number.isFinite(preferred?.y)) return null;
+        this.ensureMapTerrainForCurrentStage();
+        const radius = this.getEnemyTerrainRadius(enemy);
+        const margin = radius + 2;
+        const width = this.getWorldWidth(), height = this.getWorldHeight();
+        if (width < margin * 2 || height < margin * 2) return null;
+        const clamp = (x, y) => ({
+            x: Math.max(margin, Math.min(width - margin, x)),
+            y: Math.max(margin, Math.min(height - margin, y)),
+        });
+        const obstacles = this.mapObstacles || [];
+        const ignoresCollision = !FEATURE_FLAGS.ENABLE_MAP_TERRAIN_OBSTACLES || this.shouldIgnoreTerrain(enemy, 'collision');
+        const clear = point => ignoresCollision || !this.isTerrainBlockedByList(point.x, point.y, radius + 1, obstacles, enemy);
+        const first = clamp(preferred.x, preferred.y);
+        if (clear(first)) return first;
+
+        // Preserve formations where possible, then search farther out for large blockers.
+        for (const distance of [24, 48, 80, 128, 192, 288, 416, 576, 768]) {
+            const samples = Math.min(64, Math.max(16, Math.ceil(Math.PI * 2 * distance / 24)));
+            for (let i = 0; i < samples; i++) {
+                const angle = i / samples * Math.PI * 2;
+                const candidate = clamp(first.x + Math.cos(angle) * distance, first.y + Math.sin(angle) * distance);
+                if (clear(candidate)) return candidate;
+            }
+        }
+        // Deterministic bounded fallback; never return a known blocked location.
+        const step = Math.max(48, radius * 2);
+        const cols = Math.ceil((width - margin * 2) / step);
+        const rows = Math.ceil((height - margin * 2) / step);
+        let best = null, bestDistance = Infinity;
+        for (let row = 0; row <= rows; row++) {
+            for (let col = 0; col <= cols; col++) {
+                const candidate = clamp(margin + col * step, margin + row * step);
+                const distance = Math.hypot(candidate.x - first.x, candidate.y - first.y);
+                if (distance < bestDistance && clear(candidate)) {
+                    best = candidate;
+                    bestDistance = distance;
+                }
+            }
+        }
+        return best;
+    }
+
+    addEnemySafely(enemy) {
+        const point = this.findSafeEnemySpawnPoint(enemy);
+        if (!point) return false;
+        enemy.x = point.x;
+        enemy.y = point.y;
+        this.enemies.push(enemy);
+        return true;
+    }
+
+    repairEnemyTerrainPositions() {
+        for (const enemy of this.enemies || []) {
+            const point = this.findSafeEnemySpawnPoint(enemy);
+            if (!point) continue;
+            enemy.x = point.x;
+            enemy.y = point.y;
+        }
+    }
+
     moveEnemyWithTerrain(enemy, deltaX, deltaY) {
         if (!enemy) return;
+        const radius = this.getEnemyTerrainRadius(enemy);
+        // Recover legacy/knockback/chunk-transition overlaps before attempting tiny steps.
+        if (enemy.x < radius || enemy.y < radius || enemy.x > this.getWorldWidth() - radius || enemy.y > this.getWorldHeight() - radius || this.isTerrainBlockedAt(enemy.x, enemy.y, radius, enemy)) {
+            const point = this.findSafeEnemySpawnPoint(enemy);
+            if (!point) return;
+            enemy.x = point.x;
+            enemy.y = point.y;
+        }
+        const originX = enemy.x;
+        const originY = enemy.y;
         const targetX = enemy.x + deltaX;
         const targetY = enemy.y + deltaY;
-        const radius = Math.max(9, (enemy.size || 20) * 0.42);
         const resolved = this.resolveTerrainMovement(enemy, targetX, targetY, radius, {
             allowSlide: true,
             allowPathfinding: enemy.isElite || enemy.isMiniBoss,
         });
+        const requestedStep = Math.hypot(deltaX, deltaY);
+        const resolvedStep = Math.hypot(resolved.x - originX, resolved.y - originY);
+        const maxResolvedStep = requestedStep * 1.25 + 0.5;
+        if (resolvedStep > maxResolvedStep && resolvedStep > 0.001) {
+            const clampedX = originX + ((resolved.x - originX) / resolvedStep) * maxResolvedStep;
+            const clampedY = originY + ((resolved.y - originY) / resolvedStep) * maxResolvedStep;
+            if (!this.isTerrainBlockedAt(clampedX, clampedY, radius, enemy)) {
+                enemy.x = clampedX;
+                enemy.y = clampedY;
+                return;
+            }
+            enemy.x = originX;
+            enemy.y = originY;
+            return;
+        }
         enemy.x = resolved.x;
         enemy.y = resolved.y;
     }
@@ -9806,6 +10285,11 @@ class GameManager {
             const rect = this.canvas.getBoundingClientRect();
             this.mouseX = e.clientX - rect.left;
             this.mouseY = e.clientY - rect.top;
+            if (this.gameState === GAME_STATE.PLAYING) {
+                this.pointerAimActive = true;
+                this.aimCanvasX = this.mouseX * this.canvas.width / Math.max(1, rect.width);
+                this.aimCanvasY = this.mouseY * this.canvas.height / Math.max(1, rect.height);
+            }
             GameRuntime.recordEvent({ type: 'mousemove', x: this.mouseX, y: this.mouseY });
         });
 
@@ -9976,8 +10460,18 @@ class GameManager {
 
     initializeRun(options = {}) {
         GameRuntime.resetRunStats();
+        this.gameTime = 0;
+        this.currentStage = 0; // 从第一关开始
+        this.currentStaticStageMapId = '';
+        this.finalBossArenaActive = false;
+        this.finalBossBattleTriggered = false;
         this.resetMapDimensions();
         this.player = new Player(this.getWorldWidth(), this.getWorldHeight(), this.perks, this.perkLevels);
+        const spawn = this.getRunSpawnPoint();
+        this.player.x = spawn.x;
+        this.player.y = spawn.y;
+        this.player.facingDirX = 1;
+        this.player.facingDirY = 0;
         this.snapCameraToPlayer();
         this.activeWeapons = this.player.weapons; // 全局武器管理数组，引用同步player武器
         this.enemies = [];
@@ -9989,15 +10483,17 @@ class GameManager {
         this.specialAreas = []; // 特殊区域：八门金锁盾Lv6火墙等
         this.floatingTexts = []; // 浮动文字（暴击跳字等）
 
-        this.gameTime = 0;
-        this.currentStage = 0; // 从第一关开始
-        this.refreshMapTerrainForStage(this.getCurrentMapTerrainPhase());
+        this.syncStaticStageMap(true);
         this.spawnTimer = 0;
         this.currentResonance = 0;
         this.finalBossSpawned = false; // 5分钟最终Boss
-        this.finalBossArenaActive = false;
-        this.finalBossBattleTriggered = false;
         this.spawnedMinutes = new Set(); // 重置时间轴触发记录
+        this.spawnedStageBosses = new Set();
+        this.defeatedStageBosses = new Set();
+        this.stageOrderProgress = STAGES.map(() => 0);
+        this.completedStageOrders = new Set();
+        this.campaignRestUntil = 0;
+        this.pointerAimActive = false;
         this.swarmedMinutes = new Set(); // 重置潮汐波触发记录
         this.pendingSwarm = null;
         this.pendingTigerGuardSpawn = null;
@@ -10021,16 +10517,23 @@ class GameManager {
     beginRunEntry(reason = 'runEntry') {
         if (!this.player) return this.changeState(GAME_STATE.PLAYING, { reason: `${reason}:fallback` });
         if (FEATURE_FLAG_PARAMS.get('skipRunEntry') === '1') {
+            const spawn = this.getRunSpawnPoint();
+            this.player.x = spawn.x;
+            this.player.y = spawn.y;
+            this.player.facingDirX = 1;
+            this.player.facingDirY = 0;
             this.runEntry = null;
             this.runEntryTimer = 0;
             this.input?.clearActions?.(['moveUp', 'moveDown', 'moveLeft', 'moveRight']);
             this.snapCameraToPlayer();
             return this.changeState(GAME_STATE.PLAYING, { reason: `${reason}:skipRunEntry` });
         }
-        const endX = this.player.x;
-        const endY = this.player.y;
-        const walkDistance = Math.max(76, this.player.size * 2.8);
-        const startX = Math.max(this.player.size / 2, endX - walkDistance);
+        const spawn = this.getRunSpawnPoint();
+        const endX = spawn.x;
+        const endY = spawn.y;
+        const portalX = endX;
+        const portalY = endY + 4;
+        const startX = endX;
         const startY = endY;
         this.runEntryTimer = 0;
         this.runEntryDuration = RUN_ENTRY_TIMELINE.duration;
@@ -10039,16 +10542,18 @@ class GameManager {
             startY,
             endX,
             endY,
-            portalX: startX,
-            portalY: startY,
+            portalX,
+            portalY,
             directionX: 1,
             directionY: 0,
         };
+        this.player.x = endX;
+        this.player.y = endY;
+        this.snapCameraToPlayer();
         this.player.x = startX;
         this.player.y = startY;
         this.player.facingDirX = 1;
         this.player.facingDirY = 0;
-        this.snapCameraToPlayer();
         return this.changeState(GAME_STATE.RUN_ENTRY, { reason });
     }
 
@@ -10270,6 +10775,10 @@ class GameManager {
     }
 
     spawnEnemy() {
+        const campaign = getGameSetting('CAMPAIGN', null);
+        const rules = window.CampaignRules;
+        const plan = campaign?.ENABLED && rules ? rules.director(campaign.DIRECTOR, this.currentStage, this.gameTime, this.enemies.length, getCombatRuleMultipliers().game, this.enemies.some(e => e.isBoss), this.campaignRestUntil) : null;
+        if (plan && this.enemies.length >= plan.cap) return;
         // 在屏幕外围边缘随机生成敌人
         let x, y;
         const margin = 20;
@@ -10291,21 +10800,22 @@ class GameManager {
         const baseHealth = Math.floor((10 + 5 * (this.gameTime / 60) + this.currentStage * 5) * healthMultiplier * hardMultipliers.enemyHp);
 
         // 10% 概率生成魏军弓手，5% 概率生成精英怪，2% 概率生成机关木牛盗宝怪
-        const isArcher = GameRuntime.random() < 0.10; // 10% 概率刷出远程弓手
-        const isElite = !isArcher && GameRuntime.random() < 0.05;
+        const isArcher = GameRuntime.random() < (plan?.stage.archerChance ?? 0.10);
+        const isElite = !isArcher && GameRuntime.random() < (plan?.stage.eliteChance ?? 0.05);
         const isOx = !isArcher && GameRuntime.random() < 0.02; // 2% 概率刷出盗宝贼
 
         let enemy;
         if (isArcher) {
             // 一次生成3个弓箭手，从屏幕外围边缘生成（和普通小怪一样），往玩家方向移动保持距离
             const spread = 60;
-            for (let i = 0; i < 3; i++) {
+            const groupSize = plan ? Math.min(plan.stage.archerGroup, plan.cap - this.enemies.length) : 3;
+            for (let i = 0; i < groupSize; i++) {
                 // 在原出生点周围分散，保持屏幕外出生特性
                 const sx = x + (GameRuntime.random() - 0.5) * spread;
                 const sy = y + (GameRuntime.random() - 0.5) * spread;
                 const archer = new ArcherEnemy(sx, sy, baseHealth);
                 archer.speed *= hardMultipliers.enemySpeed;
-                this.enemies.push(archer);
+                this.addEnemySafely(archer);
             }
             return; // 已经添加完，不需要再push一次
         } else if (isOx) {
@@ -10333,7 +10843,7 @@ class GameManager {
         } else {
             enemy = new Enemy(x, y, baseHealth, hardMultipliers.enemySpeed);
         }
-        this.enemies.push(enemy);
+        this.addEnemySafely(enemy);
     }
 
     getMiniBossTypeForMinute(minute) {
@@ -10663,7 +11173,7 @@ class GameManager {
             return manager.renderMiniBoss(this, ctx);
         };
 
-        this.enemies.push(miniBoss);
+        if (!this.addEnemySafely(miniBoss)) return;
         this.floatingTexts.push(new FloatingText(miniBoss.x, miniBoss.y - miniBoss.size - 30, `Elite Captain: ${typeConfig.name}`, typeConfig.warningColor, 20));
         this.floatingTexts.push(new FloatingText(miniBoss.x, miniBoss.y - miniBoss.size - 8, typeConfig.hint, '#f3e7c4', 14));
         console.log(`[Timeline] ${minute} min: ${typeConfig.name} spawned. HP: ${hp}`);
@@ -10725,7 +11235,7 @@ class GameManager {
 
             // 必须把 centerX, centerY 传进去
             const guard = new TigerGuardEnemy(spawnX, spawnY, pending.boss, angle, pending.orbitRadius, pending.guardBaseHp, pending.centerX, pending.centerY);
-            this.enemies.push(guard);
+            this.addEnemySafely(guard);
             pending.nextIndex++;
             spawned++;
         }
@@ -10739,19 +11249,31 @@ class GameManager {
     // 偶数分钟：生成守将大 Boss
     spawnTimelineBoss(bossIndex, options = {}) {
         const stageData = STAGES[bossIndex];
+        const existing = this.enemies.find(enemy => enemy.isBoss && !enemy.isQinqiPhantom && enemy.stageIndex === bossIndex);
+        if (existing) return existing;
 
         const boss = new Boss(stageData, bossIndex);
 
         // 新增：动态等级缩放，玩家每升1级，Boss总血量额外增加 15%
         const hpMultiplier = 1 + (this.player.level * 0.15);
-        const dynamicHp = Math.floor(stageData.bossHp * hpMultiplier);
+        const campaign = getGameSetting('CAMPAIGN', null);
+        const dynamicHp = campaign?.ENABLED && window.CampaignRules
+            ? window.CampaignRules.bossHp(stageData.bossHp, this.player.level, campaign.BOSS, getCombatRuleMultipliers().game.bossHp)
+            : Math.floor(stageData.bossHp * hpMultiplier);
 
         if (options.finalArena) {
             boss.x = this.getWorldWidth() / 2;
             boss.y = Math.max(320, this.getWorldHeight() * 0.18);
         } else {
-            boss.x = this.getViewportCenterX();
-            boss.y = this.getViewportCenterY();
+            // Change map and relocate the player before measuring boss entry distance.
+            this.spawnedStageBosses?.add(bossIndex);
+            this.syncStaticStageMap();
+            const distance = campaign?.BOSS.spawnDistance || 300;
+            const half = boss.size / 2;
+            // Enter from the side with space; never materialize on top of Guan Yu.
+            const dx = this.player.x > this.getWorldWidth() / 2 ? -distance : distance;
+            boss.x = Math.max(half, Math.min(this.getWorldWidth() - half, this.player.x + dx));
+            boss.y = Math.max(half, Math.min(this.getWorldHeight() - half, this.player.y));
         }
         boss.maxHp = dynamicHp; // 强行覆盖基础配置
         boss.hp = dynamicHp;    // 强行覆盖基础配置
@@ -10770,7 +11292,11 @@ class GameManager {
             if (!options.finalArena) this.spawnQinqiPhantoms(boss);
         }
 
-        this.enemies.push(boss);
+        if (!this.addEnemySafely(boss)) {
+            this.spawnedStageBosses?.delete(bossIndex);
+            return null;
+        }
+        this.spawnedStageBosses?.add(bossIndex);
         if (!boss.isDormantFinalBoss) playGameSound('bossAppear');
         const minute = Math.round((Number(stageData.bossSecond) || ((bossIndex + 1) * 120)) / 60);
         console.log(`[Timeline] ${minute} min: ${stageData.boss} Spawned! (Level scaled HP: ${dynamicHp})`);
@@ -10784,6 +11310,7 @@ class GameManager {
         const config = WAVE_TIMELINE_CONFIG.finalBoss;
         const phantomCount = Math.max(0, Math.min(STAGES.length - 1, Number(config.phantomCount) || 0));
         for (let i = 0; i < phantomCount; i++) {
+            if (this.enemies.some(enemy => enemy.isQinqiPhantom && enemy.stageIndex === i && enemy.hp > 0)) continue;
             const phantom = new Boss(STAGES[i], i, { enableAffixes: false });
             const angle = (Math.PI * 2 * i) / Math.max(1, phantomCount);
             const dist = config.phantomDistance;
@@ -10803,7 +11330,7 @@ class GameManager {
             // 降级防跳关
             phantom.isBoss = false;
             phantom.isElite = true;
-            this.enemies.push(phantom);
+            this.addEnemySafely(phantom);
         }
     }
 
@@ -10852,14 +11379,16 @@ class GameManager {
         this.fireTornados = [];
         this.lightningEffects = [];
         this.specialAreas = [];
-        this.mapObstacles = [];
-        this.mapObstacleChunks = new Map();
-        this.mapObstacleStage = 'final_arena';
-        this.mapObstacleChunkKey = '';
+        this.currentStaticStageMapId = FINAL_STATIC_MAP_ID;
+        this.refreshMapTerrainForStage(this.getStaticMapObstacleStage(FINAL_STATIC_MAP_ID));
 
         if (this.player) {
-            this.player.x = this.getWorldWidth() / 2;
-            this.player.y = this.getWorldHeight() * 0.64;
+            const spawn = this.findNearestSafeRunSpawnPoint({
+                x: this.getWorldWidth() / 2,
+                y: this.getWorldHeight() / 2,
+            });
+            this.player.x = spawn.x;
+            this.player.y = spawn.y;
             this.player.dirX = 0;
             this.player.dirY = -1;
             this.player.environmentSlowMultiplier = 1;
@@ -11091,9 +11620,81 @@ class GameManager {
     }
 
     getRunEntryPortalEntry() {
-        return this.assets?.manifest?.map?.kit?.landmarks?.stage_portal
-            || this.assets?.manifest?.map?.kit?.hazards?.boss_portal
-            || null;
+        return this.assets?.manifest?.ui?.run_entry_portal || null;
+    }
+
+    getRunEntryPlayerWalkEntry() {
+        return this.assets?.manifest?.ui?.run_entry_player_walk || null;
+    }
+
+    getRunEntryFrame(entry, frameIndex) {
+        const frames = Array.isArray(entry?.frames) ? entry.frames : [];
+        if (!frames.length) return null;
+        const index = Math.max(0, Math.min(frames.length - 1, Math.floor(frameIndex)));
+        const src = frames[index];
+        const image = this.assets?.resolveImage?.(src);
+        if (!this.assets?.canDraw?.(image)) return null;
+        return { image, index, src };
+    }
+
+    getRunEntryPortalFrame(progress) {
+        const entry = this.getRunEntryPortalEntry();
+        const frames = Array.isArray(entry?.frames) ? entry.frames : [];
+        if (!frames.length) return { entry, frame: null };
+        const elapsed = progress * RUN_ENTRY_TIMELINE.duration;
+        const openFrames = 6;
+        const loopFrames = 6;
+        const closeFrames = 6;
+        let frameIndex = 0;
+        if (elapsed < RUN_ENTRY_TIMELINE.portalOpen[0] + RUN_ENTRY_TIMELINE.portalOpen[1]) {
+            frameIndex = Math.floor(easeOutCubic(timelineProgress(elapsed, RUN_ENTRY_TIMELINE.portalOpen)) * (openFrames - 1));
+        } else if (elapsed >= RUN_ENTRY_TIMELINE.close[0]) {
+            frameIndex = openFrames + loopFrames + Math.floor(easeInOutCubic(timelineProgress(elapsed, RUN_ENTRY_TIMELINE.close)) * (closeFrames - 1));
+        } else {
+            frameIndex = openFrames + (Math.floor(GameRuntime.frame / 12) % loopFrames);
+        }
+        return { entry, frame: this.getRunEntryFrame(entry, frameIndex) };
+    }
+
+    hasRunEntryPortalArt() {
+        const entry = this.getRunEntryPortalEntry();
+        if (!Array.isArray(entry?.frames) || !entry.frames.length) return false;
+        return entry.frames.some(src => this.assets?.canDraw?.(this.assets?.resolveImage?.(src)));
+    }
+
+    getRunEntryPortalMotion(progress) {
+        const elapsed = progress * RUN_ENTRY_TIMELINE.duration;
+        const openRaw = timelineProgress(elapsed, RUN_ENTRY_TIMELINE.portalOpen);
+        const closeRaw = timelineProgress(elapsed, RUN_ENTRY_TIMELINE.close);
+        const open = easeOutCubic(openRaw);
+        const close = easeInOutCubic(closeRaw);
+        const holdPulse = closeRaw > 0 ? 0 : Math.sin(GameRuntime.frame * 0.055) * 0.012;
+
+        if (openRaw < 1) {
+            return {
+                alpha: clamp01(openRaw * 1.25),
+                scaleX: 0.10 + open * 0.90,
+                scaleY: 0.18 + open * 0.82,
+                collapse: 0,
+            };
+        }
+
+        if (closeRaw > 0) {
+            const collapseScale = Math.max(0.02, 1 - close);
+            return {
+                alpha: clamp01(1 - closeRaw * 1.18),
+                scaleX: 0.08 + collapseScale * 0.92,
+                scaleY: 0.18 + collapseScale * 0.82,
+                collapse: close,
+            };
+        }
+
+        return {
+            alpha: 1,
+            scaleX: 1 + holdPulse,
+            scaleY: 1 - holdPulse * 0.35,
+            collapse: 0,
+        };
     }
 
     drawRunEntryGroundSeal(ctx, x, y, progress) {
@@ -11104,82 +11705,260 @@ class GameManager {
         if (alpha <= 0) return;
 
         ctx.save();
-        ctx.translate(x, y + 24);
+        ctx.translate(x, y + 34);
         ctx.globalCompositeOperation = 'lighter';
-        ctx.globalAlpha = alpha * 0.62;
-        ctx.strokeStyle = 'rgba(255, 196, 78, 0.78)';
+        ctx.globalAlpha = alpha * 0.68;
+        ctx.strokeStyle = 'rgba(197, 128, 255, 0.86)';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.ellipse(0, 0, 54, 18, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, 0, 70, 22, 0, 0, Math.PI * 2);
         ctx.stroke();
-        ctx.globalAlpha = alpha * 0.36;
+        ctx.globalAlpha = alpha * 0.42;
         ctx.setLineDash([8, 7]);
-        ctx.rotate(GameRuntime.frame * 0.006);
+        ctx.rotate(GameRuntime.frame * 0.008);
         ctx.beginPath();
-        ctx.ellipse(0, 0, 72, 25, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, 0, 94, 30, 0, 0, Math.PI * 2);
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.globalAlpha = alpha * 0.28;
-        for (let i = 0; i < 10; i++) {
-            const angle = (i / 10) * Math.PI * 2;
+        ctx.globalAlpha = alpha * 0.30;
+        ctx.strokeStyle = 'rgba(255, 194, 76, 0.8)';
+        for (let i = 0; i < 12; i++) {
+            const angle = (i / 12) * Math.PI * 2;
             ctx.beginPath();
-            ctx.moveTo(Math.cos(angle) * 28, Math.sin(angle) * 10);
-            ctx.lineTo(Math.cos(angle) * 68, Math.sin(angle) * 24);
+            ctx.moveTo(Math.cos(angle) * 32, Math.sin(angle) * 11);
+            ctx.lineTo(Math.cos(angle) * 86, Math.sin(angle) * 28);
             ctx.stroke();
         }
         ctx.restore();
     }
 
-    drawRunEntryPortal(ctx, entry, x, y, progress) {
+    drawRunEntryPortalBack(ctx, x, y, progress) {
+        const portal = this.getRunEntryPortalFrame(progress);
+        const entry = portal.entry;
         const elapsed = progress * RUN_ENTRY_TIMELINE.duration;
         const pulse = Math.sin(GameRuntime.frame * 0.18) * 0.045;
         const open = easeOutCubic(timelineProgress(elapsed, RUN_ENTRY_TIMELINE.portalOpen));
         const close = 1 - easeInOutCubic(timelineProgress(elapsed, RUN_ENTRY_TIMELINE.close));
-        const alpha = clamp01(open * close);
+        const motion = this.getRunEntryPortalMotion(progress);
+        const alpha = clamp01(open * close * motion.alpha);
         if (alpha <= 0.01) return;
-        const scale = Math.max(0.05, alpha);
-        const size = 168 * (0.86 + scale * 0.28 + pulse);
-        const image = entry?.src ? this.assets?.resolveImage?.(entry.src) : null;
-        const hasImage = Boolean(entry && this.assets?.canDraw?.(image));
+        const baseSize = Math.max(176, this.player.size * 6.6);
+        const sizeW = baseSize * (0.96 + pulse * 0.25) * motion.scaleX;
+        const sizeH = baseSize * (0.96 - pulse * 0.08) * motion.scaleY;
 
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.globalCompositeOperation = 'lighter';
-        ctx.globalAlpha = alpha * (hasImage ? 0.34 : 0.78);
-        const radiusX = size * 0.36;
-        const radiusY = size * 0.5;
-        const gradient = ctx.createRadialGradient(0, 0, 8, 0, 0, radiusY);
-        gradient.addColorStop(0, 'rgba(255, 238, 176, 0.62)');
-        gradient.addColorStop(0.42, 'rgba(255, 102, 28, 0.36)');
-        gradient.addColorStop(1, 'rgba(255, 40, 0, 0)');
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.ellipse(0, 0, radiusX, radiusY, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-
-        if (hasImage) {
-            drawRuntimeAsset(ctx, image, entry, x, y + 10, size, size, {
+        if (portal.frame) {
+            drawRuntimeAsset(ctx, portal.frame.image, entry, x, y + 8, sizeW, sizeH, {
                 alpha: alpha * 0.96,
                 anchor: entry.anchor || [0.5, 0.76],
-                shadowBlur: 18,
-                shadowColor: 'rgba(255, 126, 35, 0.55)',
+                shadowBlur: Math.max(4, 26 * (1 - motion.collapse * 0.55)),
+                shadowColor: motion.collapse > 0.6 ? 'rgba(235, 226, 255, 0.72)' : 'rgba(159, 72, 255, 0.68)',
                 blendMode: 'source-over',
                 debug: false,
             });
+        } else {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.globalCompositeOperation = 'lighter';
+            ctx.globalAlpha = alpha * 0.68;
+            const radiusY = sizeH * 0.48;
+            const radiusX = sizeW * 0.36;
+            const gradient = ctx.createRadialGradient(0, 0, 8, 0, 0, radiusY);
+            gradient.addColorStop(0, 'rgba(230, 218, 255, 0.52)');
+            gradient.addColorStop(0.34, 'rgba(143, 62, 255, 0.44)');
+            gradient.addColorStop(0.74, 'rgba(20, 8, 34, 0.18)');
+            gradient.addColorStop(1, 'rgba(42, 0, 82, 0)');
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, radiusX, radiusY, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+            this.drawRunEntryFallbackPortal(ctx, x, y, Math.max(sizeW, sizeH), alpha);
         }
+    }
 
+    drawRunEntryFallbackPortal(ctx, x, y, size, alpha) {
         ctx.save();
         ctx.translate(x, y);
         ctx.globalCompositeOperation = 'lighter';
-        ctx.globalAlpha = alpha * (hasImage ? 0.42 : 0.82);
+        ctx.globalAlpha = alpha * 0.84;
         ctx.rotate(GameRuntime.frame * 0.025);
+        const radiusX = size * 0.34;
+        const radiusY = size * 0.48;
         ctx.lineWidth = Math.max(2, size * 0.025);
-        ctx.strokeStyle = 'rgba(255, 218, 118, 0.82)';
+        ctx.strokeStyle = 'rgba(196, 134, 255, 0.9)';
         ctx.beginPath();
         ctx.ellipse(0, 0, radiusX * 0.92, radiusY * 0.92, 0, 0, Math.PI * 2);
         ctx.stroke();
+        ctx.rotate(-GameRuntime.frame * 0.046);
+        ctx.strokeStyle = 'rgba(72, 168, 255, 0.72)';
+        ctx.beginPath();
+        ctx.ellipse(0, 0, radiusX * 0.68, radiusY * 0.82, 0, 0, Math.PI * 2);
+        ctx.stroke();
         ctx.restore();
+    }
+
+    drawRunEntryPlayer(ctx, progress, elapsed) {
+        const entry = this.getRunEntryPlayerWalkEntry();
+        const frames = Array.isArray(entry?.frames) ? entry.frames : [];
+        const walkRaw = timelineProgress(elapsed, RUN_ENTRY_TIMELINE.emerge);
+        const walkProgress = easeInOutCubic(walkRaw);
+        const reveal = easeOutCubic(timelineProgress(elapsed, [0.55, 0.58]));
+        const solidAlpha = clamp01((reveal - 0.18) / 0.82);
+        const shadowAlpha = clamp01(walkProgress * (1 - timelineProgress(elapsed, RUN_ENTRY_TIMELINE.close)));
+        const riseOffset = (1 - walkProgress) * this.player.size * 0.34;
+
+        ctx.save();
+        ctx.globalCompositeOperation = 'multiply';
+        ctx.globalAlpha = 0.18 + shadowAlpha * 0.28;
+        ctx.fillStyle = 'rgba(8, 4, 15, 0.92)';
+        ctx.beginPath();
+        ctx.ellipse(this.player.x, this.player.y + this.player.size * 0.48, this.player.size * 1.28, this.player.size * 0.38, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        if (frames.length) {
+            const frameIndex = Math.min(frames.length - 1, Math.floor(walkProgress * frames.length));
+            const frame = this.getRunEntryFrame(entry, frameIndex);
+            if (frame) {
+                const size = Math.max(150, this.player.size * 5.25);
+                ctx.save();
+                if (elapsed < 0.85) {
+                    ctx.globalCompositeOperation = 'source-over';
+                    ctx.globalAlpha = clamp01(0.25 + solidAlpha * 0.65);
+                    ctx.filter = `brightness(${0.58 + solidAlpha * 0.42}) saturate(${0.7 + solidAlpha * 0.5})`;
+                }
+                drawRuntimeAsset(ctx, frame.image, entry, this.player.x, this.player.y + 4 + riseOffset, size, size, {
+                    alpha: clamp01(0.22 + reveal * 0.9),
+                    anchor: entry.anchor || [0.5, 0.78],
+                    shadowBlur: 18,
+                    shadowColor: 'rgba(100, 56, 255, 0.56)',
+                    blendMode: 'source-over',
+                    debug: false,
+                });
+                ctx.restore();
+                return;
+            }
+        }
+
+        const silhouetteAlpha = clamp01(1 - solidAlpha) * clamp01(walkProgress * 1.3);
+        if (silhouetteAlpha > 0.02) {
+            ctx.save();
+            ctx.globalAlpha = silhouetteAlpha * 0.82;
+            ctx.fillStyle = 'rgba(7, 4, 12, 0.88)';
+            ctx.shadowBlur = 18;
+            ctx.shadowColor = 'rgba(144, 80, 255, 0.62)';
+            ctx.beginPath();
+            ctx.ellipse(this.player.x, this.player.y + this.player.size * 0.18, this.player.size * 0.46, this.player.size * 0.72, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+        ctx.globalAlpha = clamp01(0.12 + solidAlpha * 0.95);
+        ctx.save();
+        ctx.translate(0, riseOffset);
+        this.player.render(ctx);
+        ctx.restore();
+        ctx.globalAlpha = 1;
+    }
+
+    drawRunEntryPortalFront(ctx, x, y, progress) {
+        const elapsed = progress * RUN_ENTRY_TIMELINE.duration;
+        const open = easeOutCubic(timelineProgress(elapsed, RUN_ENTRY_TIMELINE.portalOpen));
+        const close = 1 - easeInOutCubic(timelineProgress(elapsed, RUN_ENTRY_TIMELINE.close));
+        const alpha = clamp01(open * close);
+        if (alpha <= 0.01) return;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.rotate(-GameRuntime.frame * 0.028);
+        ctx.globalAlpha = alpha * 0.44;
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgba(255, 196, 86, 0.78)';
+        ctx.beginPath();
+        ctx.ellipse(0, 6, 74, 104, 0, -Math.PI * 0.18, Math.PI * 1.24);
+        ctx.stroke();
+        ctx.globalAlpha = alpha * 0.30;
+        ctx.strokeStyle = 'rgba(88, 184, 255, 0.74)';
+        ctx.beginPath();
+        ctx.ellipse(0, 4, 58, 88, 0, Math.PI * 0.64, Math.PI * 1.92);
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    drawRunEntryParticles(ctx, x, y, progress) {
+        const elapsed = progress * RUN_ENTRY_TIMELINE.duration;
+        const open = easeOutCubic(timelineProgress(elapsed, RUN_ENTRY_TIMELINE.portalOpen));
+        const close = 1 - easeInOutCubic(timelineProgress(elapsed, RUN_ENTRY_TIMELINE.close));
+        const alpha = clamp01(open * close);
+        if (alpha <= 0.01) return;
+        ctx.save();
+        ctx.globalCompositeOperation = 'lighter';
+        for (let i = 0; i < 34; i++) {
+            const seed = i * 37.17;
+            const drift = (GameRuntime.frame * (0.012 + (i % 5) * 0.002) + seed) % (Math.PI * 2);
+            const radius = 26 + (i % 9) * 9 + Math.sin(GameRuntime.frame * 0.05 + i) * 6;
+            const lift = timelineProgress(elapsed, RUN_ENTRY_TIMELINE.close) * 34;
+            ctx.globalAlpha = alpha * (0.18 + (i % 4) * 0.035);
+            ctx.fillStyle = i % 5 === 0 ? '#ffd36a' : (i % 2 ? '#8f55ff' : '#48b6ff');
+            ctx.beginPath();
+            ctx.arc(
+                x + Math.cos(drift) * radius,
+                y + Math.sin(drift) * radius * 0.78 - lift,
+                1.4 + (i % 3) * 0.8,
+                0,
+                Math.PI * 2
+            );
+            ctx.fill();
+        }
+        ctx.restore();
+    }
+
+    drawRunEntryCinematicOverlay(ctx, progress) {
+        ctx.save();
+        const fadeIn = progress < 0.10 ? 1 - progress / 0.10 : 0;
+        const fadeOut = progress > 0.88 ? (progress - 0.88) / 0.12 : 0;
+        const fadeAlpha = Math.max(fadeIn, fadeOut);
+        if (fadeAlpha > 0) {
+            ctx.globalAlpha = Math.min(0.88, fadeAlpha);
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        }
+        ctx.restore();
+    }
+
+    renderRunEntryWorld(ctx, progress) {
+        const stageColors = ['#1a1a1a', '#1a1515', '#151a15', '#2a1010', '#0a0a1a'];
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
+        ctx.shadowColor = 'transparent';
+        ctx.globalCompositeOperation = 'source-over';
+        this.renderScrollingBackground(ctx, stageColors[this.currentStage] || '#1a1a1a');
+
+        const useCamera = FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA;
+        if (useCamera) {
+            ctx.save();
+            const shake = progress > 0.18 && progress < 0.48 ? (1 - Math.abs(progress - 0.33) / 0.15) * 2.4 : 0;
+            ctx.translate(
+                -this.camera.x + Math.sin(GameRuntime.frame * 1.7) * shake,
+                -this.camera.y + Math.cos(GameRuntime.frame * 1.35) * shake
+            );
+        }
+
+        this.renderMapTerrain(ctx);
+
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.shadowBlur = 0;
+        ctx.shadowColor = 'transparent';
+
+        // RUN_ENTRY is the real run map, but combat is frozen. Draw only passive world props
+        // so the handoff to PLAYING does not look like a different scene.
+        for (const enemy of this.enemies) {
+            if (enemy?.type !== 'destructible_prop') continue;
+            if (!this.isInCameraView(enemy, 50)) continue;
+            enemy.render(ctx, this.assets);
+        }
+
+        return useCamera;
     }
 
     renderRunEntry(deltaTime) {
@@ -11200,76 +11979,22 @@ class GameManager {
         this.player.facingDirX = this.runEntry.directionX;
         this.player.facingDirY = this.runEntry.directionY;
 
-        const stageColors = ['#1a1a1a', '#1a1515', '#151a15', '#2a1010', '#0a0a1a'];
-        ctx.globalAlpha = 1;
-        ctx.shadowBlur = 0;
-        ctx.globalCompositeOperation = 'source-over';
-        this.renderScrollingBackground(ctx, stageColors[this.currentStage] || '#1a1a1a');
+        const useCamera = this.renderRunEntryWorld(ctx, progress);
+        const hasPortalArt = this.hasRunEntryPortalArt();
 
-        if (FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA) {
-            ctx.save();
-            const shake = progress > 0.18 && progress < 0.48 ? (1 - Math.abs(progress - 0.33) / 0.15) * 2.4 : 0;
-            ctx.translate(
-                -this.camera.x + Math.sin(GameRuntime.frame * 1.7) * shake,
-                -this.camera.y + Math.cos(GameRuntime.frame * 1.35) * shake
-            );
+        if (!hasPortalArt) this.drawRunEntryGroundSeal(ctx, this.runEntry.portalX, this.runEntry.portalY, progress);
+        this.drawRunEntryPortalBack(ctx, this.runEntry.portalX, this.runEntry.portalY, progress);
+        this.drawRunEntryPlayer(ctx, progress, elapsed);
+        if (!hasPortalArt) {
+            this.drawRunEntryPortalFront(ctx, this.runEntry.portalX, this.runEntry.portalY, progress);
+            this.drawRunEntryParticles(ctx, this.runEntry.portalX, this.runEntry.portalY, progress);
         }
 
-        this.renderMapTerrain(ctx);
-        ctx.globalAlpha = 1;
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.shadowBlur = 0;
-        this.drawRunEntryGroundSeal(ctx, this.runEntry.portalX, this.runEntry.portalY, progress);
-        this.drawRunEntryPortal(ctx, this.getRunEntryPortalEntry(), this.runEntry.portalX, this.runEntry.portalY, progress);
-
-        ctx.save();
-        ctx.globalCompositeOperation = 'lighter';
-        for (let i = 0; i < 22; i++) {
-            const angle = (i / 22) * Math.PI * 2 + GameRuntime.frame * 0.04;
-            const radius = 22 + (i % 6) * 6 + Math.sin(GameRuntime.frame * 0.08 + i) * 4;
-            ctx.globalAlpha = Math.max(0, (1 - progress * 0.55) * (0.22 + (i % 4) * 0.04));
-            ctx.fillStyle = i % 2 ? '#ffd36a' : '#ff7a24';
-            ctx.beginPath();
-            ctx.arc(
-                this.runEntry.portalX + Math.cos(angle) * radius,
-                this.runEntry.portalY + Math.sin(angle) * radius * 0.72,
-                2 + (i % 3),
-                0,
-                Math.PI * 2
-            );
-            ctx.fill();
-        }
-        ctx.restore();
-
-        const solidAlpha = clamp01((emergeProgress - 0.28) / 0.72);
-        const silhouetteAlpha = clamp01(1 - solidAlpha) * clamp01(emergeProgress * 1.3);
-        if (silhouetteAlpha > 0.02) {
-            ctx.save();
-            ctx.globalAlpha = silhouetteAlpha * 0.82;
-            ctx.fillStyle = 'rgba(7, 4, 2, 0.88)';
-            ctx.shadowBlur = 18;
-            ctx.shadowColor = 'rgba(255, 168, 48, 0.56)';
-            ctx.beginPath();
-            ctx.ellipse(this.player.x, this.player.y + this.player.size * 0.18, this.player.size * 0.46, this.player.size * 0.72, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
-        }
-        ctx.globalAlpha = clamp01(0.12 + solidAlpha * 0.95);
-        this.player.render(ctx);
-        ctx.globalAlpha = 1;
-
-        if (FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA) {
+        if (useCamera) {
             ctx.restore();
         }
 
-        ctx.save();
-        const fadeAlpha = progress < 0.16 ? 1 - progress / 0.16 : progress > 0.86 ? (progress - 0.86) / 0.14 : 0;
-        if (fadeAlpha > 0) {
-            ctx.globalAlpha = Math.min(0.86, fadeAlpha);
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        }
-        ctx.restore();
+        this.drawRunEntryCinematicOverlay(ctx, progress);
 
         if (this.runEntryTimer >= this.runEntryDuration) {
             this.completeRunEntry();
@@ -11314,11 +12039,14 @@ class GameManager {
     spawnNextSwarmLayer() {
         const ps = this.pendingSwarm;
         if (!ps || ps.currentLayer >= ps.layers) return;
+        const director = getGameSetting('CAMPAIGN.DIRECTOR', null);
+        const limit = director ? window.CampaignRules.director(director, this.currentStage, this.gameTime, this.enemies.length, getCombatRuleMultipliers().game, false).cap : Infinity;
+        if (this.enemies.length >= limit) return;
 
         const config = ps.config || WAVE_TIMELINE_CONFIG.swarm;
         const maxPerFrame = Math.max(1, Math.floor(Number(config.maxSpawnPerFrame) || 8));
         let spawnedThisFrame = 0;
-        while (ps.currentLayer < ps.layers && spawnedThisFrame < maxPerFrame) {
+        while (ps.currentLayer < ps.layers && spawnedThisFrame < maxPerFrame && this.enemies.length < limit) {
             const l = ps.currentLayer;
             const i = ps.currentIndex || 0;
             // 奇数层交错偏移半个身位，打破死板的网格感
@@ -11368,7 +12096,7 @@ class GameManager {
             mob.size = config.mobSize;
             mob.expValue = isCavalry ? config.cavalryExp : config.spearmanExp;
 
-            this.enemies.push(mob);
+            this.addEnemySafely(mob);
 
             spawnedThisFrame++;
             ps.currentIndex = i + 1;
@@ -11446,6 +12174,7 @@ class GameManager {
         // 敌人死亡掉落：经由 Drops 设计师预设调整权重
         const normalDrop = rollDropTrack(dropRules.normal, dropSettings);
         if (normalDrop === PICKUP_TYPES.EXP) {
+            const expValue = Math.max(1, Math.round(Number(enemy.expValue) || 1));
             // ========== 数据化经验珠：硬上限 + 聚合存储 ==========
             const MAX_EXP_PICKUPS = Math.max(1, Math.floor(Number(dropRules.expMerge?.maxPickups) || 300)); // 同屏硬上限
             let currentExpCount = 0;
@@ -11459,14 +12188,14 @@ class GameManager {
 
             if (currentExpCount < MAX_EXP_PICKUPS) {
                 // 未达上限：正常生成新经验珠（容量=1）
-                this.addExpPickup(x, y, 1);
+                this.addExpPickup(x, y, expValue);
             } else {
                 // 已达上限：找到第一个现存经验珠（存活最久的），隔空注能
                 if (firstExp) {
-                    firstExp.expValue += 1;
+                    firstExp.expValue += expValue;
                 } else {
                     // 极端情况：找不到就还是生成
-                    this.addExpPickup(x, y, 1);
+                    this.addExpPickup(x, y, expValue);
                 }
             }
         } else if (normalDrop === PICKUP_TYPES.RESONANCE) {
@@ -11522,7 +12251,7 @@ class GameManager {
     }
 
     handleEnemyDeath(enemy, index) {
-        if (index < 0) return false;
+        if (index < 0 || this.enemies[index] !== enemy) return false;
         if (this.preventBossDeathIfAbilitySaves(enemy)) return false;
 
         playGameSound(enemy.isBoss || enemy.isLevelBoss || enemy.isFinalBoss ? 'bossDefeat' : 'enemyDeath', enemy.isBoss || enemy.isLevelBoss || enemy.isFinalBoss ? 0.9 : 0.42);
@@ -11537,18 +12266,40 @@ class GameManager {
             this.triggerEliteDeathExplosion(enemy);
         }
         this.enemies.splice(index, 1);
+        this.updateStageOrder(enemy);
 
         // 如果是 Boss，触发进度推进
         if (enemy.isBoss) {
             // 只有最终Boss死亡才触发通关，之前阶段Boss击杀只推进进度
             if (enemy.isFinalBoss) {
+                this.defeatedStageBosses.add(enemy.stageIndex);
                 this.victory();
-            } else if (this.currentStage < STAGES.length - 1) {
-                this.currentStage++;
+            } else if (!this.defeatedStageBosses.has(enemy.stageIndex)) {
+                this.defeatedStageBosses.add(enemy.stageIndex);
+                this.currentStage = Math.max(this.currentStage, Math.min(STAGES.length - 1, enemy.stageIndex + 1));
                 this.spawnTimer = 0;
+                const campaign = getGameSetting('CAMPAIGN.BOSS', {});
+                this.campaignRestUntil = this.gameTime + (campaign.restSeconds || 8);
+                this.pendingSwarm = null;
+                this.player.hp = Math.min(this.player.maxHp, this.player.hp + (campaign.recoveryHeal || 15));
+                for (const pickup of this.pickups) pickup.isMagnetized = true;
+                this.floatingTexts.push(new FloatingText(this.player.x, this.player.y - 70, `${enemy.stageData?.boss || '守将'}已破 · 整军再战`, '#ffd36a', 22));
             }
         }
         return true;
+    }
+
+    updateStageOrder(enemy) {
+        const order = WAVE_TIMELINE_CONFIG.orders?.[this.currentStage];
+        if (!window.CampaignRules?.matchesOrder(enemy, order) || this.completedStageOrders.has(this.currentStage)) return;
+        const progress = ++this.stageOrderProgress[this.currentStage];
+        if (progress < order.count) return;
+        this.completedStageOrders.add(this.currentStage);
+        this.currentResonance += Math.max(0, Number(order.resonance) || 0);
+        const supply = new Pickup(enemy.x, enemy.y, PICKUP_TYPES.CHICKEN);
+        supply.isMagnetized = true;
+        this.pickups.push(supply);
+        this.floatingTexts.push(new FloatingText(this.player.x, this.player.y - 72, `军令达成 · ${order.name} +${order.resonance}残响`, '#bdf1b3', 20));
     }
 
     triggerEliteDeathExplosion(enemy) {
@@ -11713,6 +12464,7 @@ class GameManager {
     }
 
     onPlayerLevelUp() {
+        if (this.gameState === GAME_STATE.VICTORY || this.gameState === GAME_STATE.GAME_OVER) return;
         playGameSound('levelUp');
         // 每升满3级奖励一次免费刷新
         const rerollEveryLevels = Math.max(0, Math.floor(Number(PROGRESSION_RULE_CONFIG.rerollEveryLevels) || 0));
@@ -11722,6 +12474,7 @@ class GameManager {
 
         // 新增：触发升级核爆清屏
         this.triggerLevelUpNova();
+        if (this.gameState === GAME_STATE.VICTORY || this.gameState === GAME_STATE.GAME_OVER) return;
 
         this.levelUpOptions = this.generateLevelUpOptions();
         this.changeState(GAME_STATE.LEVEL_UP, { reason: 'levelUp' });
@@ -11779,12 +12532,14 @@ class GameManager {
     }
 
     selectLevelUpOption(index) {
+        if (this.gameState !== GAME_STATE.LEVEL_UP || !Number.isInteger(index) || !this.levelUpOptions[index]) return false;
         this.levelUpOptions[index].effect();
         // 每次升级恢复 10 点血量，不超过上限
         const healFlat = Number(PROGRESSION_RULE_CONFIG.levelUpHealFlat) || 0;
         this.player.hp = Math.min(this.player.hp + healFlat, this.player.maxHp);
         this.levelUpOptions = [];
         this.changeState(GAME_STATE.PLAYING, { reason: 'levelUpChoice' });
+        return true;
     }
 
     buyPerk(index) {
@@ -11835,6 +12590,12 @@ class GameManager {
             const movementDeltaTime = deltaTime * (this.player.environmentSlowMultiplier || 1);
             this.player.move(dx, dy, movementDeltaTime, this.getWorldWidth(), this.getWorldHeight());
         }
+        if (this.pointerAimActive) {
+            const aimX = this.getViewportLeft() + this.aimCanvasX - this.player.x;
+            const aimY = this.getViewportTop() + this.aimCanvasY - this.player.y;
+            const distance = Math.hypot(aimX, aimY);
+            if (distance > 4) { this.player.facingDirX = aimX / distance; this.player.facingDirY = aimY / distance; }
+        }
     }
 
     updateInput(deltaTime) {
@@ -11843,6 +12604,7 @@ class GameManager {
 
     updateMapSystem(deltaTime) {
         this.gameTime += deltaTime;
+        this.syncStaticStageMap();
         this.updateFinalBossArenaTrigger();
         this.ensureMapTerrainForCurrentStage();
     }
@@ -11876,28 +12638,30 @@ class GameManager {
             }
 
             const bossIndex = this.getStageBossIndexForMinute(currentMinute);
-            if (bossIndex >= 0) {
-                this.currentStage = bossIndex; // 同步当前关卡环境
-
-                // ================= 修改：终局过场拦截 =================
-                if (this.isFinalStageIndex(bossIndex)) {
-                    this.triggerFinalCutscene();
-                } else {
-                    this.spawnTimelineBoss(bossIndex);
-                }
-                // ==========================================================
-            } else if (timeline.miniBossOddMinutes && currentMinute % 2 !== 0) {
+            if (bossIndex < 0 && timeline.miniBossOddMinutes && currentMinute % 2 !== 0 && !this.enemies.some(e => e.isBoss || e.isMiniBoss)) {
                 // 1, 3, 5, 7, 9 分钟：刷新精英小 Boss（高压掉落）
                 this.spawnMiniBoss(currentMinute);
             }
         }
+
+        // Guard order is authoritative. A minute threshold cannot skip a living guard.
+        if (!this.finalBossArenaActive && !this.finalBossSpawned && this.gameState === GAME_STATE.PLAYING && this.gameTime >= this.campaignRestUntil) {
+            const next = window.CampaignRules.nextBoss(STAGES, this.defeatedStageBosses, this.enemies.some(e => e.isBoss), this.gameTime);
+            if (next >= 0 && !this.spawnedStageBosses.has(next)) {
+                this.currentStage = Math.max(this.currentStage, next);
+                this.spawnedStageBosses.add(next);
+                if (this.isFinalStageIndex(next)) this.triggerFinalCutscene();
+                else this.spawnTimelineBoss(next);
+            }
+        }
+        if (this.gameState !== GAME_STATE.PLAYING) return;
 
         // ========== 魏军·长戈兵 高压潮汐波 ==========
         // 每整分钟触发一次，从屏幕边缘四面八方冲锋进来
         const swarmConfig = WAVE_TIMELINE_CONFIG.swarm;
         const swarmStartMinute = Number(swarmConfig.startMinute ?? timeline.swarmStartMinute);
         const swarmEndMinute = Number(swarmConfig.endMinute ?? timeline.swarmEndMinute);
-        if (currentMinute >= swarmStartMinute && currentMinute <= swarmEndMinute && !this.swarmedMinutes.has(currentMinute)) {
+        if (currentMinute >= swarmStartMinute && currentMinute <= swarmEndMinute && !this.swarmedMinutes.has(currentMinute) && this.gameTime >= this.campaignRestUntil && !this.enemies.some(e => e.isBoss)) {
             this.swarmedMinutes.add(currentMinute);
             this.spawnSpearmanSwarm(currentMinute);
         }
@@ -11918,11 +12682,14 @@ class GameManager {
             // 动态难度: 每过 60 秒，生成间隔减少 20% = 频率提升 25%
             const wave = Math.floor(this.gameTime / 60);
             const hardMultipliers = getCombatRuleMultipliers().game;
-            const currentInterval = stageData.spawnInterval * Math.pow(0.8, wave) * hardMultipliers.spawnInterval;
+            const campaign = getGameSetting('CAMPAIGN', null);
+            const plan = campaign?.ENABLED && window.CampaignRules ? window.CampaignRules.director(campaign.DIRECTOR, this.currentStage, this.gameTime, this.enemies.length, hardMultipliers, this.enemies.some(e => e.isBoss), this.campaignRestUntil) : null;
+            this.encounterPlan = plan;
+            const currentInterval = plan?.interval ?? stageData.spawnInterval * Math.pow(0.8, wave) * hardMultipliers.spawnInterval;
             // 同时刷新数量：每过60秒增加1个，最少1个，最多4个
-            const spawnCount = Math.max(1, Math.round(Math.min(1 + wave, 4) * hardMultipliers.waveCount));
+            const spawnCount = plan?.count ?? Math.max(1, Math.round(Math.min(1 + wave, 4) * hardMultipliers.waveCount));
 
-            this.spawnTimer += deltaTime;
+            this.spawnTimer = Math.min(currentInterval, this.spawnTimer + deltaTime);
             if (this.spawnTimer >= currentInterval) {
                 // =========== 核心修复：移除击杀数量限制，直接根据时间轴无限刷怪 ===========
                 for (let i = 0; i < spawnCount; i++) {
@@ -11944,7 +12711,7 @@ class GameManager {
                 const margin = getNumericGameSetting('PROPS.DESTRUCTIBLE.SPAWN_MARGIN', 50); // 不生成在边缘
                 const x = this.getViewportLeft() + margin + GameRuntime.random() * (this.canvas.width - margin * 2);
                 const y = this.getViewportTop() + margin + GameRuntime.random() * (this.canvas.height - margin * 2);
-                this.enemies.push(new DestructibleProp(x, y));
+                this.addEnemySafely(new DestructibleProp(x, y));
             }
         }
     }
@@ -12411,10 +13178,7 @@ class GameManager {
     updateLevelProgressionSystem() {
         // 检查玩家升级
         if (this.player.exp >= this.player.expToNextLevel) {
-            const leveledUp = this.player.addExp(0);
-            if (leveledUp) {
-                this.onPlayerLevelUp();
-            }
+            this.player.addExp(0);
         }
     }
 
@@ -12449,6 +13213,7 @@ class GameManager {
     }
 
     gameOver() {
+        if (this.gameState === GAME_STATE.GAME_OVER || this.gameState === GAME_STATE.VICTORY) return;
         playGameSound('gameOver');
         // 累计残响
         this.totalResonance += this.currentResonance;
@@ -12468,11 +13233,12 @@ class GameManager {
         for (let i = 0; i < count; i++) {
             const x = this.getViewportLeft() + margin + GameRuntime.random() * (this.canvas.width - margin * 2);
             const y = this.getViewportTop() + margin + GameRuntime.random() * (this.canvas.height - margin * 2);
-            this.enemies.push(new DestructibleProp(x, y));
+            this.addEnemySafely(new DestructibleProp(x, y));
         }
     }
 
     victory() {
+        if (this.gameState === GAME_STATE.VICTORY || this.gameState === GAME_STATE.GAME_OVER) return;
         playGameSound('victory');
         this.totalResonance += this.currentResonance;
         this.savePersistentData();
@@ -12764,6 +13530,12 @@ class GameManager {
         const stageIndex = Number.isInteger(this.currentStage) ? this.currentStage : 0;
         const stage = STAGES[stageIndex] || STAGES[0];
         const hasBoss = Array.isArray(this.enemies) && this.enemies.some(e => e.isBoss || e.isLevelBoss);
+        const activeBoss = this.enemies?.find(e => e.isBoss && !e.isDormantFinalBoss);
+        const dormantBoss = this.enemies?.find(e => e.isDormantFinalBoss);
+        const order = WAVE_TIMELINE_CONFIG.orders?.[stageIndex];
+        const director = getGameSetting('CAMPAIGN.DIRECTOR', null);
+        const encounter = director && window.CampaignRules ? window.CampaignRules.director(director, stageIndex, this.gameTime || 0, this.enemies?.length || 0, getCombatRuleMultipliers().game, hasBoss, this.campaignRestUntil || 0) : null;
+        const nextBossSecond = Number(stage.bossSecond) || (stageIndex + 1) * 120;
         const minutes = Math.floor((this.gameTime || 0) / 60);
         const seconds = Math.floor((this.gameTime || 0) % 60);
         const hp = Math.max(0, Math.ceil(player.hp || 0));
@@ -12804,10 +13576,17 @@ class GameManager {
             expPct: Math.min(1, exp / expToNextLevel),
             lowHp: hp > 0 && hp / maxHp <= 0.25,
             stageText: `${stage.name} ${stageIndex + 1}/${STAGES.length}`,
-            bossText: hasBoss ? stage.boss : '清小怪中',
-            bossName: stage.boss,
+            bossText: activeBoss ? `${activeBoss.stageData.boss} ${Math.ceil(activeBoss.hp)}/${activeBoss.maxHp}` : '备战中',
+            bossName: activeBoss?.stageData.boss || stage.boss,
             bossActive: hasBoss,
             stageDescription: stage.description,
+            campaign: {
+                phase: encounter?.phase || '巡防战', warning: encounter?.warning || false,
+                objective: dormantBoss ? '向地图上方接近秦琪，开启决战' : activeBoss ? `击败${activeBoss.stageData.boss}，开启下一关` : `下一守将：${stage.boss} · ${Math.max(0, Math.ceil(nextBossSecond - (this.gameTime || 0)))} 秒后`,
+                order: order ? `${order.name} ${Math.min(order.count, this.stageOrderProgress?.[stageIndex] || 0)}/${order.count}${this.completedStageOrders?.has(stageIndex) ? ' · 已达成' : ''}` : '',
+                orderHint: order?.hint || '',
+                cleared: this.defeatedStageBosses?.size || 0,
+            },
             waveText: `第 ${Math.floor((this.gameTime || 0) / 60) + 1} 波`,
             timeText: `生存时间 ${minutes}:${seconds.toString().padStart(2, '0')}`,
             resonance: this.currentResonance || 0,
@@ -13818,6 +14597,10 @@ class GameManager {
         const cameraY = FEATURE_FLAGS.ENABLE_LARGE_MAP_CAMERA ? this.camera.y : 0;
         const phase = this.getCurrentMapTerrainPhase();
 
+        if (this.renderStaticStartMap(ctx, cameraX, cameraY)) {
+            return;
+        }
+
         if (FEATURE_FLAGS.ENABLE_PROCEDURAL_MAP_BASE) {
             this.renderProgrammaticMapBase(ctx, baseColor, cameraX, cameraY, phase);
             return;
@@ -13866,11 +14649,27 @@ class GameManager {
         ctx.restore();
     }
 
+    renderStaticStartMap(ctx, cameraX, cameraY) {
+        if (!this.shouldUseStaticStartMap() || !this.assets) return false;
+        const entry = this.getStaticStartMapEntry();
+        const image = this.assets.resolveImage(entry?.src);
+        if (!this.assets.canDraw(image)) return false;
+        const size = this.getStaticStartMapWorldSize();
+        if (!size) return false;
+        ctx.save();
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.drawImage(image, -cameraX, -cameraY, size.width, size.height);
+        ctx.restore();
+        return true;
+    }
+
     renderMapTerrain(ctx) {
         if (!FEATURE_FLAGS.ENABLE_MAP_TERRAIN_OBSTACLES) return;
         this.ensureMapTerrainForCurrentStage();
         if (!this.mapObstacles?.length) return;
         for (const obstacle of this.mapObstacles) {
+            if (obstacle.render === false) continue;
             const radius = obstacle.radius || Math.max(obstacle.width || obstacle.radiusX || 0, obstacle.height || obstacle.radiusY || 0) * 0.6;
             if (!this.isCircleInCameraView(obstacle.x, obstacle.y, radius, 80)) continue;
             ctx.save();
