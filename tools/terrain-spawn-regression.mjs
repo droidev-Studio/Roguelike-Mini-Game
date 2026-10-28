@@ -2,7 +2,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { chromium } from 'playwright-core';
-const args = Object.fromEntries(process.argv.slice(2).map(a => a.replace(/^--/, '').split('=')));
+const args = Object.fromEntries(process.argv.slice(2).map(a => {const [k,...v]=a.replace(/^--/, '').split('=');return [k,v.join('=')];}));
 const out = path.resolve(args.out);
 await fs.mkdir(out, {recursive:true});
 const browser = await chromium.launch({channel:'chrome', headless:true});
@@ -10,7 +10,8 @@ const page = await browser.newPage({viewport:{width:1440,height:960}});
 const errors = [];
 page.on('pageerror', e => errors.push(e.message));
 try {
-  await page.goto(args.url || 'http://127.0.0.1:5173/?skipOpening=1&skipRunEntry=1&seed=2910');
+  await page.goto(args.url || 'http://127.0.0.1:5173/?skipOpening=1&skipRunEntry=1&seed=2910',{waitUntil:'domcontentloaded',timeout:90000});
+  await page.waitForFunction(()=>window.gameManager,null,{timeout:90000});
   await page.locator('#start-game-button').click();
   await page.waitForFunction(() => gameManager.gameState === 1);
   await page.locator('[data-action="pause"]').click();

@@ -36,8 +36,9 @@ try{
     const r=await fetch(new URL(file+'?release='+release.commit,base));const data=Buffer.from(await r.arrayBuffer());
     check('file-integrity:'+file,r.ok&&crypto.createHash('sha256').update(data).digest('hex')===expected,{status:r.status});
   }
-  await page.goto(base+'?skipOpening=1&skipRunEntry=1&seed=2912',{waitUntil:'networkidle'});
-  await page.waitForFunction(()=>window.gameManager&&window.CampaignRules&&window.SaveManager,{timeout:30000});
+  const documentResponse=await page.goto(base+'?skipOpening=1&skipRunEntry=1&seed=2912',{waitUntil:'domcontentloaded',timeout:90000});
+  check('document-http',documentResponse?.ok(),{status:documentResponse?.status(),retryAfter:documentResponse?.headers()['retry-after']});
+  await page.waitForFunction(()=>window.gameManager&&window.CampaignRules&&window.SaveManager,null,{timeout:90000});
   await page.locator('#start-game-button').click();await page.waitForFunction(()=>gameManager.gameState===1);
   const before=await page.evaluate(()=>({x:gameManager.player.x,y:gameManager.player.y,time:gameManager.gameTime}));
   await page.keyboard.down('d');await page.waitForTimeout(700);await page.keyboard.up('d');
@@ -55,6 +56,22 @@ try{
   const snapshot=await page.evaluate(()=>({state:gameManager.gameState,time:gameManager.gameTime,enemies:gameManager.enemies.length,embedded:gameManager.enemies.filter(e=>gameManager.isTerrainBlockedAt(e.x,e.y,gameManager.getEnemyTerrainRadius(e),e)).length}));
   check('resumes-and-spawns',snapshot.state===1&&snapshot.time>after.time&&snapshot.enemies>0,snapshot);
   check('no-embedded-enemies',snapshot.embedded===0,snapshot);
+  // Controlled births on the actual deployed map, separate from the legal-input smoke.
+  await page.locator('[data-action="pause"]').click();
+  const births=await page.evaluate(()=>{
+    const g=gameManager,results=[];
+    for(const obstacle of g.mapObstacles.filter(o=>o.collisionType==='block'&&g.doesTerrainObstacleApplyToEntity(o,{}))){
+      const e=new Enemy(obstacle.x,obstacle.y,10);e.x=obstacle.x;e.y=obstacle.y;
+      const added=g.addEnemySafely(e),radius=g.getEnemyTerrainRadius(e);
+      const clear=added&&!g.isTerrainBlockedAt(e.x,e.y,radius,e);
+      const before={x:e.x,y:e.y};if(added)g.moveEnemyWithTerrain(e,1,1);
+      results.push({id:obstacle.id,added,clear,moved:Math.hypot(e.x-before.x,e.y-before.y)>.01});
+      const index=g.enemies.indexOf(e);if(index>=0)g.enemies.splice(index,1);
+    }
+    return results;
+  });
+  check('deployed-terrain-birth-fixture',births.length>0&&births.every(b=>b.added&&b.clear&&b.moved),births);
+  await page.locator('[data-action="resume"]').click();
   await page.screenshot({path:path.join(out,'pages-smoke.png')});
   check('browser-errors',errors.length===0,errors);check('http-errors',failedResponses.length===0,failedResponses);
 }catch(error){errors.push(error.message);process.exitCode=1;await page.screenshot({path:path.join(out,'pages-failure.png')}).catch(()=>{});}
