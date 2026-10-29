@@ -33,5 +33,11 @@
         if(!order || enemy.isProp || enemy.isBoss || enemy.isMiniBoss || enemy.isQinqiPhantom || enemy.isBossSummon || enemy.isTigerGuard)return false;
         return order.target==='any' || order.target==='elite'&&enemy.isElite || order.target===enemy.type;
     }
-    global.CampaignRules = {director, bossHp, bossSkillScale, nextBoss, matchesOrder};
+    function fanAngles(angle, count, halfAngle) {
+        const center = Number.isFinite(angle) ? angle : 0;
+        const total = Math.max(1, Math.min(9, Math.floor(Number(count) || 1)));
+        const spread = Number.isFinite(halfAngle) ? Math.max(0, Math.min(Math.PI / 2, halfAngle)) : 0;
+        return Array.from({length:total},(_,i)=>center + (total===1 ? 0 : (i/(total-1)*2-1)*spread));
+    }
+    global.CampaignRules = {director, bossHp, bossSkillScale, nextBoss, matchesOrder, fanAngles};
 })(globalThis);

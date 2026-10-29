@@ -7775,6 +7775,7 @@ class Boss extends Enemy {
         this.castRemaining = 0;
         this.rageTriggered = false;
         this.lockedAbilityTarget = null;
+        this.finalPhaseWarningRemaining = 0;
         this.invulnerableOnce = false;
         this.knockbackResist = Number(bossParams.knockbackResist) || 1.0; // Boss完全免疫击退
         this.contactDamage = getEntityNumber('stage_boss', 'damage', 20);
@@ -7796,6 +7797,11 @@ class Boss extends Enemy {
             return true;
         }
         if (this.ability === 'none') { super.update(deltaTime); return true; }
+        if (this.finalPhaseWarningRemaining > 0) {
+            this.finalPhaseWarningRemaining = Math.max(0, this.finalPhaseWarningRemaining - deltaTime);
+            if (this.finalPhaseWarningRemaining === 0) this.summonPhantoms();
+            return true;
+        }
         if (this.castRemaining > 0) {
             this.castRemaining = Math.max(0, this.castRemaining - deltaTime);
             if (this.castRemaining === 0) { this.useAbility(); this.lockedAbilityTarget = null; }
@@ -7809,7 +7815,7 @@ class Boss extends Enemy {
         if (this.abilityTimer >= this.abilityCooldown) {
             this.abilityTimer -= this.abilityCooldown;
             this.castRemaining = getNumericGameSetting('CAMPAIGN.BOSS.warningSeconds', 1.1);
-            const target = ['trackingArrow', 'randomAffix'].includes(this.ability) ? gameManager.player : this;
+            const target = ['trackingArrow', 'randomAffix', 'summonPhantoms'].includes(this.ability) ? gameManager.player : this;
             this.lockedAbilityTarget = { x: target.x, y: target.y };
         }
         this.updateAffixes(deltaTime);
@@ -7822,7 +7828,10 @@ class Boss extends Enemy {
         // 检测秦琪的半血召唤
         if (this.ability === 'summonPhantoms' && !this.halfHealthTriggered && this.hp < this.maxHp / 2) {
             this.halfHealthTriggered = true;
-            this.summonPhantoms();
+            this.castRemaining = 0;
+            this.abilityTimer = 0;
+            this.finalPhaseWarningRemaining = Math.max(0.6, Math.min(3, getNumericGameSetting('CAMPAIGN.FINAL_BOSS.phaseWarningSeconds', 1.4)));
+            gameManager.floatingTexts.push(new FloatingText(this.x, this.y - 90, '秦琪二阵 · 投影即将增援', '#ffd36a', 21));
         }
     }
 
@@ -8015,7 +8024,7 @@ class Boss extends Enemy {
                 break;
 
             case 'summonPhantoms':
-                // 秦琪：半血召唤，已经在update处理了
+                this.fireFinalBossVolley();
                 break;
         }
     }
@@ -8053,6 +8062,28 @@ class Boss extends Enemy {
         gm.projectiles.push(projectile);
     }
 
+    getFinalBossVolleyAngles() {
+        const target = this.lockedAbilityTarget || gameManager.player;
+        const angle = Math.atan2(target.y - this.y, target.x - this.x);
+        const count = getNumericGameSetting(this.halfHealthTriggered ? 'CAMPAIGN.FINAL_BOSS.enragedVolleyCount' : 'CAMPAIGN.FINAL_BOSS.volleyCount', this.halfHealthTriggered ? 5 : 3);
+        const spread = getNumericGameSetting(this.halfHealthTriggered ? 'CAMPAIGN.FINAL_BOSS.enragedHalfAngle' : 'CAMPAIGN.FINAL_BOSS.volleyHalfAngle', this.halfHealthTriggered ? 0.85 : 0.55);
+        return window.CampaignRules.fanAngles(angle, count, spread);
+    }
+
+    fireFinalBossVolley() {
+        if (!this.isFinalBoss) return;
+        const damage = getNumericGameSetting('CAMPAIGN.FINAL_BOSS.volleyDamage', 10) * window.CampaignRules.bossSkillScale(gameManager.player.level, getGameSetting('CAMPAIGN.BOSS', {}));
+        for (const angle of this.getFinalBossVolleyAngles()) {
+            const arrow = new BossProjectile(this.x, this.y, Math.cos(angle), Math.sin(angle), damage);
+            // A committed fan keeps its dodge lanes; it must not home back into them.
+            arrow.trackingRemaining = 0;
+            arrow.isFinalVolley = true;
+            arrow.speed = getNumericGameSetting('CAMPAIGN.FINAL_BOSS.volleySpeed', 250);
+            arrow.lifeRemaining = getNumericGameSetting('CAMPAIGN.FINAL_BOSS.volleyLifetime', 3.2);
+            gameManager.projectiles.push(arrow);
+        }
+    }
+
     summonPhantoms() {
         const gm = gameManager;
         gm.spawnQinqiPhantoms(this);
@@ -8085,7 +8116,7 @@ class Boss extends Enemy {
         if (!FEATURE_FLAGS.ENABLE_ART_ASSETS || !FEATURE_FLAGS.ENABLE_ART_BOSS_SPRITES || !assets) return false;
         const bossId = this.getArtBossId();
         const castWindow = 0.55;
-        const isCasting = this.chargeTimer > 0 || (this.abilityCooldown - this.abilityTimer) <= castWindow;
+        const isCasting = this.chargeTimer > 0 || this.castRemaining > 0 || this.finalPhaseWarningRemaining > 0 || (this.abilityCooldown - this.abilityTimer) <= castWindow;
         const artState = isCasting ? 'cast' : 'idle';
         const frameIndex = isCasting
             ? Math.floor((GameRuntime.frame % 18) / 9)
@@ -8124,10 +8155,21 @@ class Boss extends Enemy {
             ctx.save();
             ctx.strokeStyle = '#ffcd76';ctx.fillStyle = 'rgba(230, 99, 40, 0.18)';ctx.lineWidth = 3;
             ctx.setLineDash([12, 8]);ctx.beginPath();ctx.moveTo(this.x, this.y);ctx.lineTo(target.x, target.y);ctx.stroke();ctx.setLineDash([]);
-            ctx.beginPath();ctx.arc(target.x, target.y, 58, 0, Math.PI * 2);ctx.fill();ctx.stroke();
+            if (this.isFinalBoss) {
+                ctx.setLineDash([12, 8]);
+                const range=getNumericGameSetting('CAMPAIGN.FINAL_BOSS.volleySpeed',250)*getNumericGameSetting('CAMPAIGN.FINAL_BOSS.volleyLifetime',3.2);
+                for (const angle of this.getFinalBossVolleyAngles()) {ctx.beginPath();ctx.moveTo(this.x,this.y);ctx.lineTo(this.x+Math.cos(angle)*range,this.y+Math.sin(angle)*range);ctx.stroke();}
+                ctx.setLineDash([]);
+            } else {ctx.beginPath();ctx.arc(target.x, target.y, 58, 0, Math.PI * 2);ctx.fill();ctx.stroke();}
             ctx.font = 'bold 16px sans-serif';ctx.textAlign = 'center';ctx.fillStyle = '#ffe0a2';
-            ctx.fillText(this.ability === 'trackingArrow' ? '暗箭蓄势 · 横向走位' : '守将蓄势 · 注意走位', this.x, this.y - this.size - 15);
+            ctx.fillText(this.isFinalBoss ? '破阵扇射 · 拉开距离找间隙' : this.ability === 'trackingArrow' ? '暗箭蓄势 · 横向走位' : '守将蓄势 · 注意走位', this.x, this.y - this.size - 15);
             ctx.restore();
+        }
+        if (this.finalPhaseWarningRemaining > 0) {
+            ctx.save();ctx.strokeStyle='#ffd36a';ctx.fillStyle='rgba(255,180,70,0.12)';ctx.lineWidth=3;
+            const config=WAVE_TIMELINE_CONFIG.finalBoss,count=Math.min(4,Math.max(0,Number(config.phantomCount)||0));
+            for(let i=0;i<count;i++){const angle=i*Math.PI*2/count;ctx.beginPath();ctx.arc(this.x+Math.cos(angle)*config.phantomDistance,this.y+Math.sin(angle)*config.phantomDistance,Math.max(24,config.phantomSize*.62+4),0,Math.PI*2);ctx.fill();ctx.stroke();}
+            ctx.font='bold 18px sans-serif';ctx.textAlign='center';ctx.fillStyle='#ffe0a2';ctx.fillText('历史投影增援 · 保持距离',this.x,this.y-this.size-20);ctx.restore();
         }
         if (!usedArtBoss) {
             // 大 Boss 渲染为巨型方块
@@ -8249,6 +8291,7 @@ class BossProjectile extends Projectile {
 
     render(ctx) {
         const angle = Math.atan2(this.dy, this.dx);
+        if(this.isFinalVolley){ctx.save();ctx.strokeStyle='#ffca69';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(this.x-this.dx*20,this.y-this.dy*20);ctx.lineTo(this.x,this.y);ctx.stroke();ctx.restore();}
         if (drawArtEffectTexture(ctx, 'boss_dark_arrow', this.x, this.y, this.size * 8.4, this.size * 3.1, angle, 0.95, 0.5, 0.5)) {
             return;
         }
@@ -12745,25 +12788,24 @@ class GameManager {
         this.applyTerrainHazardsToPlayer(deltaTime);
 
         // 更新火焰区域（王植）
+        let strongestFireDamage = 0;
         for (let i = this.fireAreas.length - 1; i >= 0; i--) {
             const fire = this.fireAreas[i];
             fire.lifetime -= deltaTime;
+            if (fire.lifetime <= 0) { this.fireAreas.splice(i, 1); continue; }
             // 玩家在火焰里持续掉血
             const dx = this.player.x - fire.x;
             const dy = this.player.y - fire.y;
             const distSq = dx * dx + dy * dy;
             if (distSq <= fire.radius * fire.radius) {
-                if (this.player.canTakeDamage()) {
-                    this.applyPlayerDamage(fire.damagePerSecond * deltaTime);
-                }
+                // Overlapping pools extend denied space, not invisible damage multipliers.
+                strongestFireDamage = Math.max(strongestFireDamage, (Number(fire.damagePerSecond) || 0) * deltaTime);
                 if (FEATURE_FLAGS.ENABLE_BOSS_AFFIXES && fire.slowMultiplier) {
                     this.player.environmentSlowMultiplier = Math.min(this.player.environmentSlowMultiplier, fire.slowMultiplier);
                 }
             }
-            if (fire.lifetime <= 0) {
-                this.fireAreas.splice(i, 1);
-            }
         }
+        if (strongestFireDamage > 0 && this.player.canTakeDamage()) this.applyPlayerDamage(strongestFireDamage);
 
         // 更新太平要术火焰龙卷风陷阱
         for (let i = this.fireTornados.length - 1; i >= 0; i--) {
@@ -13579,10 +13621,10 @@ class GameManager {
             bossText: activeBoss ? `${activeBoss.stageData.boss} ${Math.ceil(activeBoss.hp)}/${activeBoss.maxHp}` : '备战中',
             bossName: activeBoss?.stageData.boss || stage.boss,
             bossActive: hasBoss,
-            stageDescription: stage.description,
+            stageDescription: activeBoss?.isFinalBoss ? (activeBoss.finalPhaseWarningRemaining > 0 ? '二阵将启：历史投影增援，保持距离' : activeBoss.halfHealthTriggered ? '二阵：五路扇射，拉开距离穿过箭隙' : '一阵：三路扇射，观察方向预告') : stage.description,
             campaign: {
                 phase: encounter?.phase || '巡防战', warning: encounter?.warning || false,
-                objective: dormantBoss ? '向地图上方接近秦琪，开启决战' : activeBoss ? `击败${activeBoss.stageData.boss}，开启下一关` : `下一守将：${stage.boss} · ${Math.max(0, Math.ceil(nextBossSecond - (this.gameTime || 0)))} 秒后`,
+                objective: dormantBoss ? '向地图上方接近秦琪，开启决战' : activeBoss?.isFinalBoss ? '击败秦琪，完成过五关' : activeBoss ? `击败${activeBoss.stageData.boss}，开启下一关` : `下一守将：${stage.boss} · ${Math.max(0, Math.ceil(nextBossSecond - (this.gameTime || 0)))} 秒后`,
                 order: order ? `${order.name} ${Math.min(order.count, this.stageOrderProgress?.[stageIndex] || 0)}/${order.count}${this.completedStageOrders?.has(stageIndex) ? ' · 已达成' : ''}` : '',
                 orderHint: order?.hint || '',
                 cleared: this.defeatedStageBosses?.size || 0,

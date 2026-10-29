@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {chromium} from 'playwright-core';
 import {installTerrainPlayAudit} from './terrain-play-audit.mjs';
+import {installCombatPlayAudit} from './combat-play-audit.mjs';
 const args=Object.fromEntries(process.argv.slice(2).map(a=>{const [k,...v]=a.replace(/^--/,'').split('=');return [k,v.join('=')||true];}));
 const out=path.resolve(String(args.out||'project-materials/quality/loop-playtest'));
 const duration=Number(args.seconds||180),label=String(args.label||'play'),seed=String(args.seed||'2901');
@@ -15,15 +16,16 @@ async function keys(next){for(const k of held)if(!next.includes(k))await page.ke
 const observe=()=>page.evaluate(()=>{
   const g=window.gameManager,p=g?.player;
   return {state:g?.gameState,time:g?.gameTime||0,stage:g?.currentStage,stageSpec:window.__RUNTIME_SPEC_CONFIG__?.stages?.stages?.[g?.currentStage],
-    player:p?{x:p.x,y:p.y,hp:p.hp,maxHp:p.maxHp,speed:p.speed,level:p.level,exp:p.exp,next:p.expToNextLevel,skills:p.inGameSkills,weapons:p.weapons.map(w=>({type:w.type,level:w.level,damage:w.damage}))}:null,
+    player:p?{x:p.x,y:p.y,hp:p.hp,maxHp:p.maxHp,speed:p.speed,level:p.level,exp:p.exp,next:p.expToNextLevel,rerolls:p.rerolls,skills:p.inGameSkills,weapons:p.weapons.map(w=>({type:w.type,level:w.level,damage:w.damage}))}:null,
     enemies:(g?.enemies||[]).map(e=>({x:e.x,y:e.y,hp:e.hp,maxHp:e.maxHp,size:e.size,isBoss:e.isBoss,isFinalBoss:e.isFinalBoss,isMiniBoss:e.isMiniBoss,isProp:e.isProp,type:e.type,bossIndex:e.stageIndex,state:e.state,lockedDirX:e.lockedDirX,lockedDirY:e.lockedDirY,castRemaining:e.castRemaining,lockedAbilityTarget:e.lockedAbilityTarget})),
     projectiles:(g?.projectiles||[]).filter(p=>p.isEnemyProjectile).map(p=>({x:p.x,y:p.y,dx:p.dx,dy:p.dy,speed:p.speed})),fire:(g?.fireAreas||[]).map(f=>({x:f.x,y:f.y,radius:f.radius})),
-    pickups:(g?.pickups||[]).map(p=>({x:p.x,y:p.y,type:p.type,value:p.expValue})),
+    pickups:(g?.pickups||[]).map(p=>({x:p.x,y:p.y,type:p.type,value:p.expValue,heals:p.type===PICKUP_TYPES.CHICKEN||p.type===PICKUP_TYPES.BUN})),
     options:(g?.levelUpOptions||[]).map(o=>({type:o.type,title:o.title,description:o.desc,weaponType:o.weaponType,weaponLevel:o.weaponLevel,key:o.skillKey})),
     world:{width:g?.getWorldWidth(),height:g?.getWorldHeight(),left:g?.getViewportLeft(),top:g?.getViewportTop()},canvas:{width:g?.canvas.width,height:g?.canvas.height,rect:g?.canvas.getBoundingClientRect().toJSON()},
     obstacles:(g?.mapObstacles||[]).filter(o=>o.collisionType==='block'&&g.doesTerrainObstacleApplyToEntity(o,p)).map(o=>({shape:o.shape,x:o.x,y:o.y,radius:o.radius,radiusX:o.radiusX,radiusY:o.radiusY,width:o.width,height:o.height})),
     terrainViolations:(g?.enemies||[]).filter(e=>!e.isProp&&g.isTerrainBlockedAt(e.x,e.y,g.getEnemyTerrainRadius(e),e)).map(e=>({type:e.type,x:e.x,y:e.y,size:e.size})),
     terrainAudit:window.__TERRAIN_PLAY_AUDIT__?.sample(),
+    combatAudit:window.__COMBAT_PLAY_AUDIT__?.sample(),
     ui:document.body.innerText.slice(0,900),specs:window.__SPEC_CONFIG_APPLIED__};
 });
 function direction(s){
@@ -33,7 +35,7 @@ function direction(s){
   const speed=Number.isFinite(p.speed)?p.speed:200;
   for(const [dx,dy,k]of options){const x=p.x+dx*speed*.28,y=p.y+dy*speed*.28;let score=0;
     if(x<40||y<40||x>s.world.width-40||y>s.world.height-40)score-=1000;
-    for(const e of foes){const d=Math.hypot(x-e.x,y-e.y),safe=(e.size||20)*.5+24;score-=Math.max(0,65-d)*.15;if(d<safe)score-=(safe-d)*4+20;}
+    for(const e of foes){const d=Math.hypot(x-e.x,y-e.y),safe=(e.size||20)*.5+24+(args.strategy==='careful'&&e.isBoss?22:0);score-=Math.max(0,65-d)*.15;if(d<safe)score-=(safe-d)*4+20;}
     for(const o of s.obstacles){let blocked;
       if(o.shape==='circle')blocked=Math.hypot(x-o.x,y-o.y)<(o.radius||40)+22;
       else if(o.shape==='ellipse')blocked=((x-o.x)/((o.radiusX||80)+22))**2+((y-o.y)/((o.radiusY||40)+22))**2<=1;
@@ -44,8 +46,10 @@ function direction(s){
     for(const f of s.fire)if(Math.hypot(x-f.x,y-f.y)<f.radius+15)score-=200;
     for(const e of foes){if(e.castRemaining>0&&e.lockedAbilityTarget&&Math.hypot(x-e.lockedAbilityTarget.x,y-e.lockedAbilityTarget.y)<75)score-=120;
       if(['windup','cast'].includes(e.state)&&e.lockedDirX!==undefined){const px=x-e.x,py=y-e.y,forward=px*e.lockedDirX+py*e.lockedDirY,side=Math.abs(px*e.lockedDirY-py*e.lockedDirX);if(forward>0&&forward<600&&side<55)score-=200;}}
-    if(loot.length){const nearest=Math.min(...loot.map(q=>Math.hypot(x-q.x,y-q.y)));score-=nearest*.14;}
-    else if(foes.length){const nearest=Math.min(...foes.map(e=>Math.hypot(x-e.x,y-e.y)));const desired=p.weapons.some(w=>w.type==='crossbow')?140:72;score-=Math.abs(nearest-desired)*.28;}
+    const heals=args.strategy==='careful'&&p.hp/p.maxHp<.6?loot.filter(q=>q.heals):[];
+    if(heals.length){score-=Math.min(...heals.map(q=>Math.hypot(x-q.x,y-q.y)))*.35;}
+    else if(loot.length){const nearest=Math.min(...loot.map(q=>Math.hypot(x-q.x,y-q.y)));score-=nearest*.14;}
+    else if(foes.length){const ordered=foes.map(e=>({e,d:Math.hypot(x-e.x,y-e.y)})).sort((a,b)=>a.d-b.d);const nearest=ordered[0].d;let desired=p.weapons.some(w=>w.type==='crossbow')?140:72;if(args.strategy==='careful'&&ordered[0].e.isBoss)desired=p.weapons.some(w=>w.type==='crossbow')?175:130;score-=Math.abs(nearest-desired)*.28;}
     score-=Math.hypot(x-s.world.width/2,y-s.world.height/2)*.0003;
     if(score>best.score)best={score,keys:k};
   }return best.keys;
@@ -54,6 +58,7 @@ function choice(s){return s.options.map((o,i)=>{
   let score=0;const t=o.title||'',has=s.player.weapons.some(w=>w.type===o.weaponType);
   if(o.weaponType)score+=has?45: s.player.weapons.length<3?35:4;
   if(/青釭|弩|太平/.test(t))score+=8;
+  if(args.strategy==='careful'&&o.weaponType==='crossbow'&&!has)score+=35;
   if(/伤害|冷却|会心|破军/.test(t))score+=18;
   if(/生命|青囊|回血/.test(t))score+=s.player.hp/s.player.maxHp<.65?100:4;
   if(/吸附|经验|移速/.test(t))score+=10;
@@ -65,6 +70,7 @@ try{
   await page.waitForFunction(()=>!!window.gameManager&&!!document.querySelector('#start-game-button'),null,{timeout:90000});
   console.log(JSON.stringify({ready:true,url:page.url()}));
   if(args.auditTerrain)await installTerrainPlayAudit(page);
+  if(args.auditCombat)await installCombatPlayAudit(page);
   if(args.difficulty==='easy'){
     await page.locator('#gameEditorToggle').click();
     for(const key of ['playerIntensity','gameHard','drops','level'])await page.locator(`[data-setting="${key}"][data-choice="easy"]`).click();
@@ -88,5 +94,5 @@ try{
     await page.waitForTimeout(120);
   }
   await keys([]);const final=await observe();if(final.state===1)await page.keyboard.press('p');await page.screenshot({path:path.join(out,label+'-final.png')});
-  await fs.writeFile(path.join(out,label+'-result.json'),JSON.stringify({method:'Real-time Chrome, fresh profile, normal initial HP/XP/weapon levels. Only start, visible difficulty settings, movement, mouse aiming, pause and offered upgrade keys. No gameplay state injection. Optional terrain instrumentation observes real births and map repairs. Seed is supplied but real frame scheduling can change random call order; not a matched deterministic comparison. Opening cinematic skipped by existing URL option.',url:page.url(),wallSeconds:duration,samples,actions,final,errors,abortedRequests,failedResponses},null,2));console.log(JSON.stringify({done:true,label,state:final.state,time:final.time,hp:final.player?.hp,errors,failedResponses,abortedRequests:abortedRequests.length}));
+  await fs.writeFile(path.join(out,label+'-result.json'),JSON.stringify({method:'Real-time Chrome, fresh profile, normal initial HP/XP/weapon levels. Only start, visible difficulty settings, movement, mouse aiming, pause and offered upgrade keys. No gameplay state injection. Optional terrain/combat instrumentation observes original runtime calls. Seed is supplied but real frame scheduling can change random call order; not a matched deterministic comparison. Opening cinematic skipped by existing URL option.',strategy:args.strategy||'original',url:page.url(),wallSeconds:duration,samples,actions,final,errors,abortedRequests,failedResponses},null,2));console.log(JSON.stringify({done:true,label,state:final.state,time:final.time,hp:final.player?.hp,errors,failedResponses,abortedRequests:abortedRequests.length}));
 }catch(error){await fs.writeFile(path.join(out,label+'-failure.json'),JSON.stringify({at:new Date().toISOString(),url:page.url(),error:error.message,errors,failedResponses},null,2));throw error;}finally{await browser.close();}

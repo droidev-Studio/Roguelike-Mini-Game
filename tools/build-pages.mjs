@@ -16,10 +16,16 @@ for(const dir of ['assets','src','vendor'])await fs.cp(path.join(root,dir),path.
 });
 await fs.writeFile(path.join(out,'.nojekyll'),'');
 const files={};
-for(const file of ['index.html',...runtime,'src/ui/UIBridge.js','src/rules/CampaignRules.js','assets/manifest.json']){
+for(const file of [...runtime,'src/ui/UIBridge.js','src/rules/CampaignRules.js','assets/manifest.json']){
   const bytes=await fs.readFile(path.join(out,file));
   files[file]=crypto.createHash('sha256').update(bytes).digest('hex');
 }
+let html=await fs.readFile(path.join(out,'index.html'),'utf8');
+for(const [file,hash]of Object.entries(files)){
+  if(file.endsWith('.js'))html=html.replaceAll(`src="${file}"`,`src="${file}?v=${hash.slice(0,12)}"`);
+}
+await fs.writeFile(path.join(out,'index.html'),html);
+files['index.html']=crypto.createHash('sha256').update(html).digest('hex');
 const commit=process.env.GITHUB_SHA||execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
 await fs.writeFile(path.join(out,'release.json'),JSON.stringify({commit,builtAt:new Date().toISOString(),files},null,2));
 console.log('Pages artifact ready: '+out);

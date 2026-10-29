@@ -76,7 +76,7 @@
       "id": "yellow-river-ferry",
       "name": "黄河渡口",
       "boss": "秦琪",
-      "description": "历史投影：召唤前四关守将幻影",
+      "description": "破阵扇射：锁定方向后齐射，半血预警投影增援",
       "fromSecond": 600,
       "toSecond": null,
       "bossSecond": 600,

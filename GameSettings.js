@@ -6,6 +6,7 @@
         CAMPAIGN: {
             ENABLED: true,
             BOSS: { hpPerLevel: 0.045, maxLevelMultiplier: 1.55, skillPerLevel: 0.025, maxSkillMultiplier: 1.4, spawnDistance: 330, warningSeconds: 1.1, recoveryHeal: 15, restSeconds: 8, enrageCooldownMultiplier: 0.85, arrowTrackingSeconds: 1.1, arrowLifetime: 5 },
+            FINAL_BOSS: { volleyCount: 3, enragedVolleyCount: 5, volleyHalfAngle: 0.55, enragedHalfAngle: 0.85, volleyDamage: 10, volleySpeed: 250, volleyLifetime: 3.2, phaseWarningSeconds: 1.4 },
             DIRECTOR: {
                 cycleSeconds: 45, warningSeconds: 5, assaultSeconds: 10, assaultRate: 1.25,
                 minimumInterval: 0.32, bossIntervalMultiplier: 1.8,

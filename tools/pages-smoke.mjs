@@ -41,6 +41,8 @@ try{
   check('document-http',documentResponse?.ok(),{status:documentResponse?.status(),retryAfter:documentResponse?.headers()['retry-after']});
   await page.waitForFunction(()=>window.gameManager&&window.CampaignRules&&window.SaveManager,null,{timeout:90000});
   check('single-document-startup',documentRequests===1,{documentRequests});
+  const scripts=await page.evaluate(()=>Array.from(document.scripts).filter(s=>s.src).map(s=>s.getAttribute('src')));
+  check('classic-scripts-match-release',Object.entries(release.files).filter(([file])=>file.endsWith('.js')).every(([file,hash])=>scripts.includes(file+'?v='+hash.slice(0,12))),scripts);
   await page.locator('#start-game-button').click();await page.waitForFunction(()=>gameManager.gameState===1);
   const before=await page.evaluate(()=>({x:gameManager.player.x,y:gameManager.player.y,time:gameManager.gameTime}));
   await page.keyboard.down('d');await page.waitForTimeout(700);await page.keyboard.up('d');

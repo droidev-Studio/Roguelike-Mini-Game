@@ -59,3 +59,21 @@ test('a quick down-up between frames is consumed exactly once',()=>{
 test('clearing input prevents menu keys leaking into resumed play',()=>{
   const input=new context.Input({});input.setKey('p',true);input.clearActions(['pause']);assert.equal(input.consume('pause'),false);
 });
+test('final volley leaves player-sized dodge lanes at fighting distance',()=>{
+  const config=context.window.DEFAULT_GAME_SETTINGS.CAMPAIGN.FINAL_BOSS;
+  for(const [count,spread]of [[config.volleyCount,config.volleyHalfAngle],[config.enragedVolleyCount,config.enragedHalfAngle]]){
+    const angles=R.fanAngles(Math.PI/2,count,spread);
+    assert.equal(angles.length,count);
+    assert.ok(Math.abs(angles.reduce((a,b)=>a+b,0)/count-Math.PI/2)<1e-10);
+    const gap=2*120*Math.sin((angles[1]-angles[0])/2);
+    assert.ok(gap>2*(18+5),'a player and arrow must fit between adjacent lanes');
+  }
+  assert.ok(config.volleyLifetime<3*settings.BOSS.enrageCooldownMultiplier+settings.BOSS.warningSeconds,'fans expire before the next legacy-speed volley');
+  assert.ok(config.volleyDamage*R.bossSkillScale(999,settings.BOSS)<20);
+  assert.ok(config.volleyDamage*R.bossSkillScale(999,settings.BOSS)*config.enragedVolleyCount+20<100,'normal full-health player is not killed by one complete fan plus contact burst');
+});
+test('invalid fan inputs cannot create unbounded bullets or non-finite directions',()=>{
+  assert.equal(R.fanAngles(0,100,100).length,9);
+  assert.equal(R.fanAngles(0,-3,.5).length,1);
+  assert.ok(R.fanAngles(NaN,5,NaN).every(Number.isFinite));
+});
