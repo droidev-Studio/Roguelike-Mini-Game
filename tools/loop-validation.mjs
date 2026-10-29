@@ -9,6 +9,7 @@ const checks=[
   {name:'syntax',args:['--check','game.js']},
   {name:'typecheck',args:['node_modules/typescript/bin/tsc','--noEmit']},
   {name:'campaign-rules',args:['--test','tools/campaign-rules.test.mjs']},
+  {name:'entry-bootstrap',args:['--test','tools/entry-bootstrap.test.mjs']},
   {name:'assets',args:['tools/validate-assets.js']},
   {name:'p0-gameplay',args:['tools/p0-gameplay-smoke.js']},
 ];

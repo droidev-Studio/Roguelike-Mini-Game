@@ -14,60 +14,25 @@
             const isGitHubPages = window.location.hostname.endsWith('github.io')
             const isLocalDev = ['127.0.0.1', 'localhost', '::1'].includes(window.location.hostname)
             const params = new URLSearchParams(window.location.search)
-            const artKeys = [
-                'artAssets',
-                'artWeaponIcons',
-                'artSkillIcons',
-                'artPickups',
-                'artA1A2',
-                'artEnemies',
-                'artBosses',
-                'artPlayer',
-                'artTiles',
-                'artEffects',
-                'artUi',
-                'artUISkin',
-                'artHud',
-                'artPreview'
-            ]
-            const devKeys = [
-                'domUi',
-                'audio',
-                'stateMusic',
-                'domWeaponCd',
-                'pickupMerge',
-                'aiTuning',
-                'qinqiPhantoms',
-                'ENABLE_LARGE_MAP_CAMERA',
-                'ENABLE_GAME_SETTINGS',
-                'ENABLE_WEAPON_COOLDOWN_HUD'
-            ]
-            const hasArtParam = artKeys.some(key => params.has(key))
-            const hasDevParam = devKeys.some(key => params.has(key))
-
-            if ((!isGitHubPages && !isLocalDev) || (hasArtParam && hasDevParam)) return
-
-            if (!params.has('seed')) params.set('seed', '12345')
-            params.set('artA1A2', '1')
-            params.set('artEnemies', '1')
-            params.set('artPlayer', '1')
-            params.set('artTiles', '1')
-            params.set('artEffects', '1')
-            params.set('artUi', '1')
-            params.set('artHud', '1')
-            if (isLocalDev) {
-                params.set('domUi', '1')
-                params.set('audio', '1')
-                params.set('stateMusic', '1')
-                params.set('domWeaponCd', '1')
-                params.set('pickupMerge', '1')
-                params.set('aiTuning', '1')
-                params.set('qinqiPhantoms', '1')
-                params.set('ENABLE_LARGE_MAP_CAMERA', '1')
-                params.set('ENABLE_GAME_SETTINGS', '1')
-                params.set('ENABLE_WEAPON_COOLDOWN_HUD', '1')
+            if (!isGitHubPages && !isLocalDev) return
+            const defaults = {
+                seed: '12345',
+                artA1A2: '1', artEnemies: '1', artPlayer: '1', artTiles: '1',
+                artEffects: '1', artUi: '1', artHud: '1',
+                domUi: '1', audio: '1', stateMusic: '1', domWeaponCd: '1',
+                pickupMerge: '1', aiTuning: '1', qinqiPhantoms: '1',
+                ENABLE_LARGE_MAP_CAMERA: '1', ENABLE_GAME_SETTINGS: '1',
+                ENABLE_WEAPON_COOLDOWN_HUD: '1'
             }
-            window.location.replace(`${window.location.pathname}?${params.toString()}${window.location.hash}`)
+            for (const [key, value] of Object.entries(defaults)) {
+                if (!params.has(key)) params.set(key, value)
+            }
+            // Flags below read location.search synchronously. Normalize it in place:
+            // reloading here used to loop forever on Pages, which lacked the local flags.
+            const search = `?${params.toString()}`
+            if (search !== window.location.search) {
+                window.history.replaceState(null, '', `${window.location.pathname}${search}${window.location.hash}`)
+            }
         })()
     </script>
 </head>

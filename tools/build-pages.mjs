@@ -16,7 +16,7 @@ for(const dir of ['assets','src','vendor'])await fs.cp(path.join(root,dir),path.
 });
 await fs.writeFile(path.join(out,'.nojekyll'),'');
 const files={};
-for(const file of [...runtime,'src/rules/CampaignRules.js','assets/manifest.json']){
+for(const file of ['index.html',...runtime,'src/ui/UIBridge.js','src/rules/CampaignRules.js','assets/manifest.json']){
   const bytes=await fs.readFile(path.join(out,file));
   files[file]=crypto.createHash('sha256').update(bytes).digest('hex');
 }

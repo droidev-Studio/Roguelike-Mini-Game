@@ -24,7 +24,8 @@ if(args.dir){
 const base=args.url||`http://127.0.0.1:${server.address().port}/`;
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const page=await browser.newPage({viewport:{width:1440,height:960}});
-const errors=[],failedResponses=[],checks=[];
+const errors=[],failedResponses=[],checks=[];let documentRequests=0;
+page.on('request',r=>{if(r.isNavigationRequest()&&r.frame()===page.mainFrame()&&++documentRequests>4){errors.push('Repeated document navigation');page.close().catch(()=>{});}});
 page.on('pageerror',e=>errors.push(e.message));
 page.on('response',r=>{if(r.status()>=400)failedResponses.push({url:r.url(),status:r.status()});});
 const check=(name,ok,detail)=>{checks.push({name,ok,detail});if(!ok)throw new Error(name+': '+JSON.stringify(detail));};
@@ -39,6 +40,7 @@ try{
   const documentResponse=await page.goto(base+'?skipOpening=1&skipRunEntry=1&seed=2912',{waitUntil:'domcontentloaded',timeout:90000});
   check('document-http',documentResponse?.ok(),{status:documentResponse?.status(),retryAfter:documentResponse?.headers()['retry-after']});
   await page.waitForFunction(()=>window.gameManager&&window.CampaignRules&&window.SaveManager,null,{timeout:90000});
+  check('single-document-startup',documentRequests===1,{documentRequests});
   await page.locator('#start-game-button').click();await page.waitForFunction(()=>gameManager.gameState===1);
   const before=await page.evaluate(()=>({x:gameManager.player.x,y:gameManager.player.y,time:gameManager.gameTime}));
   await page.keyboard.down('d');await page.waitForTimeout(700);await page.keyboard.up('d');
@@ -76,7 +78,7 @@ try{
   check('browser-errors',errors.length===0,errors);check('http-errors',failedResponses.length===0,failedResponses);
 }catch(error){errors.push(error.message);process.exitCode=1;await page.screenshot({path:path.join(out,'pages-failure.png')}).catch(()=>{});}
 finally{
-  const report={date:new Date().toISOString(),base,release,checks,errors,failedResponses};
+  const report={date:new Date().toISOString(),base,release,checks,errors,failedResponses,documentRequests};
   await fs.writeFile(path.join(out,'pages-smoke.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report));
   await browser.close();if(server)await new Promise(resolve=>server.close(resolve));
 }

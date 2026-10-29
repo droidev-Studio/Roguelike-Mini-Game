@@ -2,13 +2,15 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {chromium} from 'playwright-core';
+import {installTerrainPlayAudit} from './terrain-play-audit.mjs';
 const args=Object.fromEntries(process.argv.slice(2).map(a=>{const [k,...v]=a.replace(/^--/,'').split('=');return [k,v.join('=')||true];}));
 const out=path.resolve(String(args.out||'project-materials/quality/loop-playtest'));
 const duration=Number(args.seconds||180),label=String(args.label||'play'),seed=String(args.seed||'2901');
 await fs.mkdir(out,{recursive:true});
 const browser=await chromium.launch({channel:'chrome',headless:true}),page=await browser.newPage({viewport:{width:1440,height:960}});
 const errors=[],abortedRequests=[],samples=[],actions=[];let held=new Set(),lastSample=-10,lastStage=-1,lastState=-1;
-page.on('pageerror',e=>errors.push(e.message));page.on('requestfailed',r=>{const message=r.url()+': '+r.failure()?.errorText;if(r.failure()?.errorText==='net::ERR_ABORTED')abortedRequests.push(message);else errors.push(message);});
+const failedResponses=[];
+page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)failedResponses.push({url:r.url(),status:r.status()});});page.on('requestfailed',r=>{const message=r.url()+': '+r.failure()?.errorText;if(r.failure()?.errorText==='net::ERR_ABORTED')abortedRequests.push(message);else errors.push(message);});
 async function keys(next){for(const k of held)if(!next.includes(k))await page.keyboard.up(k);for(const k of next)if(!held.has(k))await page.keyboard.down(k);held=new Set(next);}
 const observe=()=>page.evaluate(()=>{
   const g=window.gameManager,p=g?.player;
@@ -21,6 +23,7 @@ const observe=()=>page.evaluate(()=>{
     world:{width:g?.getWorldWidth(),height:g?.getWorldHeight(),left:g?.getViewportLeft(),top:g?.getViewportTop()},canvas:{width:g?.canvas.width,height:g?.canvas.height,rect:g?.canvas.getBoundingClientRect().toJSON()},
     obstacles:(g?.mapObstacles||[]).filter(o=>o.collisionType==='block'&&g.doesTerrainObstacleApplyToEntity(o,p)).map(o=>({shape:o.shape,x:o.x,y:o.y,radius:o.radius,radiusX:o.radiusX,radiusY:o.radiusY,width:o.width,height:o.height})),
     terrainViolations:(g?.enemies||[]).filter(e=>!e.isProp&&g.isTerrainBlockedAt(e.x,e.y,g.getEnemyTerrainRadius(e),e)).map(e=>({type:e.type,x:e.x,y:e.y,size:e.size})),
+    terrainAudit:window.__TERRAIN_PLAY_AUDIT__?.sample(),
     ui:document.body.innerText.slice(0,900),specs:window.__SPEC_CONFIG_APPLIED__};
 });
 function direction(s){
@@ -56,9 +59,12 @@ function choice(s){return s.options.map((o,i)=>{
   if(/吸附|经验|移速/.test(t))score+=10;
   return {i,score};}).sort((a,b)=>b.score-a.score)[0]?.i||0;}
 try{
-  await page.goto(String(args.url||'http://127.0.0.1:5173/')+`?seed=${seed}&skipOpening=1`,{waitUntil:'domcontentloaded'});
+  const response=await page.goto(String(args.url||'http://127.0.0.1:5173/')+`?seed=${seed}&skipOpening=1`,{waitUntil:'domcontentloaded',timeout:90000});
+  if(!response?.ok())throw new Error('Document HTTP '+response?.status());
   await page.waitForTimeout(2500);
-  await page.waitForFunction(()=>!!window.gameManager&&!!document.querySelector('#start-game-button'),{timeout:30000});
+  await page.waitForFunction(()=>!!window.gameManager&&!!document.querySelector('#start-game-button'),null,{timeout:90000});
+  console.log(JSON.stringify({ready:true,url:page.url()}));
+  if(args.auditTerrain)await installTerrainPlayAudit(page);
   if(args.difficulty==='easy'){
     await page.locator('#gameEditorToggle').click();
     for(const key of ['playerIntensity','gameHard','drops','level'])await page.locator(`[data-setting="${key}"][data-choice="easy"]`).click();
@@ -71,7 +77,7 @@ try{
   const start=Date.now();
   while(Date.now()-start<duration*1000){
     const s=await observe();
-    if(s.time-lastSample>=10||s.stage!==lastStage||s.state!==lastState){samples.push(s);lastSample=s.time;lastStage=s.stage;lastState=s.state;console.log(JSON.stringify({label,time:+s.time.toFixed(1),state:s.state,stage:s.stage,hp:s.player?.hp,level:s.player?.level,enemies:s.enemies.length,options:s.options}));await fs.writeFile(path.join(out,label+'-live.json'),JSON.stringify({samples,actions,errors,abortedRequests},null,2));if(s.stage!==samples.at(-2)?.stage)await page.screenshot({path:path.join(out,label+'-stage-'+(s.stage+1)+'.png')});}
+    if(s.time-lastSample>=10||s.stage!==lastStage||s.state!==lastState){samples.push(s);lastSample=s.time;lastStage=s.stage;lastState=s.state;console.log(JSON.stringify({label,time:+s.time.toFixed(1),state:s.state,stage:s.stage,hp:s.player?.hp,level:s.player?.level,enemies:s.enemies.length,births:s.terrainAudit?.births,badBirths:s.terrainAudit?.badBirths.length,switches:s.terrainAudit?.switches.length,options:s.options}));await fs.writeFile(path.join(out,label+'-live.json'),JSON.stringify({samples,actions,errors,abortedRequests,failedResponses},null,2));if(s.stage!==samples.at(-2)?.stage)await page.screenshot({path:path.join(out,label+'-stage-'+(s.stage+1)+'.png')});}
     if([4,5].includes(s.state)){await keys([]);await page.screenshot({path:path.join(out,label+'-outcome.png')});break;}
     if(s.state===3){await keys([]);const i=choice(s);actions.push({time:s.time,type:'upgrade',index:i,option:s.options[i]});await page.keyboard.press(String(i+1),{delay:100});await page.waitForTimeout(100);continue;}
     if(s.state===1){
@@ -82,5 +88,5 @@ try{
     await page.waitForTimeout(120);
   }
   await keys([]);const final=await observe();if(final.state===1)await page.keyboard.press('p');await page.screenshot({path:path.join(out,label+'-final.png')});
-  await fs.writeFile(path.join(out,label+'-result.json'),JSON.stringify({method:'Real-time Chrome, fresh profile, normal HP/XP/weapon levels. Only start, movement, mouse aiming, pause and offered upgrade keys. No state injection. Seed is supplied but real frame scheduling can change random call order; not a matched deterministic comparison. Opening cinematic skipped by existing URL option.',wallSeconds:duration,samples,actions,final,errors,abortedRequests},null,2));console.log(JSON.stringify({done:true,label,state:final.state,time:final.time,hp:final.player?.hp,errors,abortedRequests:abortedRequests.length}));
-}finally{await browser.close();}
+  await fs.writeFile(path.join(out,label+'-result.json'),JSON.stringify({method:'Real-time Chrome, fresh profile, normal initial HP/XP/weapon levels. Only start, visible difficulty settings, movement, mouse aiming, pause and offered upgrade keys. No gameplay state injection. Optional terrain instrumentation observes real births and map repairs. Seed is supplied but real frame scheduling can change random call order; not a matched deterministic comparison. Opening cinematic skipped by existing URL option.',url:page.url(),wallSeconds:duration,samples,actions,final,errors,abortedRequests,failedResponses},null,2));console.log(JSON.stringify({done:true,label,state:final.state,time:final.time,hp:final.player?.hp,errors,failedResponses,abortedRequests:abortedRequests.length}));
+}catch(error){await fs.writeFile(path.join(out,label+'-failure.json'),JSON.stringify({at:new Date().toISOString(),url:page.url(),error:error.message,errors,failedResponses},null,2));throw error;}finally{await browser.close();}

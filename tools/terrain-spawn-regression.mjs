@@ -103,7 +103,19 @@ try {
     const expectedMap=g.getCurrentStaticStageMapId();
     g.syncStaticStageMap(true);
     check('actual-map-transition-repairs-enemies',g.currentStaticStageMapId===expectedMap&&g.enemies.includes(transitionEnemy)&&transitionEnemy.hp===123&&valid(transitionEnemy),{map:g.currentStaticStageMapId,x:transitionEnemy.x,y:transitionEnemy.y});
-    return {maps,routes,checks};
+    const transitions=[];
+    for(const target of [{stage:0,guard:false},{stage:0,guard:true},{stage:1},{stage:2},{stage:3},{stage:4,final:true}]){
+      const before=g.currentStaticStageMapId;
+      const veterans=[20,48,100].map((size,i)=>{const e=new Enemy(330,305,123+i);e.size=size;e.x=i?g.getWorldWidth()-3:330;e.y=i?g.getWorldHeight()-3:305;return {e,hp:e.hp};});
+      g.enemies=veterans.map(v=>v.e);g.currentStage=target.stage;g.finalBossArenaActive=!!target.final;
+      if(target.guard===false)g.spawnedStageBosses.clear();else g.spawnedStageBosses.add(0);
+      g.syncStaticStageMap(true);
+      const invalidAfter=veterans.filter(v=>!valid(v.e)).map(v=>({x:v.e.x,y:v.e.y,size:v.e.size}));
+      const moved=veterans.map(({e})=>{const x=e.x,y=e.y,dx=g.player.x-x,dy=g.player.y-y,d=Math.hypot(dx,dy)||1;g.moveEnemyWithTerrain(e,dx/d*2,dy/d*2);return valid(e)&&Math.hypot(e.x-x,e.y-y)>.01;});
+      const result={from:before,to:g.currentStaticStageMapId,enemies:veterans.length,invalidAfter,moved,hpPreserved:veterans.every(v=>g.enemies.includes(v.e)&&v.e.hp===v.hp)};transitions.push(result);
+      check('full-map-transition:'+result.to,invalidAfter.length===0&&moved.every(Boolean)&&result.hpPreserved,result);
+    }
+    return {maps,routes,transitions,checks};
   }, args.baseline === '1');
   await page.screenshot({path:path.join(out,args.baseline==='1'?'spawn-baseline.png':'spawn-regression.png')});
   const report={date:new Date().toISOString(),url:page.url(),...result,errors};
