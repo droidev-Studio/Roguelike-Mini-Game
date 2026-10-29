@@ -23,7 +23,13 @@ if(process.argv.includes('--optimize-web')){
   const output=(Array.isArray(bundle)?bundle[0]:bundle).output.find(o=>o.type==='chunk'&&o.isEntry);
   if(!output)throw new Error('Spec loader bundle missing');
   await fs.writeFile(path.join(out,'src/core/SpecLoader.ts'),output.code);
-  webProfile={assets:'web-optimization.json',compiledModules:['src/core/SpecLoader.ts']};
+  const loaderVersion=crypto.createHash('sha256').update(output.code).digest('hex').slice(0,12);
+  const entryPath=path.join(out,'game.js');
+  const entry=await fs.readFile(entryPath,'utf8');
+  const versioned=entry.replace("import('./src/core/SpecLoader.ts')",`import('./src/core/SpecLoader.ts?v=${loaderVersion}')`);
+  if(entry===versioned)throw new Error('Spec loader import was not versioned');
+  await fs.writeFile(entryPath,versioned);
+  webProfile={assets:'web-optimization.json',compiledModules:['src/core/SpecLoader.ts'],loaderVersion};
 }
 const files={};
 for(const file of [...runtime,'src/ui/UIBridge.js','src/rules/CampaignRules.js','assets/manifest.json',...(webProfile?['src/core/SpecLoader.ts','web-optimization.json']:[])]){

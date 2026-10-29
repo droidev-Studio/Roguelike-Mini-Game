@@ -24,13 +24,13 @@ registry_lock=threading.Lock()
 def convert(relative):
     source=assets/relative
     digest=hashlib.sha256(source.read_bytes()).hexdigest()[:24]
-    destination=target/(digest+'.webp')
     with registry_lock:lock=locks.setdefault(digest,threading.Lock())
     with Image.open(source) as image:
         alpha='A' in image.getbands() and image.getchannel('A').getextrema()[0]<255
+        destination=target/(digest+('-a90' if alpha else '')+'.webp')
         normalized=image.convert('RGBA' if alpha else 'RGB')
         with lock:
-            if not destination.exists():normalized.save(destination,'WEBP',lossless=alpha,quality=100 if alpha else 88,method=4,exact=True,**({'icc_profile':image.info['icc_profile']} if image.info.get('icc_profile') else {}))
+            if not destination.exists():normalized.save(destination,'WEBP',lossless=False,quality=90 if alpha else 88,alpha_quality=100,method=4,**({'icc_profile':image.info['icc_profile']} if image.info.get('icc_profile') else {}))
         with Image.open(destination) as result:
             if result.size!=image.size:raise RuntimeError('Texture dimensions changed: '+relative)
             if alpha and result.convert('RGBA').getchannel('A').tobytes()!=normalized.getchannel('A').tobytes():raise RuntimeError('Texture alpha changed: '+relative)
@@ -43,6 +43,6 @@ def rewrite(value):
     if isinstance(value,dict):return {k:rewrite(v) for k,v in value.items()}
     return value
 manifest_path.write_text(json.dumps(rewrite(manifest),ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-report={'profile':'webp-opaque-q88-transparent-lossless-v1','converted':len(records),'beforeBytes':sum(r['beforeBytes'] for r in records),'afterBytes':sum(r['afterBytes'] for r in records),'records':records}
+report={'profile':'webp-rgb-q88-q90-exact-alpha-v2','converted':len(records),'beforeBytes':sum(r['beforeBytes'] for r in records),'afterBytes':sum(r['afterBytes'] for r in records),'records':records}
 (root/'web-optimization.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print(json.dumps({k:v for k,v in report.items() if k!='records'}))
