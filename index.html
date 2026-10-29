@@ -13,8 +13,9 @@
         (function () {
             const isGitHubPages = window.location.hostname.endsWith('github.io')
             const isLocalDev = ['127.0.0.1', 'localhost', '::1'].includes(window.location.hostname)
+            const isGamia = ['gamia-ai-games.com', 'www.gamia-ai-games.com'].includes(window.location.hostname)
             const params = new URLSearchParams(window.location.search)
-            if (!isGitHubPages && !isLocalDev) return
+            if (!isGitHubPages && !isLocalDev && !isGamia) return
             const defaults = {
                 seed: '12345',
                 artA1A2: '1', artEnemies: '1', artPlayer: '1', artTiles: '1',
