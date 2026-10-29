@@ -10,6 +10,8 @@ let server;
 if(args.dir){
   const root=path.resolve(args.dir);
   const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.jpeg':'image/jpeg','.jpg':'image/jpeg','.svg':'image/svg+xml','.webp':'image/webp','.mp3':'audio/mpeg','.wav':'audio/wav','.ogg':'audio/ogg'};
+  const release=JSON.parse(await fs.readFile(path.join(root,'release.json'),'utf8'));
+  if(release.webProfile?.compiledModules?.length)types['.ts']='text/javascript';
   server=http.createServer(async(req,res)=>{
     try{
       const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
